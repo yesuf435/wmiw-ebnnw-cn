@@ -29,8 +29,24 @@
         "start -d", 
         "stop",
         "status",
-        "restart"
-      ]
+      "restart"
+    ]
     }
-  ]
+  ],
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": true,
+    "markdown": true,
+    "javascript": true,
+    "python": true
+  },
+  "github.copilot.inlineSuggest.enable": true,
+  "github.copilot.suggestionDelay": 0,
+  "editor.inlineSuggest.enabled": true,
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": true
+  },
+  "editor.suggest.snippetsPreventQuickSuggestions": false
 }
