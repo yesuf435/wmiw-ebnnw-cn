@@ -1,0 +1,35 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "PHP: Debug Workerman CLI",
+      "type": "php",
+      "request": "launch",
+      "program": "${workspaceFolder}/wmiw.ebnnw.cn/start.php",
+      "args": [
+        "${input:workermanCommand}"
+      ],
+      "cwd": "${workspaceFolder}/wmiw.ebnnw.cn/",
+      "port": 9003,
+      "stopOnEntry": true,
+      "env": {
+        // For Xdebug 3, ensure XDEBUG_MODE is set if not in php.ini for CLI
+        // "XDEBUG_MODE": "debug" 
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "workermanCommand",
+      "type": "pickString",
+      "description": "Select the Workerman command to run with start.php:",
+      "options": [
+        "start",
+        "start -d", 
+        "stop",
+        "status",
+        "restart"
+      ]
+    }
+  ]
+}
