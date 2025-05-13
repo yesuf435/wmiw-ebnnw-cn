@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="keywords" content="{$site.SITE_INFO.keyword}" />
+		<meta name="description" content="{$site.SITE_INFO.description}" />
+        <title>收到买家的评价-我是卖家-{$site.SITE_INFO.title}</title>
+        <include file="Common:intoHead" />
+		<css href="__CSS__/user.css"/>
+		<js href="--PUBLIC--/Js/jquery_raty/jquery.raty.min.js"/>
+		<js href="__JS__/user.js"/>
+    </head>
+    <body>
+    <include file="Common:head_narrow" />
+<div id="container_white">
+    <div class="main_b9">
+        <div class="main_b3_top"><a href="">首　页</a>&nbsp;&gt;&gt;&nbsp;我是卖家&nbsp;&gt;&gt;&nbsp;收到买家的评价</div>
+        <div class="main_b9_1 clearfix">
+            <!--左侧导航开始-->
+            <include file="Member:menu" />
+            <!--左侧导航结束-->
+            <!---右侧开始-->
+            <div class="sider">
+                <ul class="inquiry">
+                    <li class="hover"><a href="{:U('Member/seller_myevaluate')}">收买家的评价</a></li>
+                    <li><a href="{:U('Member/my_evaluatebuy')}">我评价的买家</a></li>
+                </ul>
+                <div class="inquiry-con">
+                    <div class="xycount clearfix" >
+                        <div class="fl rate_leiji"><div class="mjico"></div><div class="fl">卖家累计信誉：</div><div class="fl" id="credit"></div></div>
+                        <div class="rate_summary fl">好评率：<strong>{$einfo.scorePER}</strong></div>
+                    </div>
+                    <table class="buyer-rate-info tabela">
+                        <colgroup>
+                            <col width="60"><col width="50"><col width="50"><col width="50"><col width="50"><col width="50">
+                        </colgroup>
+                        <thead>
+                            <tr bgcolor="#fbfaf7">
+                                <th>&nbsp;</th><th>最近1周</th><th>最近1个月</th><th>最近6个月</th><th>6个月前</th><th>总计</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><img width="20" height="20" src="--PUBLIC--/Img/level/good.gif" alt="好评" />好评</td>
+                                <td>{$einfo.scoreAH}</td><td>{$einfo.scoreBH}</td><td>{$einfo.scoreCH}</td><td>{$einfo.scoreDH}</td><td>{$einfo.scoreZH}</td>
+                            </tr>
+                            <tr>
+                                <td><img width="20" height="20" src="--PUBLIC--/Img/level/middle.gif" alt="中评" />中评</td>
+                                <td>{$einfo.scoreAZ}</td><td>{$einfo.scoreBZ}</td><td>{$einfo.scoreCZ}</td><td>{$einfo.scoreDZ}</td><td>{$einfo.scoreZZ}</td>
+                            </tr>
+                            <tr>
+                                <td><img width="20" height="20" src="--PUBLIC--/Img/level/bad.gif" alt="差评" />差评</td>
+                                <td>{$einfo.scoreAC}</td><td>{$einfo.scoreBC}</td><td>{$einfo.scoreCC}</td><td>{$einfo.scoreDC}</td><td>{$einfo.scoreZC}</td>
+                            </tr>
+                            <tr>
+                                <td>总计</td>
+                                <td>{$einfo.scoreALA}</td><td>{$einfo.scoreALB}</td><td>{$einfo.scoreALC}</td><td>{$einfo.scoreALD}</td><td>{$einfo.scoreALZ}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="mertit"><h3>买家给我的评价</h3></div>
+                    <table width="100%" cellspacing="0" cellpadding="0" class="tabela">
+                        <thead>
+                            <tr bgcolor="#fbfaf7" align="center">
+                                <th width="5%" class="brno" scope="col">评价</th>
+                                <th width="45%" valign="middle" align="center" class="brno" scope="col">评论</th>
+                                <th width="20%" valign="middle" align="center" class="brno" style="text-align: center;" scope="col">评价人</th>
+                                <th width="30%" valign="middle" align="center" scope="col">拍品信息</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <empty name="list">
+                            <tr><td colspan="5" align="center">
+                                哎哟！这里空空如也！
+                            </td></tr>
+                            <else/>
+                            <volist name="list" id="vo">
+                                <tr valign="top" align="left">
+                                    <td align="left" class="tablea_pic">
+                                        <eq name="vo.pingjia" value="0"><img width="20" height="20" src="--PUBLIC--/Img/level/bad.gif" alt="差评" /></eq>
+                                        <eq name="vo.pingjia" value="1"><img width="20" height="20" src="--PUBLIC--/Img/level/middle.gif" alt="中评" /></eq>
+                                        <eq name="vo.pingjia" value="2"><img width="20" height="20" src="--PUBLIC--/Img/level/good.gif" alt="好评" /></eq>
+                                         
+                                    </td>
+                                    <td valign="middle">
+                                        <p>拍品：{$vo.service_evaluate}</p>
+                                        <p>服务：{$vo.conform_evaluate}</p>
+                                        <div style=" color: #999;text-align: right;">[&nbsp;{$vo.time|date='Y-m-d H:i',###}&nbsp;]</div>
+                                    </td>
+                                    <td style="vertical-align: middle;">
+                                        <span class="ac-show-userbox clearfix" cardtips="0" pid="{$vo.pid}" uid="{$vo.uid}" seller="0">
+                                            <a class="ac-show-usercard" href="javascript:void(0);">{$vo.nickname}</a>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <img style="float: left; margin-right: 10px; display: inline; width:50px; height:auto; " src="{$upWholeUrl}{$vo.pictures|getPicUrl=###,3,0}"/>
+                                        <p><a href="{:U('Auction/details',array('pid'=>$vo['pid']))}">{$vo.pname}</a></p>
+                                        <p>成交价：<span style="color: #ff6600;">{$vo.price}</span></p>
+                                        
+                                    </td>
+                                </tr>
+                            </volist> 
+                            </empty>  
+                            <tr valign="top" align="left">
+                                <td bgcolor="#fbfaf7" align="left" colspan="5">
+                                    <div class="page">
+                                        {$page}
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!---右侧结束-->
+        </div>
+        <!--auction.html结束-->
+    </div>
+</div>
+<!---底部开始-->
+<include file="Common:help_narrow" />
+<include file="Common:footer"/>
+<script type="text/javascript">
+var start_path = "--PUBLIC--/Js/jquery_raty/img"
+var credit_score = "{$einfo.credit_score}";
+$(function(){
+    $('#credit').raty({
+        readOnly: true,
+        score: Number(credit_score),
+        path : start_path
+      });
+});
+</script>
+</body>
+</html>

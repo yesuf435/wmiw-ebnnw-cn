@@ -1,0 +1,132 @@
+<include file="Common:meta" />
+<title><eq name="ACTION_NAME" value="search">提现搜索结果<else/>提现管理</eq>-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl"><eq name="ACTION_NAME" value="search">提现搜索结果<else/>提现管理</eq></div>
+                            </div>
+                            <div class="widget-body am-cf">
+                                <form id="searchForm" action="{:U('Index/search')}" method='get' class="am-form tpl-form-border-form tpl-form-border-br  am-u-sm-12 am-u-md-12 am-u-lg-5 am-fr am-cf">
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-5">
+                                        <div class="am-form-group am-input-group-sm">
+                                            <input type="text" class="am-form-field " value="{$keys.account}" name="account" placeholder="搜索账号"/>
+                                         </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-5">
+                                        <div class="am-form-group am-input-group-sm">
+                                            <select name="status" data-am-selected="{btnSize: 'sm'}">
+                                                <option value="">所有分类</option>
+                                                <option value="0">未处理</option>
+                                                <option value="1">已转账</option>
+                                                <option value="2">已驳回</option>
+                                                    
+                                            </select>
+                                         </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-2">
+                                        <div class="am-btn-group am-btn-group-xs" style="width: 100%;">
+                                            <input style="line-height: 21px;" type="submit" value="筛选" act="0" class="am-btn tpl-table-list-field am-u-sm-12 am-u-md-12 am-u-lg-12 am-btn-success">
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="am-u-sm-12">
+                                    <empty name="list">
+                                    <div class="on-none">未查询到数据</div>
+                                    <else/>
+                                        <table width="100%" id="example-r" class="am-table am-table-compact tpl-table-black " >
+                                            <thead>
+                                                <tr>
+                                                    <td>用户账号</td>
+                                                    <td>提现金额</td>
+                                                    <td>收款账户</td>
+                                                    <td>备注</td>
+                                                    <td>申请时间</td>
+                                                    <td>状态</td>
+                                                    <td>操作</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <volist name="list" id="vo">
+                                                    <tr id="{$vo.id}">
+                                                        <td>
+                                                            <div class="ushow">
+                                                                <img class="uimg" src="{$vo.user.uid|getUserpic=###,2}" alt="" />
+                                                                <div class="utxt">账号：{$vo.user.account}<br/>{$vo.user.nickname}</div>
+                                                            </div>
+                                                        </td>
+                                                        <td>{$vo.money}</td>
+                                                        <td>
+                                                            <notempty name="vo.bank">银行：{$vo.bank}<br/></notempty>
+                                                            <notempty name="vo.bankhome">开户行：{$vo.bankhome}<br/></notempty>
+                                                            <notempty name="vo.account">账号：{$vo.account}<br/></notempty>
+                                                            <notempty name="vo.name">姓名：{$vo.name}<br/></notempty>
+                                                        </td>
+                                                        <td align="left">{$vo.remark}</td>
+                                                        <td>{$vo.time|date='Y-m-d H:i',###}</td>
+                                                        <td>
+                                                            <eq name="vo.status" value="0"><span class="striking s2">等待提现</span></eq>
+                                                                <eq name="vo.status" value="1">
+                                                                <span class="striking s2">已转账</span>
+                                                                <div class="tl">
+                                                                时间：{$vo.dtime|date='Y-m-d H:i',###}<br>
+                                                                回复：{$vo.cause}
+                                                                </div>
+                                                                </eq>
+                                                                <eq name="vo.status" value="2">
+                                                                <span class="striking s1">被驳回</span>
+                                                                <div class="tl">
+                                                                时间：{$vo.dtime|date='Y-m-d H:i',###}<br>
+                                                                原因：{$vo.cause}
+                                                                </div>
+                                                            </eq>
+                                                        </td>
+                                                        <td>
+                                                        <eq name="vo.status" value="0">[ <a href="{:U('Index/rtake',array('tid'=>$vo[tid]))}">回复申请 </a> ]<else/>无</eq>
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                </volist>
+                                            </tbody>
+                                        </table>
+                                        <div class="am-u-lg-12 am-cf">
+                                            <div class="am-fr">
+                                                <div class="am-pagination tpl-pagination">
+                                                    {$page}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </empty>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<script type="text/javascript">
+    $(function(){
+        $(".del").click(function(){
+            var delLink=$(this).attr("link");
+            AMUI.dialog.confirm({ title: '温馨提示', content:'你真的打算删除【<b>'+$(this).attr("name")+'</b>】吗?', onConfirm: function() {
+                top.window.location.href=delLink;
+            }, onCancel: function() { console.log('onCancel') } });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>
+

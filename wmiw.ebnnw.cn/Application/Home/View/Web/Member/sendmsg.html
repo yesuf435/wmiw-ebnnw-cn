@@ -1,0 +1,136 @@
+<include file="Common:meta" />
+<title>站内消息-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/newstyle.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+        <div class="center">
+            <div class="col-main">
+                <div class="main-wrap">
+                    <div class="main-wrap-box">
+                        <div class="user-news">
+                            <!--标题 -->
+                            <div class="am-cf on-user-title">
+                                <div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">站内消息</strong> / <small>Sms</small></div>
+                            </div>
+
+                            <div class="sms-content">
+                                <form id="smsForm" name="sendMsg" class="am-form am-form-horizontal">
+                                    <eq name="tp" value="gp">
+                                        <div class="am-form-group">
+                                            <label for="price" class="am-form-label">收件人</label>
+                                            <div class="am-form-content">
+                                                <select name="gp">
+                                                    <option value="0">关注我的({$sendct.0}个)</option>
+                                                    <option value="1">我的客户({$sendct.1}个)</option>
+                                                    <!-- <option value="2">全部用户({$sendct.2}个)</option> -->
+                                                </select>
+                                            </div>
+                                        </div>
+                                    <else/>
+                                        <div class="am-form-group">
+                                            <label for="price" class="am-form-label">发送给</label>
+                                            <div class="am-form-content sendto-user">
+                                                <img src="{$info.uid|getUserpic=###,2}">
+                                                <div class="sendto-user-info">
+                                                    <neq name="info.uid" value="0">
+                                                        <p>
+                                                            <span class="th">账号：</span>
+                                                            <span class="td">{$info.account}</span>
+                                                        </p>
+                                                        <p>
+                                                            <span class="th">昵称：</span>
+                                                            <span class="th">{$info.nickname}</span>
+                                                        </p>
+                                                    <else/>
+                                                        <a class="td link"  target="_blank" href="{:U('Seller/index',array('userid'=>$info['uid']))}">
+                                                            <div class="rzc cuit_over">{$info.nickname}</div>
+                                                        </a>
+                                                    </neq>
+                                                </div>
+                                                
+                                                <input type="hidden" name="info[uid]" value="{$info.uid}" />
+                                                <input type="hidden" name="info[rsid]" value="{$info.rsid}" />
+                                            </div>
+                                        </div>
+                                        <if condition="$auction">
+                                            <div class="am-form-group" >
+                                                <label for="default" class="am-form-label">关于拍卖</label>
+                                                <div class="am-form-content am-cf" style="line-height: 34px;">
+                                                    <label class="am-checkbox am-danger on-checkbox am-fl">
+                                                        <input type="checkbox" id="default" value="1" name="topid" data-am-ucheck checked>
+                                                    </label>
+                                                    <a class="link am-fl" target="blank" href="{:U('Auction/details',array('pid'=>$auction['pid']))}">{$auction.pname}</a>
+                                                </div>
+                                                <input type="hidden" name="info[pid]" value="{$auction.pid}" />
+                                            </div>
+                                        </if>
+                                    </eq>
+                                    
+                                    <div class="am-form-group">
+                                        <label for="price" class="am-form-label">留言</label>
+                                        <div class="am-form-content">
+                                            <textarea id="content" name="info[content]" placeholder="填写你要发送的消息，小于120个字符">{$my_info.content}</textarea>
+                                        </div>
+                                    </div>
+                                    <ul class="user-frame am-avg-sm-1 am-text-center">
+                                         <li>
+                                            <button class="am-btn am-btn-danger on-btn-danger submitBtn">发送</button>
+                                         </li>
+                                    </ul>
+                                </form>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--底部-->
+                
+                <include file="Common:footer"/>
+            </div>
+            <eq name="how" value="sel"><include file="Seller:menu"/><else/><include file="Member:menu"/></eq>
+        </div>
+<js href="--PUBLIC--/assets/js/jquery.form.js"/>
+<script type="text/javascript">
+$(function(){
+// 表单提交
+    var $form = $('#smsForm');
+    var $subbtn = $(".submitBtn");
+    $form.validator({
+        submit: function() {
+            var formValidity = this.isFormValid();
+            if (formValidity) {
+                // 验证成功的逻辑
+                $subbtn.button('loading');
+                // 验证成功的逻辑
+                $form.ajaxSubmit({url:document.URL,data:'',type:"POST",
+                    success:function(data, st) {
+                        // 提示框
+                        AMUI.dialog.alert({ title: data.title, content: data.info});
+                        if(data.status==1){
+                            setTimeout(function(){
+                                top.window.location.href = data.url;
+                            },1000);
+                        }else{
+                            $subbtn.button('reset');
+                        }
+                        return false;
+                    }
+                });
+            } else {
+                $subbtn.button('reset');
+            // 验证失败的逻辑
+            }
+        //阻止原生form提交
+        return false;
+        }
+    });
+});
+</script>
+    </body>
+</html>

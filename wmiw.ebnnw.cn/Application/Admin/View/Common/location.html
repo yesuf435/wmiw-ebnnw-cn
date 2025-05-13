@@ -1,0 +1,36 @@
+<div id="Js-region-box" class="am-form-group">
+    <label for="address" class="am-u-sm-3 am-form-label">所在地</label>
+    <div id="address" class="am-u-sm-9 am-cf on-address">
+        <ul class="am-avg-sm-3 on-address-input-box">
+            <li><input id="address" name="data[prov]" placeholder="省" type="text" value="{$info.prov}" required></li>
+            <li><input id="address" name="data[city]" placeholder="市" type="text" value="{$info.city}" required></li>
+            <li><input id="address" name="data[district]" placeholder="区、县" type="text" value="{$info.district}" required></li>
+        </ul>
+        <button type="button" id="addressBtn" class="am-btn am-btn-block am-margin-bottom-sm on-address-btn">
+            &nbsp;&nbsp;
+        </button>
+        <link href="--PUBLIC--/assets/css/amazeui.address.css" rel="stylesheet" type="text/css">
+        <script src="--PUBLIC--/assets/js/iscroll.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="--PUBLIC--/assets/js/address.js" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript">
+        $(function() {
+            document.addEventListener('touchmove', function (e) {
+                e.preventDefault();
+            }, false);
+            //  自定义输出
+            $("#addressBtn").address({
+                customOutput: true,
+                selectEnd: function(json,address) {
+                    for(var key in json) {
+                        $(".on-address-input-box").find("input[name='data[" + key + "]']").val(json[key]).focus().blur();
+                    }
+                }
+            }).on("provTap",function(event,activeli){
+                console.log(activeli.text());
+            }).on("cityTap",function(event,activeli){
+                console.log(activeli.text());
+            });
+        });
+        </script>
+    </div>
+</div>

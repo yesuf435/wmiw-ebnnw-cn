@@ -1,0 +1,115 @@
+<include file="Common:meta" />
+<title>{$channelName}拍卖{$stname}-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<link href="__CSS__/demo.css" rel="stylesheet" type="text/css" />
+<link href="__CSS__/auctionlist.css" rel="stylesheet" type="text/css">
+<link href="__CSS__/filtstyle.css" rel="stylesheet" type="text/css">
+<link href="__CSS__/style.css" rel="stylesheet" type="text/css">
+<js href="__JS__/script.js"/>
+<body>
+<include file="Common:search_none" />
+<include file="Common:header_topnav" />
+<include file="Common:header_search" />
+<include file="Common:navigation" />
+    <div class="on-mb">
+        <div class="auction-list">
+
+            <div class="m-user">
+                <!--个人信息 -->
+                <div class="m-userinfo">
+                    <div class="m-baseinfo">
+                        <a class="m-pic" href="{:U('Member/my_info')}">
+                            <img class="userPic" src="<empty name='$seller.avatar_sel'>{$seller.uid|getUserpic=###,1,'sel'}<else/>__IMG__/getAvatar.do.jpg</empty>">
+                        </a>
+                        <ul class="m-info">
+                            <li><h2>{$seller.organization}</h2></li>
+                            <li class="am-cf"><div class="lh">综合信誉：</div><div class="ld" id="credit"></div></li>
+                            <li class="am-cf"><div class="lh">店铺级别：</div><div class="ld"><img src="{$seller.leval}"></div></li>
+                            <li class="am-cf"><div class="lh">成交率：</div><div class="ld">{$count.cjl}</div></li>
+                        </ul>
+                    </div>
+                    <div class="m-right">
+                        <ul class="am-avg-sm-2">
+                            <li class="lybox_min am-fr am-cf"><a target="_blank" class="ly" href="{:U('Member/sendmsg',array('uid'=>$sellerid))}">
+                                <i class="am-icon-envelope"></i><p class="txt">给我留言</p></a>
+                            </li>
+                            <li class="gzbox_min ac-attention-box am-fr am-cf">
+                                <a sellerid="{$sellerid}" class="gz_sell gz selatt{$sellerid} <eq name='usgz' value='1'>on</eq>" st="{$usgz}" href="javascript:void(0);"><i class="am-icon-heart"></i><p class="txt"><eq name='usgz' value='1'>取消关注<else/>关注店铺</eq></p></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!--个人资产-->
+                <div class="m-userproperty">
+                    <p class="m-coupon">
+                        <a class="<eq name='channel' value='auction'>on</eq>" href="{:U('Shop/index',array('sellerid'=>$sellerid,'channel'=>'auction'))}">
+                            <i class="am-icon-gavel"></i>
+                            <span class="m-title">拍卖</span>
+                        </a>
+                    </p>
+                    <p class="m-wallet">
+                        <a class="<eq name='channel' value='special'>on</eq>" href="{:U('Shop/index',array('sellerid'=>$sellerid,'channel'=>'special'))}">
+                            <i class="am-icon-object-ungroup"></i>
+                            <span class="m-title">专场</span>
+                        </a>
+                    </p>
+                    <p class="m-bill">
+                        <a class="<eq name='channel' value='meeting'>on</eq>" href="{:U('Shop/index',array('sellerid'=>$sellerid,'channel'=>'meeting'))}">
+                            <i class="am-icon-object-group"></i>
+                            <span class="m-title">拍卖会</span>
+                        </a>
+                    </p>
+                </div>
+                <div class="box-container-bottom"></div>
+            </div>
+            <div class="sort am-avg-sm-4">
+                <li <eq name="type" value="all"> class="first"</eq> ><a href="{:U('Shop/index',array('sellerid'=>$sellerid,'channel'=>$channel,'type'=>'all'))}">全部({$count.all})</a></li>
+                <li <eq name="type" value="biding"> class="first"</eq> ><a href="{:U('Shop/index',array('sellerid'=>$sellerid,'channel'=>$channel,'type'=>'biding'))}">正在拍卖({$count.ing})</a></li>
+                <li <eq name="type" value="future"> class="first"</eq> ><a href="{:U('Shop/index',array('sellerid'=>$sellerid,'channel'=>$channel,'type'=>'future'))}">即将开拍({$count.wait})</a></li>
+                <li <eq name="type" value="bidend"> class="first"</eq> ><a href="{:U('Shop/index',array('sellerid'=>$sellerid,'channel'=>$channel,'type'=>'bidend'))}">已结束({$count.end})</a></li>
+            </div>
+            <eq name="channel" value="auction">
+                <div class="am-g am-g-fixed">
+                    <div class="am-u-sm-12 am-u-md-12">
+                        <div class="auction-content">
+                            <div class="clear"></div>
+                            <ul class="am-avg-sm-2 am-avg-md-3 am-avg-lg-4 boxes">
+                                <include file="Auction:bidbox"/>
+                            </ul>
+                        </div>
+                        <!--分页 -->
+                        <div class="am-cf">
+                            <div class="am-fr">{$page}</div>
+                        </div>
+                    </div>
+                </div>
+            </eq>
+            <eq name="channel" value="special">
+                <include file="Special:special"/>
+            </eq>
+            <eq name="channel" value="meeting">
+                <include file="Meeting:meeting"/>
+            </eq>
+            <include file="Common:footer"/>
+        </div>
+    </div>
+    <include file="Common:query_links"/>
+<js href="--PUBLIC--/Js/jquery_raty/jquery.raty.min.js"/>
+<script type="text/javascript">
+var start_path = "--PUBLIC--/Js/jquery_raty/img"
+var credit_score = "{$credit_score}";
+$(function(){
+    $('#credit').raty({
+        readOnly: true,
+        score: Number(credit_score),
+        hints: ['差', '一般', '好', '非常好', '特别好'],
+        starOn: 'star-on-big.png',
+        path : start_path
+    });
+});
+</script>
+
+</body>
+</html>

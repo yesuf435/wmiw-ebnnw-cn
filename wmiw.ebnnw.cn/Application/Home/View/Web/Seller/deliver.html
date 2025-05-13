@@ -1,0 +1,138 @@
+<include file="Common:meta" />
+<title>{$whopage.name}-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/addstyle.css" rel="stylesheet" type="text/css">
+<body onload="express();">
+<include file="Common:header" />
+<include file="Common:navigation" />
+        <div class="center">
+            <div class="col-main">
+                <div class="main-wrap">
+                    <div class="main-wrap-box am-form" >
+                        <!--标题 -->
+                        <div class="am-cf on-user-title">
+                            <div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">{$whopage.name}</strong> / <small>Deliver&nbsp;goods</small></div>
+                        </div>
+                        <div class="am-u-md-12 am-u-lg-8">
+
+                            <form id="expressrForm" class="am-form am-form-horizontal">
+                                    <div class="am-form-group">
+                                            <ul class="user-address-ul am-avg-sm-1 am-avg-md-3 am-thumbnails" style="margin-bottom: 0px;">
+                                                <li class="user-addresslist defaultAddr" style="margin: 0px auto; float: none;">
+                                                    <p class="new-tit new-p-re">
+                                                        <span class="new-txt">{$address.truename}</span>
+                                                        <span class="new-txt-rd2">{$address.mobile}</span>
+                                                    </p>
+                                                    <div class="new-mu_l2a new-p-re">
+                                                        <p class="new-mu_l2cw">
+                                                            <span class="title">地址：</span>
+                                                            <span class="province">{$address.prov}</span>
+                                                            <span class="city">{$address.city}</span>
+                                                            <span class="dist">{$address.district}</span>
+                                                            <span class="street">{$address.address}</span>
+                                                        </p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="express" class="am-form-label">快递</label>
+                                        <div class="am-form-content">
+                                            <select  name="info[express]" >
+                                                <option value="">请选择快递</option>
+                                                <option value="*" <eq name="info.express" value="*">selected="selected"</eq>>其他快递/物流</option>
+                                                <volist name="express_list" id="vo">
+                                                    <option value="{$vo.no}">{$vo.com}</option>
+                                                </volist>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group Js-express_other_box" style="display:none;">
+                                        <label for="expressother" class="am-form-label">快递名称</label>
+                                        <div class="am-form-content">
+                                            <input id="expressother" placeholder="快递名称" type="text" name="info[express_other]" value="{$info.express_other}" >
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="am-form-group">
+                                        <label for="postalcode" class="am-form-label">快递单号</label>
+                                        <div class="am-form-content">
+                                            <input id="expressno" placeholder="快递单号" type="text" name="info[express_no]" value="{$info.express_no}" required>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="remark" class="am-form-label">留言</label>
+                                        <div class="am-form-content">
+                                            <input id="remark" placeholder="留言" type="text" name="info[remark]" value="<eq name="ac" value="1">{$info.remark}</eq>" required>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" value="{$info.order_no}" name="info[order_no]">
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <input type="submit" name="" value="<eq name="ac" value="1">编辑发货<else/>提交发货</eq>" class="am-btn am-btn-primary am-btn-sm submitBtn">
+                                        </div>
+                                    </div>
+                                </form>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <!--底部-->
+                <include file="Common:footer"/>
+            </div>
+            <eq name="CONTROLLER_NAME" value="Member"><include file="Member:menu"/></eq>
+            <eq name="CONTROLLER_NAME" value="Seller"><include file="Seller:menu"/></eq>
+        </div>
+<js href="--PUBLIC--/assets/js/jquery.form.js"/>
+<script type="text/javascript">
+$(function(){
+
+    var $form = $('#expressrForm');
+        var $subbtn = $(".submitBtn");
+        $form.validator({
+            submit: function() {
+                var formValidity = this.isFormValid();
+                if (formValidity) {
+                    // 验证成功的逻辑
+                    $subbtn.button('loading');
+                    // 验证成功的逻辑
+                    $form.ajaxSubmit({url:document.URL,data:'',type:"POST",
+                        success:function(data, st) {
+                            // 提示框
+                            AMUI.dialog.alert({ title: data.title, content: data.info});
+                            if(data.status==1){
+                                setTimeout(function(){
+                                    top.window.location.href = data.url;
+                                },1000);
+                            }else{
+                                $subbtn.button('reset');
+                            }
+                            return false;
+                        }
+                    });
+
+                } else {
+                    $subbtn.button('reset');
+                // 验证失败的逻辑
+                }
+            //阻止原生form提交
+            return false;
+            }
+        });
+    $('.Js-express').on("change",function(){
+        express();
+    });
+});
+function express(tval){
+    if($('.Js-express').val()=='*'){
+        $('.Js-express_other_box').show();
+    }else{
+        $('.Js-express_other_box').hide();
+    }
+}
+</script>
+    </body>
+</html>

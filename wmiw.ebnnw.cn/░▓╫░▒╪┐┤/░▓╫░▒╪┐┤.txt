@@ -1,0 +1,51 @@
+昂酷拍卖环境要求：
+windows系统
+PHP环境:php 5.3+
+数据库：mysql
+PHP组件要求：
+memcache组件（建议）如果不支持请修改缓存模式
+
+安装步骤：
+
+1.直接将程序拷贝到网站根目录下，用域名打开根据安装向导进行安装【请不要修改表前缀】
+2.安装完成后检查网址是否可以正常打开,如果二级页面无法打开请参考【url模式说明和缓存模式的说明.png】进行修改url模式。如果拍卖详细页面不能正常打开请检查是否安装memcache，或者参考【url模式说明和缓存模式的说明.png】修改缓存模式为文件缓存
+3.如果详细页面显示【正在建立连接】请根据以下情况解决：
+（windows系统）请参考设置系统变量，参考【windows环境变量设置.png】进行设置后运行根目录下【start_for_win.bat】，打开命令行窗口（注意网站运行期间该窗口禁止关闭，如果关闭会导致拍卖无法进行）。
+
+（linux系统）参考【linux服务启动.jpg】启动服务
+
+注意：7272端口请添加例外
+
+############### linux7272端口添加例外【
+
+/sbin/iptables -I INPUT -p tcp --dport 7272 -j ACCEPT #开启7272端口
+
+/etc/rc.d/init.d/iptables save #保存配置
+
+/etc/rc.d/init.d/iptables restart #重启服务
+
+查看端口是否已经开放
+
+/etc/init.d/iptables status 
+############### linux7272端口添加例外】
+
+
+
+数据清空：
+
+当前数据库中有测试数据，如需清空数据库，请按照【可清空表数据】进行清空
+
+
+
+安装时候请不要修改表前缀
+
+
+
+gzip: stdin has more than one entry--rest ignored
+tar: This does not look like a tar archive
+tar: Skipping to next header
+tar: Child returned status 2
+tar: Error is not recoverable: exiting now
+
+
+

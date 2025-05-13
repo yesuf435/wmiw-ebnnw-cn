@@ -1,0 +1,136 @@
+<include file="Common:meta" />
+<title>找回密码-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<link href="__CSS__/dlstyle.css" rel="stylesheet" type="text/css">
+<body>
+    <div class="login-boxtitle">
+		{:showAdvPosition('logoA','span')}
+	</div>
+		<div class="login-banner">
+			<div class="login-banner-bg">{:showAdvPosition('lrbanner','div')}</div>
+			<div class="res-main am-cf">
+				<div class="login-box">
+					<ul class="tabMenuLink am-avg-sm-2">
+					        <li class="on-mli <eq name="findtype" value="email">on</eq>">
+					            <a style="border-right: 1px solid #f1f1f1;" href="{:U('Login/findpwd',array('findtype'=>'email'))}">邮箱找回密码</a>
+					        </li>
+					        <li class="on-mli <eq name="findtype" value="mobile">on</eq>">
+					            <a  href="{:U('Login/findpwd',array('findtype'=>'mobile'))}">手机找回密码</a>
+					        </li>
+					</ul>
+					<form id="registerForm">
+						<!-- 邮箱找回表单 -->
+						<eq name="findtype" value="email">
+							<div class="verification">
+								<label class="i-box" for="email"><i class="am-icon-envelope-o"></i></label>
+								<input class="input" id="email" name="email" placeholder="邮箱" type="text" value="{$email}" />
+							</div>
+							<div class="verification">
+								<label class="i-box" for="email_verify"><i class="am-icon-code-fork"></i></label>
+								 <input class="input" id="email_verify" placeholder="邮箱验证码" name="email_verify" type="text" value="" />
+								 <span sendyn="0" checktp="email" class="obtainCodeButton">获取</span></a>
+							</div>
+					         <input type="hidden" name="findtype" value="email">
+						</eq>
+						<!-- 邮箱找回表单——end -->
+						<!-- 手机找回表单 -->
+						<eq name="findtype" value="mobile">																		
+							<div class="verification">
+								<label class="i-box" for="mobile"><i class="am-icon-mobile-phone am-icon-md"></i></label>
+								<input class="input" placeholder="手机号码" id="mobile" name="mobile" type="number" value="" />
+							</div>
+							<div class="verification">
+								<label class="i-box" for="mobile_verify"><i class="am-icon-code-fork"></i></label>
+								<input placeholder="手机验证码" id="mobile_verify" name="mobile_verify" type="number" class="input" value="" />
+								<a class="btn" href="javascript:void(0);" onclick="sendMobileCode();" id="sendMobileCode">
+								<span sendyn="0" checktp="mobile" class="obtainCodeButton">获取</span></a>
+							</div>
+							<input type="hidden" name="findtype" value="mobile">
+						</eq>
+						<div class="verification">
+							<label class="i-box" for="password"><i class="am-icon-lock"></i></label>
+							<input class="input" id="pwd" name="pwd" placeholder="重设密码" type="password" />
+						</div>
+						<div class="verification">
+						 	<label class="i-box" for="passwordRepeat"><i class="am-icon-lock"></i></label>
+							<input class="input" id="pwded" name="pwded" placeholder="确认密码" type="password" />
+						</div>
+						<div class="am-cf am-margin-0">
+							<input type="submit" name="" value="找回" class="am-btn am-btn-primary am-btn-sm am-fl submitBtn">
+						</div>	
+						<hr>
+						<div class="am-cf" style="margin: 0px;padding: 0px;text-align: right;font-size: 12px;">
+							<span>已有账号？</span><a href="{:U('Login/index')}" >登陆</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<include file="Common:footer"/>
+		<js href="--PUBLIC--/assets/js/jquery.form.js"/>
+		<script>
+		var sendCodeUlrl = "{:U('Login/sendCode','',true)}";
+		var wait=60;
+			$(function(){
+				// 发送验证码
+		    	$('.obtainCodeButton').click(function(){
+		    		var obj = $(this);
+		    		if (obj.attr('sendyn')==0) {
+		    			time(obj);
+		    			var $loading = AMUI.dialog.loading({title:'发送中...'}); 
+			    		var checkadr = $('#'+$(this).attr('checktp')).val();
+						var checktp = $(this).attr('checktp');
+						$.post(sendCodeUlrl,{'checkadr':checkadr,'checktp':checktp,'how':'findpwd'},function(data){
+							$loading.modal('close');
+							AMUI.dialog.alert({ title: '', content: data.info});
+			                if (data.status) {
+			                    time(obj);
+			                }
+			            },'json');
+		    		}else{
+		    			AMUI.dialog.alert({ title: '', content: '请等待倒计时结束，再次发送'});
+		    		}
+		    		
+		        });
+		        // 重新发送验证码
+				function time(o) {
+				    if (wait == 0) {
+				        o.attr("sendyn", 0);
+				        o.html('重新发送');       
+				        wait = 60;
+				    } else {
+				        o.attr("sendyn", 1);
+				        o.html('重新发送(' + wait + ')');
+				        wait--;
+				        setTimeout(function() {
+				            time(o)
+				        },
+				        1000)
+				    }
+				}
+				// 表带提交
+				$(".submitBtn").click(function(){
+					var $btn = $(this);
+					$btn.button('loading');
+					$('#registerForm').ajaxSubmit({url:document.URL,data:'',type:"POST",
+						success:function(data, st) {
+							// 提示框
+							AMUI.dialog.alert({ title: data.title, content: data.info});
+				            if(data.status==1){
+				                setTimeout(function(){
+				                    top.window.location.href = data.url;
+				                },1000);
+				            }else{
+				            	$btn.button('reset');
+				            }
+				            return false;
+				        }
+				    });
+				    return false;
+				});
+			});
+		</script>
+	</body>
+</html>

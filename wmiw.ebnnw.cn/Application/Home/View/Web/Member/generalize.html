@@ -1,0 +1,202 @@
+<include file="Common:meta" />
+<title>我的推广-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<!-- 二维码生成 -->
+<js href="--PUBLIC--/assets/js/qrcode/jquery.qrcode.js"/>
+<js href="--PUBLIC--/assets/js/qrcode/utf.js"/>
+<!-- 二维码生成 -->
+<js href="__JS__/clipboard.min.js"/>
+<link href="__CSS__/uslisttyle.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+        <div class="center">
+            <div class="col-main">
+                <div class="main-wrap">
+                    <div class="main-wrap-box">
+                        <div class="am-cf on-user-title">
+                            <div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">我的推广</strong> / <small>My&nbsp;promotion</small></div>
+                        </div>
+                        <div class="am-tabs am-tabs-d2">
+                                <ul class="am-avg-sm-3 am-tabs-nav am-nav am-nav-tabs">
+                                    <li <if condition="ACTION_NAME eq 'generalize'">class="am-active"</if>><a href="{:U('Member/generalize')}">我的推广</a></li>
+                                    <li <if condition="ACTION_NAME eq 'generalize_list'">class="am-active"</if>><a href="{:U('Member/generalize_list')}">推广的用户</a></li>
+                                </ul>
+                                <div class="am-tabs-bd">
+                                    <if condition="ACTION_NAME eq 'generalize'">
+                                    <!-- 我的推广 -->
+                                        <div class="am-tab-panel am-fade am-in am-active" style="padding: 10px 0px; z-index: 1;">
+                                            <div class="am-alert am-alert-danger" data-am-alert>
+                                                <button type="button" class="am-close">&times;</button>
+                                                <p>如果有人通过您分享的链接或者二维码进入《{$site.SITE_INFO.name}》并完成注册，您将获得<strong>{$generalize}元</strong>信誉额度的奖励哦！赶快动起来吧！</p>
+                                            </div>
+                                            <section data-am-widget="accordion" class="am-accordion am-accordion-gapped" data-am-accordion='{  }'>
+                                                <dl class="am-accordion-item am-active">
+                                                    <dt class="am-accordion-title">url链接</dt>
+                                                    <dd class="am-accordion-bd am-collapse am-in">
+                                                        <div class="am-accordion-content">
+                                                            <div style="position: relative;">
+                                                            <input readonly="readonly" value="{$url}" type="text">
+                                                            <a class="am-btn am-btn-danger am-btn-sm" href="javascript:void(0);" style="position: absolute; right: 0px; top: 0px;" id="copyUrl" data-clipboard-text="{$url}">复制</a>
+                                                            </div>
+                                                        </div>
+                                                    </dd>
+                                                </dl>
+                                                <dl class="am-accordion-item">
+                                                    <dt class="am-accordion-title">二维码</dt>
+                                                    <dd class="am-accordion-bd am-collapse ">
+                                                    <div class="am-accordion-content">
+                                                        <div id="qrcodeShow"></div>
+                                                    </div>
+                                                    </dd>
+                                                </dl>
+                                            </section>
+                                            <div class="clear"></div>
+                                        </div>
+
+                                    </if>
+                                    <if condition="ACTION_NAME eq 'generalize_list'">
+                                    <!-- 推广列表 -->
+                                        <div class="am-tab-panel am-fade am-in am-active" style="padding: 10px 0px; z-index: 1;">
+                                            <div class="on-user-list">
+                                                <empty name="list">
+                                                    哎哟！这里空空如也！
+                                                <else/>
+                                                    <ul class="am-avg-sm-2 am-avg-md-4">
+                                                        <volist name="list" id="lv">
+                                                            <li <eq name="ACTION_NAME" value="blacklist">class="Js-user-listbox"</eq>>
+                                                                <div class="on-user-box">
+                                                                    <div class="user-info">
+                                                                        <img src="<empty name='lv.avatar'>__IMG__/getAvatar.do.jpg<else/>{$lv.uid|getUserpic=###,1}</empty>">
+                                                                        <div class="on-user-con">
+                                                                            <p class="am-text-truncate user-nickname">{$lv.nickname}</p>
+                                                                            <p class="user-intr">{$lv.intr|default='这家伙很懒，什么也没有留下！'}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <ul class="am-avg-sm-1 user-action">
+                                                                        <li><a class="user-liuyan" href="{:U('Member/sendmsg',array('how'=>'sel','uid'=>$lv['uid']))}"><i class="am-icon-envelope"></i>私信</a></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </li>
+                                                        </volist>
+                                                    </ul>
+                                                    {$page}
+                                                </empty> 
+                                            </div>
+                                        </div>
+                                    </if>
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        
+                    </div>
+                </div>
+                <!--底部-->
+                <include file="Common:footer"/>
+            </div>
+            <include file="Member:menu"/>
+        </div>
+<style type="text/css">
+    input{background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    color: #555555;
+    display: block;
+    font-size: 14px;
+    line-height: 1.2;
+    padding: 0.5em;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s, -webkit-box-shadow 0.15s ease-in-out 0s;
+    vertical-align: middle;
+    width: 100%;}
+    #qrcodeShow{ text-align: center;}
+    #qrcodeShow canvas{ width: 50%;}
+</style>
+<script type="text/javascript">
+    var qrcodeUrl = "{$url}";
+    var qrcodeSize = '600';
+    $(function(){
+        // 复制分享链接【
+        var clipboard = new Clipboard('#copyUrl'); 
+        clipboard.on('success', function(e) {
+           console.log(e);
+           AMUI.dialog.alert({content: '分享链接复制成功！'}); 
+            });
+        clipboard.on('error', function(e) {
+               console.log(e);
+               AMUI.dialog.alert({content: '分享链接复制失败！请手动复制'});
+        });
+        // 复制分享链接】
+        // 二维码生成【
+        jQuery('#qrcodeShow').qrcode({
+             render    : "canvas",        //二维码生成方式
+             text    : qrcodeUrl,
+             width : qrcodeSize,               //二维码的宽度
+             height : qrcodeSize,              //二维码的高度
+             background : "#ffffff",       //二维码的后景色
+             foreground : "#000000",        //二维码的前景色
+             src: "{$avatar}"             //二维码中间的图片
+        });
+        // 二维码生成】
+    });
+    
+</script>
+    </body>
+</html>

@@ -1,0 +1,62 @@
+<aside class="menu">
+    <ul>
+        <li class="person active">
+            <a href="{:U('Seller/index')}"><i class="am-icon-user"></i>卖家中心</a>
+        </li>
+        
+        <li class="person">
+            <p><i class="am-icon-newspaper-o"></i>卖家资料</p>
+            <ul>
+                <li <eq name="ACTION_NAME" value="seller_info">class="on"</eq>> <a href="{:U('Seller/seller_info')}">卖家资料</a></li>
+                <li <eq name="ACTION_NAME" value="myfensi">class="on"</eq>> <a href="{:U('Seller/myfensi')}">我的粉丝</a></li>
+                <li <eq name="ACTION_NAME" value="blacklist">class="on"</eq>> <a href="{:U('Seller/blacklist')}">屏蔽买家</a></li>
+            </ul>
+        </li>
+        <li class="person">
+            <p><i class="am-icon-gavel"></i>拍卖管理</p>
+            <ul>
+                <li <eq name="ACTION_NAME" value="goods_add">class="on"</eq> ><a href="{:U('Seller/goods_add')}">发布拍品</a></li>
+                <li <eq name="ACTION_NAME" value="goods_list">class="on"</eq> ><a href="{:U('Seller/goods_list')}">待拍拍品</a></li>
+                <li <eq name="ACTION_NAME" value="auction_list">class="on"</eq> ><a href="{:U('Seller/auction_list')}">我的拍卖</a></li>
+            </ul>
+        </li>
+        <if condition="C('Auction.special_page') eq 1">
+            <li class="person">
+                <p><i class="am-icon-object-ungroup"></i>专场管理</p>
+                <ul>
+                    <li <eq name="ACTION_NAME" value="special_add">class="on"</eq> ><a href="{:U('Seller/special_add')}">发布专场</a></li>
+                    <li <eq name="ACTION_NAME" value="special_list">class="on"</eq> ><a href="{:U('Seller/special_list')}">我的专场</a></li>
+                </ul>
+            </li>
+        </if>
+        <if condition="C('Auction.meeting_page') eq 1">
+            <li class="person">
+                <p><i class="am-icon-object-group"></i>拍卖会管理</p>
+                <ul>
+                    <li <eq name="ACTION_NAME" value="meeting_add">class="on"</eq> ><a href="{:U('Seller/meeting_add')}">发布拍卖会</a></li>
+                    <li <eq name="ACTION_NAME" value="meeting_list">class="on"</eq> ><a href="{:U('Seller/meeting_list')}">我的拍卖会</a></li>
+                </ul>
+            </li>
+        </if>
+        <li class="person">
+            <p><i class="am-icon-balance-scale"></i>交易管理</p>
+            <ul>
+                <li <if condition="(ACTION_NAME eq 'myorder') and ($rstatus neq 1)">class="on"</if> ><a href="{:U('Seller/myorder')}">订单管理</a></li>
+                <li <if condition="(ACTION_NAME eq 'myorder') and ($rstatus eq 1)">class="on"</if> ><a href="{:U('Seller/myorder',array('rstatus'=>1))}">退货订单</a></li>
+                <li <in name="ACTION_NAME" value="evaluate_list">class="on"</in>><a href="{:U('Seller/evaluate_list')}">评价管理</a></li>
+            </ul>
+        </li>
+        <!-- <li class="person">
+            <p><i class="am-icon-weixin"></i>微信图文</p>
+            <ul>
+                <if condition="C('Weixin.appid') and C('Weixin.appsecret')">
+                    <li <eq name="ACTION_NAME" value="weisend">class="on"</eq> ><a href="{:U('Seller/weisend')}">微信图文推送</a></li>
+                </if>
+            </ul>
+        </li> -->
+        
+    </ul>
+</aside>
+
+
+

@@ -1,0 +1,221 @@
+<include file="Common:meta" />
+<title>{$data.name}收货地址-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/addstyle.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+<div class="center">
+    <div class="col-main">
+        <div class="main-wrap">
+            <div class="main-wrap-box am-cf">
+                <empty name="data.type">
+                    <!--标题 -->
+                    <div class="am-cf on-user-title">
+                        <div class="am-fl am-cf"><span class="am-text-danger am-text-lg">地址管理</span> / <small>Address&nbsp;list</small></div>
+                    </div>
+                    <div class="am-alert am-alert-danger" data-am-alert>
+                        <button type="button" class="am-close">&times;</button>
+                        <p>已保存了<strong>{$data.count}</strong>条地址，还能保存<strong>{$data.yu}</strong>条地址</p>
+                    </div>
+                    <ul class="user-address-ul am-avg-sm-1 am-avg-md-3 am-thumbnails">
+                        <foreach name="list" item="av">
+                            <li class="user-addresslist <eq name='av.default' value='1'>defaultAddr</eq>">
+                                <span adid="{$av.adid}" def="<eq name='av.default' value='1'>on</eq>" class="new-option-r Js-note"><i class="am-icon-check-circle"></i>默认地址</span>
+                                <p class="new-tit new-p-re">
+                                    <span class="new-txt">{$av.truename}</span>
+                                    <span class="new-txt-rd2">{$av.mobile}</span>
+                                </p>
+                                <div class="new-mu_l2a new-p-re">
+                                    <p class="new-mu_l2cw">
+                                        <span class="title">地址：</span>
+                                        <span class="province">{$av.prov}</span>
+                                        <span class="city">{$av.city}</span>
+                                        <span class="dist">{$av.district}</span>
+                                        <span class="street">{$av.address}</span>
+                                    </p>
+                                </div>
+                                <div class="new-addr-btn">
+                                    <a href="{:U('Member/deliver_address',array('type'=>'edit','adid'=>$av['adid']))}"><i class="am-icon-edit"></i>编辑</a>
+                                    <span class="new-addr-bar">|</span>
+                                    <a class="Js-del" adid="{$av.adid}" href="javascript:void(0)"><i class="am-icon-trash"></i>删除</a>
+                                </div>
+                            </li>
+                        </foreach>
+                    </ul>
+
+                    <div class="clear"></div>
+                <else/>
+                    <!--添加新地址【-->
+                        <div class="add-dress">
+                            <!--标题 -->
+                            <div class="am-cf on-user-title">
+                                <div class="am-fl am-cf"><span class="am-text-danger am-text-lg">{$data.name}地址</span> / <small>Add/Edit&nbsp;address</small></div>
+                            </div>
+                            <div class="am-u-md-12 am-u-lg-8" style="margin-top: 20px;">
+                                <form id="addressrForm" class="am-form am-form-horizontal">
+                                    <div class="am-form-group">
+                                        <label for="truename" class="am-form-label">收货人</label>
+                                        <div class="am-form-content">
+                                            <input type="text" id="truename" placeholder="收货人" name="data[truename]" value="{$info.truename}" minlength="2" maxlength="20" required>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="mobile" class="am-form-label">手机号</label>
+                                        <div class="am-form-content">
+                                            <input id="mobile" class="js-pattern-mobile" placeholder="手机号（中国大陆）" type="text" name="data[mobile]" value="{$info.mobile}" required>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="phone" class="am-form-label">固定电话</label>
+                                        <div class="am-form-content">
+                                            <input id="phone" class="js-pattern-phone" placeholder="固定电话（选填）" type="text" name="data[phone]" value="{$info.phone}" >
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="am-form-group">
+                                        <label for="postalcode" class="am-form-label">邮政编码</label>
+                                        <div class="am-form-content">
+                                            <input id="postalcode" class="js-pattern-postalcode" placeholder="邮政编码" type="text" name="data[postalcode]" value="{$info.postalcode}" required>
+                                        </div>
+                                    </div>
+                                    <include file="Common:location"/>
+                                    <div class="am-form-group">
+                                        <label for="address" class="am-form-label">详细地址</label>
+                                        <div class="am-form-content">
+                                            <textarea class="" rows="3" id="address" placeholder="输入详细地址" name="data[address]" minlength="3" maxlength="100" required>{$info.address}</textarea>
+                                            <small>100字以内写出你的详细地址...</small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="default" class="am-form-label"></label>
+                                        <div class="am-form-content">
+                                            <label class="am-checkbox am-danger on-checkbox">
+                                                <input type="checkbox" id="default" value="1" name="data[default]" data-am-ucheck <eq name="info.default" value="1">checked</eq>>设置为默认收货地址
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <input type="hidden" name="data[adid]" value="{$info.adid}"/>
+                                            <input type="submit" name="" value="保 存" class="am-btn am-btn-primary am-btn-sm submitBtn">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                <!--添加新地址】-->
+                </empty>
+                <empty name="data.type">
+                <a class="new-abtn-type" href="{:U('Member/deliver_address',array('type'=>'add'))}">新增新地址</a>
+                </empty>
+            </div>
+            
+            <div class="clear"></div>
+        </div>
+        <include file="Common:footer"/>
+    </div>
+    <include file="Member:menu" />
+</div>
+<js href="--PUBLIC--/assets/js/jquery.form.js"/>
+<script type="text/javascript">
+var delLink = "{:U('Member/del_deliver_address')}";
+var topLink = "{:U('Member/deliver_address')}";
+var count = "{$data.count}";
+var yu = "{$data.yu}";
+var setDefaultUrl = "{:U('Member/default_deliver_address')}";
+    $(function(){
+        var $form = $('#addressrForm');
+        var $subbtn = $(".submitBtn");
+        if ($.AMUI && $.AMUI.validator) {
+            $.AMUI.validator.patterns.mobile = /^\s*1\d{10}\s*$/;
+            $.AMUI.validator.patterns.phone = /^(\d{3}-|\d{4}-)(\d{8}|\d{7})$/;
+            $.AMUI.validator.patterns.postalcode = /^\d{6}$/;
+        }
+        $form.validator({
+            submit: function() {
+                var formValidity = this.isFormValid();
+                if (formValidity) {
+                    // 验证成功的逻辑
+                    $subbtn.button('loading');
+                    // 验证成功的逻辑
+                    $form.ajaxSubmit({url:document.URL,data:'',type:"POST",
+                        success:function(data, st) {
+                            // 提示框
+                            AMUI.dialog.alert({ title: data.title, content: data.info});
+                            if(data.status==1){
+                                setTimeout(function(){
+                                    top.window.location.href = data.url;
+                                },1000);
+                            }else{
+                                $subbtn.button('reset');
+                            }
+                            return false;
+                        }
+                    });
+
+                } else {
+                    $subbtn.button('reset');
+                // 验证失败的逻辑
+                }
+            //阻止原生form提交
+            return false;
+            }
+        });
+// $(".new-option-r").click(function() {
+//                         
+//                     });
+        // 设默认【
+        $('.Js-note').click(function(){
+            var thisObj = $(this);
+            if(thisObj.attr('def')==''){
+                $.post(setDefaultUrl,{'adid':thisObj.attr('adid')},function(data){      //ajax后台
+                    if (data.status) {
+                        $('.Js-note').attr('def','');
+                        thisObj.attr('def','on');
+                        thisObj.parent('.user-addresslist').addClass("defaultAddr").siblings().removeClass("defaultAddr");
+                    } else {
+                        AMUI.dialog.alert({ title: data.title, content: data.info});
+                    }
+                },'json'); 
+            }else{
+                return false;
+            }
+            
+        });
+        // 设默认】
+        // 删除地址【
+        $(".Js-del").click(function(){
+            var adid = $(this).attr("adid");
+            var delobj = $(this).parents('li');
+            AMUI.dialog.confirm({ title: '提示', content: '是否删除这个地址？', 
+                onConfirm: function() {
+                    $.post(delLink,{'adid':adid},function(data){      //ajax后台
+                        if (data.status) {
+                            delobj.remove();
+                            count = Number(count)-1;
+                            yu = Number(yu)+1;
+                            $('#count').html(count);
+                            $('#yu').html(yu);
+                            if (data.url) {
+                                top.window.location.href=data.url;
+                            };
+                        } else {
+                            // 提示框
+                            AMUI.dialog.alert({ title: data.title, content: data.info});
+                        }
+                    },'json'); 
+                }, 
+                onCancel: function() {}
+             }); 
+
+            return false;
+        });
+        // 删除地址】
+    });
+</script>
+</body>
+</html>

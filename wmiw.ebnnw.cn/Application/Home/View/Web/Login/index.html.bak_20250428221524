@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>登录 - 拍卖平台</title>
+  <!-- 使用Amaze UI CSS (如果项目本身用了Amaze UI) 或者直接用 login.css 和 enhanced_forms.css -->
+  <!-- <link rel="stylesheet" href="/Public/amazeui/css/amazeui.min.css"/> -->
+  <link rel="stylesheet" href="/Public/css/login.css">
+  <link rel="stylesheet" href="/Public/css/enhanced_forms.css">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+  <div class="login-wrap am-g">
+    <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
+      <h1 class="login-title">用户登录</h1>
+      
+      <!-- 标签页结构 (如果需要注册切换) -->
+      <ul class="tabMenuLink am-nav am-nav-tabs am-nav-justify">
+        <li class="on-mli"><a href="javascript:void(0);">登录</a></li>
+        <li><a href="{:U('Login/register')}">注册</a></li>
+      </ul>
+
+      <form id="login-form" method="post" action="{:U('Login/index')}" class="am-form">
+        <div class="am-form-group">
+          <label for="login-username">用户名:</label>
+          <input type="text" id="login-username" name="account" placeholder="请输入用户名" required>
+        </div>
+
+        <div class="am-form-group">
+          <label for="login-password">密码:</label>
+          <input type="password" id="login-password" name="pwd" placeholder="请输入密码" required>
+        </div>
+
+        <div class="am-form-group verification">
+          <label for="login-code" class="am-u-sm-3 am-form-label">验证码:</label>
+          <div class="am-u-sm-9">
+            <input type="text" id="login-code" name="verify_code" placeholder="请输入验证码" class="input" required>
+            <img class="verifyImg" src="{:U('Login/verify_code')}" onclick="this.src=this.src+'?rand='+Math.random();" alt="验证码" title="点击刷新验证码">
+          </div>
+        </div>
+
+        <div id="login-error-msg" class="form-error-msg" style="display: none;"></div>
+
+        <div class="am-form-group">
+          <button type="submit" class="am-btn am-btn-primary am-btn-block">登 录</button>
+        </div>
+        
+        <div class="am-text-center">
+          <p>没有账号？ <a href="{:U('Login/register')}">立即注册</a> | <a href="{:U('Login/findpwd')}">忘记密码？</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <script>
+    $(document).ready(function() {
+      // 登录表单提交
+      $('#login-form').on('submit', function(e) {
+        e.preventDefault();
+        
+        var formData = $(this).serialize();
+        
+        // 显示加载状态
+        $('.am-btn-primary').prop('disabled', true).text('登录中...');
+        
+        // 发送AJAX请求
+        $.ajax({
+          url: '{:U("Login/index")}',
+          type: 'POST',
+          data: formData,
+          dataType: 'json',
+          success: function(response) {
+            if (response.status === 1) {
+              // 登录成功
+              $('#login-error-msg').hide();
+              // 如果有跳转URL，则跳转
+              if (response.url) {
+                window.location.href = response.url;
+              } else {
+                window.location.href = '{:U("Member/index")}';
+              }
+            } else {
+              // 登录失败，显示错误信息
+              $('#login-error-msg').text(response.info || '登录失败，请检查用户名和密码').show();
+              $('.am-btn-primary').prop('disabled', false).text('登 录');
+              // 刷新验证码
+              $('.verifyImg').attr('src', '{:U("Login/verify_code")}?rand=' + Math.random());
+            }
+          },
+          error: function() {
+            $('#login-error-msg').text('网络错误，请稍后重试').show();
+            $('.am-btn-primary').prop('disabled', false).text('登 录');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

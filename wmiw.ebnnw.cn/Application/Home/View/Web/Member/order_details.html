@@ -1,0 +1,440 @@
+<include file="Common:meta" />
+<title><eq name="alist.oinfo.rstatus" value="0">订单详情<else/>退货详情</eq>-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/orstyle.css" rel="stylesheet" type="text/css">
+<link href="__CSS__/addstyle.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+        <div class="center">
+            <div class="col-main">
+                <div class="main-wrap">
+                    <div class="main-wrap-box">
+                        <div class="user-orderinfo">
+                            <!--标题 -->
+                            <div class="am-cf on-user-title">
+                                <div class="am-fl am-cf"><strong class="am-text-danger am-text-lg"><eq name="alist.oinfo.rstatus" value="0">订单详情<else/>退货详情</eq></strong> / <small>Order&nbsp;details</small></div>
+                            </div>
+                            <if condition="$alist['oinfo']['rstatus'] eq 0">
+                                <!--进度条收货流程-->
+                                <div class="m-progress">
+                                    <div class="m-progress-list">
+                                        <span class="step-1 step">
+                                           <em class="u-progress-stage-bg"></em>
+                                           <i class="u-stage-icon-inner">1<em class="bg"></em></i>
+                                           <p class="stage-name">竞拍成功</p>
+                                        </span>
+
+                                        <span class="step-2 step <if condition="$alist['oinfo']['time1'] neq 0">on</if>">
+                                           <em class="u-progress-stage-bg"></em>
+                                           <i class="u-stage-icon-inner">2<em class="bg"></em></i>
+                                           <p class="stage-name">支付订单</p>
+                                        </span>
+                                        <span class="step-3 step <if condition="$alist['oinfo']['time2'] neq 0">on</if>">
+                                           <em class="u-progress-stage-bg"></em>
+                                           <i class="u-stage-icon-inner">3<em class="bg"></em></i>
+                                           <p class="stage-name">卖家发货</p>
+                                        </span>
+                                        <span class="step-4 step <if condition="$alist['oinfo']['time3'] neq 0">on</if>">
+                                           <em class="u-progress-stage-bg"></em>
+                                           <i class="u-stage-icon-inner">4<em class="bg"></em></i>
+                                           <p class="stage-name">确认收货</p>
+                                        </span>
+                                        <span class="step-5 step <if condition="$alist['oinfo']['time3'] neq 0">on</if>">
+                                           <em class="u-progress-stage-bg"></em>
+                                           <i class="u-stage-icon-inner">5<em class="bg"></em></i>
+                                           <p class="stage-name">交易完成</p>
+                                        </span>
+                                        <span class="u-progress-placeholder"></span>
+                                    </div>
+                                    <div class="u-progress-bar total-steps-2">
+                                        <div class="u-progress-bar-inner"></div>
+                                    </div>
+                                </div>
+                                <!--进度条收货流程】-->
+                            <else/>
+                                <!--进度条退货流程-->
+                                <div class="m-progress">
+                                    <div class="m-progress-list">
+                                        <span class="step-1 step">
+                                           <em class="u-progress-stage-bg"></em>
+                                           <i class="u-stage-icon-inner">1<em class="bg"></em></i>
+                                           <p class="stage-name">申请退货</p>
+                                        </span>
+                                        <span class="step-2 step <if condition="$alist['oinfo']['time8'] neq 0">on</if>">
+                                           <em class="u-progress-stage-bg"></em>
+                                           <i class="u-stage-icon-inner">2<em class="bg"></em></i>
+                                           <p class="stage-name">买家发货</p>
+                                        </span>
+                                        <span class="step-3 step <if condition="$alist['oinfo']['time9'] neq 0">on</if>">
+                                           <em class="u-progress-stage-bg"></em>
+                                           <i class="u-stage-icon-inner">3<em class="bg"></em></i>
+                                           <p class="stage-name">卖家收货</p>
+                                        </span>
+                                        <span class="step-4 step <if condition="$alist['oinfo']['time9'] neq 0">on</if>">
+                                           <em class="u-progress-stage-bg"></em>
+                                           <i class="u-stage-icon-inner">4<em class="bg"></em></i>
+                                           <p class="stage-name">退货完成</p>
+                                        </span>
+                                        <span class="u-progress-placeholder"></span>
+                                    </div>
+                                    <div class="u-progress-bar total-steps-2">
+                                        <div class="u-progress-bar-inner"></div>
+                                    </div>
+                                </div>
+                                <!--进度条退货流程】-->
+                            </if>
+                            <!-- 各个状态的显示【 -->
+                            <div class="order-infoaside">
+                                <div class="order-logistics">
+                                    <if condition="$alist['oinfo']['status'] eq 0">
+                                        <div class="icon-log"><i><img src="__IMG__/pay.png"></i></div>
+                                        <div class="latest-logistics">
+                                            <eq name="whopage.seller" value="0">
+                                                <eq name="alist.oinfo.deftime1st" value="0">
+                                                    竞拍成功，请支付该订单！
+                                                    <p class="text">您需要在<span class="countdown-timer">{$alist.oinfo.deftime1|date='Y-m-d H:i',###}</span>前进行支付！如过期未支付，将无法支付，将扣除保证金！</p>
+                                                <else/>
+                                                    订单已过期并扣除您保证金！
+                                                </eq>
+                                            <else/>
+                                                <eq name="alist.oinfo.deftime1st" value="0">
+                                                    竞拍成功，等待买家支付该订单！
+                                                <else/>
+                                                    买家未在有效期支付该订单，已扣除保证金！
+                                                </eq>
+                                            </eq>
+                                            <div class="time-list">{$alist.oinfo.time|date='Y-m-d H:i',###}</div>
+                                        </div>
+                                    </if>
+                                    <if condition="$alist['oinfo']['status'] eq 1">
+                                        <div class="icon-log"><i><img src="__IMG__/send.png"></i></div>
+                                        <div class="latest-logistics">
+                                            <p class="text">
+                                                <eq name="whopage.seller" value="0">
+                                                    您已支付该订单!
+                                                    <eq name="alist.oinfo.deftime2st" value="0">
+                                                        等待卖家发货！
+                                                    <else/>
+                                                        卖家未在有效期发货，已扣除卖家保证金！
+                                                    </eq>
+                                                <else/>
+                                                    买家已支付该订单！
+                                                    <eq name="alist.oinfo.deftime2st" value="0">
+                                                        请尽快发货!
+                                                    <else/>
+                                                        您没有在有效期发货，已扣除您缴纳的保证金！
+                                                    </eq>
+                                                </eq>
+                                                <neq name="alist.oinfo.remark" value="">买家留言：{$alist.oinfo.remark}</neq>
+                                            </p>
+                                            <div class="time-list">{$alist.oinfo.time1|date='Y-m-d H:i',###}</div>
+                                        </div>
+                                    </if>
+                                    <if condition="$alist['oinfo']['status'] eq 2">
+                                        <div class="icon-log"><i><img src="__IMG__/receive.png"></i></div>
+                                        <div class="latest-logistics">
+                                            <p class="text">
+                                                <eq name="whopage.seller" value="0">
+                                                    卖家已发货！
+                                                <else/>
+                                                    您已发货！等待买家确认收货！
+                                                </eq><br/>
+                                                <neq name="alist.oinfo.remark" value="">卖家留言：{$alist.oinfo.remark}</neq>
+                                            </p>
+                                            <div class="time-list">{$alist.oinfo.time2|date='Y-m-d H:i',###}</div>
+                                            <eq name="alist.oinfo.express" value="*">
+                                                <p class="text">快递不支持物流跟踪，请联系卖家获取物流动态！</p>
+                                                <div class="inquire">
+                                                    <span class="package-detail">承运公司：<span class="am-text-warning">{$alist.oinfo.express_ch}</span></span>
+                                                    <span class="package-detail">运单号: </span>
+                                                    <span class="package-number">{$alist.oinfo.express_no}</span>
+                                                </div>
+                                            <else/>
+                                                <p class="text">{$alist.oinfo.exparr.result.list.0.remark}</p>
+                                                <div class="time-list">
+                                                    <span class="date">{$alist.oinfo.exparr.result.list.0.datetime}</span>
+                                                </div>
+                                                <div class="inquire">
+                                                    <span class="package-detail">承运公司：<span class="am-text-warning">{$alist.oinfo.express_ch}</span></span>
+                                                    <span class="package-detail">运单号: </span>
+                                                    <span class="package-number">{$alist.oinfo.express_no}</span>
+                                                    <a href="{:U('Member/logistics',array('order_no'=>$alist['oinfo']['order_no']))}">查看</a>
+                                                </div>
+                                            </eq>
+                                        </div>
+                                    </if>
+                                    <if condition="$alist['oinfo']['status'] eq 3">
+                                        <div class="icon-log"><i><img src="__IMG__/comment.png"></i></div>
+                                        <div class="latest-logistics">
+                                            <eq name="whopage.seller" value="0">
+                                                您已确认收货！
+                                            <else/>
+                                                买家已确认收货！等待买家给您做出评价！
+                                            </eq>
+                                            <div class="time-list">{$alist.oinfo.time3|date='Y-m-d H:i',###}</div>
+                                        </div>
+                                    </if>
+                                    <if condition="$alist['oinfo']['status'] eq 4">
+                                        <div class="icon-log"><i><img src="__IMG__/comment.png"></i></div>
+                                        <div class="latest-logistics">
+                                            <p class="text">
+                                            <eq name="whopage.seller" value="0">
+                                                您已对卖家做出评价！
+                                                您可以<a href="{:U('Member/evaluate_list',array('order_no'=>$oinfo['order_no']))}">查看评价</a>
+                                            <else/>
+                                                买家已对您做出评价！
+                                                您可以<p class="text"><a href="{:U('Member/seller_evaluate',array('order_no'=>$oinfo['order_no']))}">评价买家</a></p>
+                                            </eq>
+                                            </p>
+                                            <div class="time-list">{$alist.oinfo.time4|date='Y-m-d H:i',###}</div>
+                                        </div>
+                                    </if>
+                                    <if condition="$alist['oinfo']['status'] eq 5">
+                                        <div class="icon-log"><i><img src="__IMG__/refund.png"></i></div>
+                                        <div class="latest-logistics">
+                                            <p class="text">
+                                            <eq name="whopage.seller" value="0">
+                                                您已申请退货！等待卖家同意退货！
+                                            <else/>
+                                                买家已申请退货！<a href="{:U('Member/reply_return',array('order_no'=>$alist['oinfo']['order_no']))}" class="mini_btn1">回复退货</a>
+                                            </eq>
+                                            </p>
+                                            <div class="time-list">{$alist.oinfo.time5|date='Y-m-d H:i',###}</div>
+                                        </div>
+                                    </if>
+                                    <if condition="$alist['oinfo']['status'] eq 6">
+                                        <div class="icon-log"><i><img src="__IMG__/refund.png"></i></div>
+                                        <div class="latest-logistics">
+                                            <p class="text">
+                                            <eq name="whopage.seller" value="0">
+                                                卖家拒绝了您的退货请求！在{$alist.oinfo.defmediate|date='Y-m-d H:i',###}之前联系网站申请平台介入，过期将默认您已收货，货款将转入卖家账户。
+                                            <else/>
+                                                您已拒绝了买家的退货请求！买家如在{$alist.oinfo.defmediate|date='Y-m-d H:i',###}之前未申请平台介入，货款将转入您的账户。
+                                            </eq>
+                                            </p>
+                                            <div class="time-list">{$alist.oinfo.time6|date='Y-m-d H:i',###}</div>
+                                        </div>
+                                    </if>
+                                    <if condition="$alist['oinfo']['status'] eq 7">
+                                        <div class="icon-log"><i><img src="__IMG__/send.png"></i></div>
+                                        <div class="latest-logistics">
+                                            <p class="text">
+                                            <eq name="whopage.seller" value="0">
+                                                卖家同意了您的退货请求！在{$alist.oinfo.deftime8|date='Y-m-d H:i',###}之前给卖家发货，过期将判定您以收货，货款将转入卖家账户。
+                                            <else/>
+                                                您已同意了买家的退货请求！买家如在{$alist.oinfo.deftime8|date='Y-m-d H:i',###}未发货，将判定买家已收货，货款将转入您的账户。
+                                            </eq>
+                                            </p>
+                                            <div class="time-list">{$alist.oinfo.time7|date='Y-m-d H:i',###}</div>
+                                        </div>
+                                    </if>
+                                    <if condition="$alist['oinfo']['status'] eq 8">
+                                        <div class="icon-log"><i><img src="__IMG__/receive.png"></i></div>
+                                        <div class="latest-logistics">
+                                            <p class="text">
+                                                <eq name="whopage.seller" value="0">
+                                                    您已给卖家发货，等待卖家确认收货！
+                                                <else/>
+                                                    买家已给您发货，请保持电话畅通，以便顺利收货！
+                                                </eq><br/>
+                                                <neq name="alist.oinfo.remark" value="">卖家留言：{$alist.oinfo.remark}</neq>
+                                            </p>
+                                            <div class="time-list">{$alist.oinfo.time7|date='Y-m-d H:i',###}</div>
+                                            <eq name="alist.oinfo.sel_express" value="*">
+                                                <p class="text">快递不支持物流跟踪，请联系卖家获取物流动态！</p>
+                                                <div class="inquire">
+                                                    <span class="package-detail">承运公司：<span class="am-text-warning">{$alist.oinfo.sel_express_ch}</span></span>
+                                                    <span class="package-detail">运单号: </span>
+                                                    <span class="package-number">{$alist.oinfo.sel_express_no}</span>
+                                                </div>
+                                            <else/>
+                                                <p class="text">{$alist.oinfo.sel_exparr.result.list.0.remark}</p>
+                                                <div class="time-list">
+                                                    <span class="date">{$alist.oinfo.sel_exparr.result.list.0.datetime}</span>
+                                                </div>
+                                                <div class="inquire">
+                                                    <span class="package-detail">承运公司：<span class="am-text-warning">{$alist.oinfo.sel_express_ch}</span></span>
+                                                    <span class="package-detail">运单号: </span>
+                                                    <span class="package-number">{$alist.oinfo.sel_express_no}</span>
+                                                    <a href="{:U('Member/logistics',array('order_no'=>$alist['oinfo']['order_no']))}">查看</a>
+                                                </div>
+                                            </eq>
+                                        </div>
+                                    </if>
+                                    <if condition="$alist['oinfo']['status'] eq 9">
+                                        <div class="icon-log"><i><img src="__IMG__/comment.png"></i></div>
+                                        <div class="latest-logistics">
+                                            <p class="text">
+                                            <eq name="whopage.seller" value="0">
+                                                卖家已确认收货，退货完成！
+                                            <else/>
+                                                您已确认收货，退货完成！
+                                            </eq>
+                                            </p>
+                                            <div class="time-list">{$alist.oinfo.time9|date='Y-m-d H:i',###}</div>
+                                        </div>
+                                    </if>
+                                    <if condition="$alist['oinfo']['status'] eq 10">
+                                        <div class="icon-log"><i><img src="__IMG__/comment.png"></i></div>
+                                        <div class="latest-logistics">
+                                            <p class="text">
+                                            <eq name="whopage.seller" value="0">
+                                                卖家已对您做出评价！<a href="{:U('Member/evaluate_list',array('order_no'=>$alist['oinfo']['order_no']))}" class="am-btn am-btn-danger on-btn-danger am-radius">查看评价</a>
+                                            <else/>
+                                                您已对买家做出评价！<a href="{:U('Seller/evaluate_list',array('order_no'=>$alist['oinfo']['order_no']))}" class="am-btn am-btn-danger on-btn-danger am-radius">查看评价</a>
+                                            </eq>
+                                            </p>
+                                            <div class="time-list">{$alist.oinfo.time10|date='Y-m-d H:i',###}</div>
+                                        </div>
+                                    </if>
+                                        <!-- <span class="am-icon-angle-right icon"></span> -->
+                                    <div class="clear"></div>
+                                </div>
+                                <if condition="$alist['oinfo']['rstatus'] eq 0">
+                                <!-- 购买流程买家收货地址【 -->
+                                    <div class="order-addresslist">
+                                        <div class="order-address">
+                                            
+                                            <if condition="$alist['oinfo']['status'] neq 0">
+                                                <p class="new-tit new-p-re">
+                                                    <span class="new-txt">{$alist.oinfo.address.truename}</span>
+                                                    <span class="new-txt-rd2">{$alist.oinfo.address.mobile}</span>
+                                                </p>
+                                                <div class="new-mu_l2a new-p-re">
+                                                    <p class="new-mu_l2cw">
+                                                        <span class="title">收货地址：</span>
+                                                        {$alist.oinfo.address.prov}
+                                                        {$alist.oinfo.address.city}
+                                                        {$alist.oinfo.address.district}
+                                                        <span class="street">{$alist.oinfo.address.address}</span>
+                                                    </p>
+                                                </div>
+                                            <else/>
+                                                <div class="icon-add"></div>
+                                                <p class="new-tit new-p-re">
+                                                支付订单后确认收货地址！
+                                                </p>
+                                            </if>
+                                        </div>
+                                    </div>
+                                <!-- 购买流程买家收货地址】 -->
+                                <else/>
+                                <!-- 退货流程卖家收货地址【 -->
+                                    <div class="order-addresslist">
+                                        <div class="order-address">
+                                            <div class="icon-add"></div>
+                                            <if condition="$alist['oinfo']['status'] egt 7">
+                                                <p class="new-tit new-p-re">
+                                                    <span class="new-txt">{$alist.oinfo.sel_address.truename}</span>
+                                                    <span class="new-txt-rd2">{$alist.oinfo.sel_address.mobile}</span>
+                                                </p>
+                                                <div class="new-mu_l2a new-p-re">
+                                                    <p class="new-mu_l2cw">
+                                                        <span class="title">收货地址：</span>
+                                                        {$alist.oinfo.sel_address.prov}
+                                                        {$alist.oinfo.sel_address.city}
+                                                        {$alist.oinfo.sel_address.district}
+                                                        <span class="street">{$alist.oinfo.sel_address.address}</span>
+                                                    </p>
+                                                </div>
+                                            <else/>
+                                                <p class="new-tit new-p-re">
+                                                支付订单后确认收货地址！
+                                                </p>
+                                            </if>
+                                        </div>
+                                    </div>
+                                <!-- 退货流程卖家收货地址】 -->
+                                </if>
+                            </div>
+                            <!-- 各个状态的显示】 -->
+                            <if condition="$alist['oinfo']['rstatus'] eq 0">
+                                <include file="Member:order_box" />
+                            <else/>
+                                <include file="Member:order_return_box" />
+                            </if>
+                            <!-- 买家||卖家确认收货【 -->
+                            <eq name="ACTION_NAME" value="receipt">
+                                <div class="receiptbox ">
+                                    <h2>我已收到货，并同意支付。</h2>
+                                    <div class="rb-con">
+                                        <form id="receiptForm" class="am-form am-form-horizontal">
+                                            <div class="am-form-group">
+                                                <ul class="am-form-content">
+                                                    <li class="alert-msg">请收到货后，再确认收货！否则您可能钱货两空！</li>
+                                                    <li class="refund-tips">如果您想申请退款，请返回到“订单管理”申请退款</li>
+                                                </ul>
+                                            </div>
+                                        
+                                            <div class="am-form-group">
+                                                <label for="paypwd" class="am-form-label">支付密码</label>
+                                                <div class="am-form-content">
+                                                    <input id="paypwd" type="password" placeholder="支付密码" name="data[paypwd]" minlength="3" maxlength="20"   required>
+                                                </div>
+                                            </div>
+                                            <input type="hidden"  name="data[order_no]" value="{$oinfo.order_no}">
+                                            <div class="info-btn am-text-center">
+                                                <input name="" value="确认支付" class="am-btn am-btn-primary am-btn-sm submitBtn" type="submit">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <js href="--PUBLIC--/assets/js/jquery.form.js"/>
+                                <script type="text/javascript">
+                                $(function(){
+                                    var $form = $('#receiptForm');
+                                    var $subbtn = $(".submitBtn");
+                                    $form.validator({
+                                        submit: function() {
+                                            var formValidity = this.isFormValid();
+                                            if (formValidity) {
+                                                // 验证成功的逻辑
+                                                $subbtn.button('loading');
+                                                // 验证成功的逻辑
+                                                $form.ajaxSubmit({url:document.URL,data:'',type:"POST",
+                                                    success:function(data, st) {
+                                                        // 提示框
+                                                        AMUI.dialog.alert({ title: data.title, content: data.info});
+                                                        if(data.status==1){
+                                                            setTimeout(function(){
+                                                                top.window.location.href = data.url;
+                                                            },2000);
+                                                        }else{
+                                                            $subbtn.button('reset');
+                                                            if (data.url) {
+                                                                setTimeout(function(){
+                                                                    top.window.location.href = data.url;
+                                                                },2000);
+                                                            };
+                                                        }
+                                                        return false;
+                                                    }
+                                                });
+
+                                            } else {
+                                                $subbtn.button('reset');
+                                            // 验证失败的逻辑
+                                            }
+                                        //阻止原生form提交
+                                        return false;
+                                        }
+                                    });
+                                });
+                                </script>
+                            </eq>
+                            <!-- 买家||卖家确认收货】 -->
+                        </div>
+                    </div>
+                </div>
+                <!--底部-->
+                <include file="Common:footer"/>
+            </div>
+            <eq name="whopage.seller" value="0"><include file="Member:menu"/></eq>
+            <eq name="whopage.seller" value="1"><include file="Seller:menu"/></eq>
+        </div>
+    </body>
+</html>

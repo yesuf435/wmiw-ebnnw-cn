@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>登录 - CHRISTIE’S 佳士得</title>
+  <!-- Link to the new CSS file -->
+  <link rel="stylesheet" href="/Public/css/new_login.css">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+  <div class="login-container">
+    <!-- Optional Header from design, can be added if needed -->
+    <!-- <div class="login-header">
+      <span class="login-time">12:22</span>
+      <span class="login-close">×</span>
+    </div> -->
+    <div class="login-content">
+      <p class="login-greeting">您好，<br>欢迎来到CHRISTIE’S 佳士得</p>
+      
+      <form id="login-form" method="post" action="{:U(\'Login/index\')}" class="login-form">
+        <div class="am-form-group">
+          <!-- Removed label for cleaner look, placeholder is sufficient -->
+          <input type="text" id="login-username" name="account" placeholder="请输入用户名或手机号" required>
+        </div>
+        <div class="am-form-group">
+          <input type="password" id="login-password" name="pwd" placeholder="请输入密码" required>
+        </div>
+        
+        <!-- Verification Code Section -->
+        <div class="am-form-group verification">
+          <div class="input">
+             <input type="text" id="login-code" name="verify_code" placeholder="请输入验证码" required>
+          </div>
+          <img class="verifyImg" src="{:U(\'Login/verify_code\')}" onclick="this.src='{:U(\'Login/verify_code\')}?rand='+Math.random();" alt="验证码" title="点击刷新验证码">
+        </div>
+        
+        <!-- Forgot Password Link -->
+        <a href="{:U(\'Login/findpwd\')}" class="forgot-password-link">忘记密码？</a>
+        
+        <!-- Error Message Area -->
+        <div id="login-error-msg" class="form-error-msg" style="display: none;"></div>
+        
+        <!-- Login Button -->
+        <button type="submit" class="login-button">登录</button>
+      </form>
+      
+      <!-- Login Options -->
+      <div class="login-options">
+        <!-- Add functionality for SMS login later if needed -->
+        <span>短信验证码登录</span> 
+        <a href="{:U(\'Login/register\')}">新用户注册</a>
+      </div>
+      
+      <!-- Social Login Placeholder -->
+      <div class="login-social">
+        <div class="social-icon"></div> <!-- Placeholder for WeChat -->
+        <div class="social-icon"></div> <!-- Placeholder for QQ or other -->
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    $(document).ready(function() {
+      // Login form submission (kept existing logic, adapted selectors)
+      $('#login-form').on('submit', function(e) {
+        e.preventDefault();
+        
+        var $submitButton = $('.login-button'); // Updated selector
+        var $errorMsg = $('#login-error-msg'); // Kept selector
+        var $verifyImg = $('.verifyImg'); // Kept selector
+
+        // Show loading state
+        $submitButton.prop('disabled', true).text('登录中...');
+        $errorMsg.hide(); // Hide previous errors
+        
+        // Get form data
+        var formData = $(this).serialize();
+        
+        // Send AJAX request
+        $.ajax({
+          url: '{:U("Login/index")}',
+          type: 'POST',
+          data: formData,
+          dataType: 'json',
+          timeout: 10000, // 10 seconds timeout
+          success: function(response) {
+            if (response.status === 1) {
+              // Login successful
+              if (response.url) {
+                window.location.href = response.url;
+              } else {
+                window.location.href = '{:U("Member/index")}'; 
+              }
+            } else {
+              // Login failed
+              $errorMsg.text(response.info || '登录失败，请检查用户名、密码或验证码').show();
+              $submitButton.prop('disabled', false).text('登录');
+              // Refresh verification code
+              $verifyImg.attr('src', '{:U("Login/verify_code")}?rand=' + Math.random());
+            }
+          },
+          error: function(xhr, textStatus, errorThrown) {
+            var errorMessage = '网络连接出现问题，请稍后重试';
+            if (textStatus === 'timeout') {
+              errorMessage = '请求超时，请检查网络连接后重试';
+            } else if (xhr.status === 0) {
+              errorMessage = '无法连接到服务器，请检查网络连接';
+            } else if (xhr.status >= 500) {
+              errorMessage = '服务器错误 (' + xhr.status + ')，请稍后重试';
+            }
+            
+            $errorMsg.text(errorMessage).show();
+            $submitButton.prop('disabled', false).text('登录');
+            // Refresh verification code
+            $verifyImg.attr('src', '{:U("Login/verify_code")}?rand=' + Math.random());
+          }
+        });
+      });
+      
+      // Verification code refresh click (kept existing logic)
+      $('.verifyImg').on('click', function() {
+        $(this).attr('src', '{:U("Login/verify_code")}?rand=' + Math.random());
+      });
+    });
+  </script>
+</body>
+</html>
+

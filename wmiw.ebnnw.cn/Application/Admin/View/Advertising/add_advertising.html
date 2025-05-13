@@ -1,0 +1,194 @@
+<include file="Common:meta" />
+<title>添加/编辑广告-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">添加/编辑广告</div>
+                            </div>
+                            <div class="widget-body am-fr">
+                                <form id="rechargeableForm" class="am-form tpl-form-border-form tpl-form-border-br">
+                                    <div class="am-form-group">
+                                        <label for="name" class="am-u-sm-3 am-form-label">广告位置</label>
+                                        <div class="am-u-sm-9">
+                                            <select id="Js-advpid" name="info[pid]" required>
+                                                <option advw="0" advh="0" value="">选择广告位置</option>
+                                                <volist name="posName" id="pos">
+                                                    <option value="{$pos.id}" advw="{$pos.width}" advh="{$pos.height}"<eq name="info['pid']" value="$pos['id']">selected="selected"</eq>>{$pos.name}</option>
+                                                </volist>
+                                            </select>
+                                            <small><span  class="remark">您广告位的尺寸宽度：<strong class="advw"></strong>px；高度：<strong class="advh"></strong>px<span></small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="name" class="am-u-sm-3 am-form-label">广告名称</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="name" name="info[name]" value="{$info.name}" placeholder="请输入广告名称">
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="url" class="am-u-sm-3 am-form-label">链接地址</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="url" name="info[url]" value="{$info.url}" placeholder="请输入链接地址">
+                                            <small>必须以“http://”开头，如：“http://www.oncoo.net”，建议从浏览器地址栏复制！如不指向任何链接填写“javascript void(0);”</small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="desc" class="am-u-sm-3 am-form-label">广告描述</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="desc" name="info[desc]" value="{$info.desc}" placeholder="请输入广告描述">
+                                            <small>描述会显示在广告标签的“title”内</small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="rec" class="am-u-sm-3 am-form-label">广告图片</label>
+                                        <div class="am-u-sm-9">
+                                            <div class="uploadePic-box am-margin-bottom-0 am-cf">
+                                                <ul  data-am-widget="gallery" data-am-gallery="{pureview:{target: 'a.showurl'}}">
+                                                    <notempty name="info.code">
+                                                        <li class="img-box">
+                                                            <div class="upImg-list-box am-gallery-item">
+                                                                <a class="showurl" href="{$upWholeUrl}{$info.code}" ><img src="{$upWholeUrl}{$info.code}"><input type="hidden" name="info[code]" value="{$info.code}" /></a>
+                                                            </div>
+                                                        </li>
+                                                    </notempty>
+                                                    <li class="upImg-lighthouse">
+                                                        <div class="upImg-list-box">
+                                                            <div class="filePic">
+                                                                <i class="am-icon-cloud-upload"></i><div class="txt">上传图片</div>
+                                                                <input type="file" pname="info[code]" link="{:U('Upload/upAdvFile')}" class="upInput" value="选择凭证图片" name="file" max="5" maxsize="5120" allowexts="gif,jpeg,jpg,png,bmp" accept="image/*" multiple>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <small>图片尺寸：宽<strong class="advw"></strong>px；高<strong class="advh"></strong>px；请严格按照该尺寸进行上传！</small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="bkcolor" class="am-u-sm-3 am-form-label">背景色</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="bkcolor" name="info[bkcolor]" value="{$info.bkcolor}" placeholder="请输入背景色代码">
+                                            <small>如：“#ffffff”，为空则没有颜色</small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="sort" class="am-u-sm-3 am-form-label">广告排序</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="sort" name="info[sort]" value="{$info.sort|default=0}" placeholder="请输入广告排序" required>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="start_time" class="am-u-sm-3 am-form-label">开始时间</label>
+                                        <div class="am-u-sm-9">
+                                              <input id="adv_start_time" placeholder="开始时间" type="text" class="am-form-field" size="20" name="data[adv_start_time]" value="<if condition="$info['adv_start_time']">{$info.adv_start_time|date='Y-m-d H:i',###}</if>" readonly/>
+
+                                              <small>设置开始时间，该广告会在该时间显示</small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="adv_end_time" class="am-u-sm-3 am-form-label">结束时间</label>
+                                        <div class="am-u-sm-9">
+                                              <input id="adv_end_time" placeholder="结束时间" type="text" class="am-form-field" size="20" name="data[adv_end_time]" value="<if condition="$info['adv_end_time']">{$info.adv_end_time|date='Y-m-d H:i',###}</if>" readonly/>
+                                              <small>设置结束时间，该广告会在该时间停止显示，为空则永久显示</small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="status" class="am-u-sm-3 am-form-label">状态</label>
+                                        <div class="am-u-sm-9">
+                                            <div>
+                                                <label class="am-secondary am-margin-right-sm am-checkbox-inline">
+                                                    <input type="radio" name="info[status]" value="0" data-am-ucheck <if condition="$info.status eq 0"> checked</if> /> 启用
+                                                </label>
+                                                <label class="am-secondary am-checkbox-inline">
+                                                    <input type="radio" name="info[status]" value="1" data-am-ucheck <if condition="$info.status eq 1"> checked</if> /> 禁用
+                                                </label>
+                                            </div>
+                                            <small>禁用将忽略该条广告</small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <input type="hidden" name="info[id]" value="{$info.id}" />
+                                            <input type="submit" name="" value="提交" class="am-btn am-btn-primary tpl-btn-bg-color-success submitBtn">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<js href="--PUBLIC--/PhotoClipJs/lrz.all.bundle.js"/>
+<!-- 日期时间插件【 -->
+<link href="--PUBLIC--/datetimepicker/amazeui.datetimepicker.css" rel="stylesheet" type="text/css">
+<js href="--PUBLIC--/datetimepicker/amazeui.datetimepicker.js"/>
+<js href="--PUBLIC--/datetimepicker/locales/amazeui.datetimepicker.zh-CN.js"/>
+<!-- 日期时间插件 -->
+<script type="text/javascript">
+        $(function(){
+            //为input添加时间插件
+            $('#adv_start_time').datetimepicker({language:  'zh-CN',format: 'yyyy-mm-dd hh:ii'});
+            $('#adv_end_time').datetimepicker({language:  'zh-CN',format: 'yyyy-mm-dd hh:ii'});
+            //为input添加插件_end
+            resizeImg(); //初始化图片尺寸
+            $('#Js-advpid').on("change",function(){
+                resizeImg();
+            });
+            //初始化图片尺寸
+            function resizeImg(){
+                var pidObj = $('#Js-advpid').children('option:selected'); 
+                $('.advw').html(pidObj.attr('advw'));
+                $('.advh').html(pidObj.attr('advh'));
+                upAppendData = pidObj.attr('advw')+'|'+pidObj.attr('advh');
+            }
+        });
+    // 表单提交
+        var $form = $('#rechargeableForm');
+        var $subbtn = $(".submitBtn");
+        $form.validator({
+            submit: function() {
+                var formValidity = this.isFormValid();
+                if (formValidity) {
+                    // 验证成功的逻辑
+                    $subbtn.button('loading');
+                    // 验证成功的逻辑
+                    $form.ajaxSubmit({url:document.URL,data:'',type:"POST",
+                        success:function(data, st) {
+                            // 提示框
+                            AMUI.dialog.alert({ title: data.title, content: data.info});
+                            if(data.status==1){
+                                setTimeout(function(){
+                                    top.window.location.href = data.url;
+                                },1000);
+                            }else{
+                                $subbtn.button('reset');
+                            }
+                            return false;
+                        }
+                    });
+                } else {
+                    $subbtn.button('reset');
+                // 验证失败的逻辑
+                }
+            //阻止原生form提交
+            return false;
+            }
+        });
+</script>
+</body>
+</html>

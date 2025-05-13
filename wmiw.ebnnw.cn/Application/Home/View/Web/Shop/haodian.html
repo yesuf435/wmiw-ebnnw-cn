@@ -1,0 +1,46 @@
+<include file="Common:meta" />
+<title>{$channelName}拍卖{$stname}-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<link href="__CSS__/demo.css" rel="stylesheet" type="text/css" />
+<link href="__CSS__/haodian.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header_topnav" />
+<include file="Common:header_search" />
+<include file="Common:navigation" />
+    <div class="haodian">
+        <ul class="haodian am-avg-sm-1 am-avg-md-2 am-avg-lg-3">
+            <foreach name="list" item="lv">
+                <li class="hd-li">
+                    <div class="hd-con">
+                        <div class="hd-contp">
+                            <a href="{:U('Shop/index',array('sellerid'=>$lv['uid']))}">
+                                <img class="hd-av" src="<empty name='$lv.avatar_sel'>{$lv.uid|getUserpic=###,1,'sel'}<else/>__IMG__/getAvatar.do.jpg</empty>">
+                            </a>
+                            <div class="contp-con">
+                                <a class="hd-name" href="">{$lv.organization}</a>
+                                <div class="hd-info"><img src="{$lv.leval}"></div>
+                            </div>
+                            <a class="jindian" href="{:U('Shop/index',array('sellerid'=>$lv['uid']))}">进店</a>
+                            
+                        </div>
+                        <ul class="hd-conbd am-cf">
+                            <li class="gd-a"><a href="{:U('Auction/details',array('pid'=>$lv['auction'][0]['pid']))}"><img alt="{$lv.auction.0.pname}" src="{$upWholeUrl}{$lv.auction.0.pictures|getPicUrl=###,2,0}"></a></li>
+                            <li class="gd-b"><a href="{:U('Auction/details',array('pid'=>$lv['auction'][1]['pid']))}"><img alt="{$lv.auction.0.pname}" src="{$upWholeUrl}{$lv.auction.1.pictures|getPicUrl=###,2,0}"></a></li>
+                            <li class="gd-c"><a href="{:U('Auction/details',array('pid'=>$lv['auction'][2]['pid']))}"><img alt="{$lv.auction.0.pname}" src="{$upWholeUrl}{$lv.auction.2.pictures|getPicUrl=###,2,0}"></a></li>
+                        </ul>
+                    </div>
+                </li>
+            </foreach>
+        </ul>
+        <div>{$page}</div>
+    </div>
+    <include file="Common:footer"/>
+    <include file="Common:query_links"/>
+<script type="text/javascript">
+$(function(){
+});
+</script>
+</body>
+</html>

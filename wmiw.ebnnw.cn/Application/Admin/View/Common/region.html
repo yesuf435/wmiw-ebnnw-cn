@@ -1,0 +1,24 @@
+<for start="0" end="$layer" step="1" name="i" >
+	<select name="region[{$name.$i}]" id="{$name.i}" class="region valid">
+		<if condition="$rid[$i] eq 0">
+			<option value="0" selected="selected" tier="1">{$option.$i}</option>
+		<else />
+			<option tier="{$tier}" value="0">{$option.$i}</option>
+		</if>
+		<foreach name="rMap" item="rv">
+			<if condition="$rid[$i] eq $rv['region_id']">
+				<option value="{$rv.region_id}" selected="selected" tier="{$tier}">{$rv.region_name}</option>
+				<?php $setout = M('region')->field(array('region_id','region_name'))->where(array('parent_id'=>$rid[$i]))->select(); ?>
+			<else />
+				<option tier="{$tier}" value="{$rv.region_id}">{$rv.region_name}</option>
+			</if>
+		</foreach>
+	</select>
+	<?php $tier += 1; $rMap = $setout;?>
+</for>
+<script type="text/javascript">
+var regionUrl = "{:U('region')}";
+</script>
+<script type="text/javascript" src="__ROOT__/Public/Js/cuitTagLib.js"></script>
+
+

@@ -1,0 +1,691 @@
+<include file="Common:meta" />
+<title>账户安全-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/infstyle.css" rel="stylesheet" type="text/css">
+<link href="__CSS__/stepstyle.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+<div class="center">
+            <div class="col-main">
+                <div class="main-wrap">
+                    <div class="main-wrap-box">
+                        <empty name="option">
+                            <!--标题 -->
+                            <div class="user-safety">
+                                <div class="am-cf on-user-title">
+                                    <div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">账户安全</strong> / <small>Set&nbsp;up&nbsp;Safety</small></div>
+                                </div>
+                                <!--头像 -->
+                                <div class="user-infoPic">
+
+                                    <div class="filePic">
+                                        <img class="am-circle am-img-thumbnail" src="<empty name='info.avatar'>__IMG__/getAvatar.do.jpg<else/>{$info.uid|getUserpic=###,1}</empty>" alt="" />
+                                    </div>
+
+                                    <p class="am-form-help">头像</p>
+
+                                    <div class="info-m">
+                                        <div><b>用户名：<i>{$info.account}</i></b></div>
+                                        <div class="safeText">
+                                            <a href="safety.html">账户安全:<em style="margin-left:20px ;">{$score}</em>分</a>
+                                            <div class="progressBar"><span style="width: {$score}%;" class="progress"></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="check">
+                                    <ul>
+                                        <li>
+                                            <i class="i-safety-lock"></i>
+                                            <div class="m-left">
+                                                <div class="fore1">登录密码</div>
+                                                <div class="fore2"><small>为保证您购物安全，建议您定期更改密码以保护账户安全。</small></div>
+                                            </div>
+                                            <div class="fore3">
+                                                <a href="{:U('Member/safety',array('option'=>'password'))}">
+                                                    <div class="am-btn am-btn-secondary">修改</div>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <i class="i-safety-wallet <notempty name='info.paypwd'>on</notempty>"></i>
+                                            <div class="m-left">
+                                                <div class="fore1">支付密码</div>
+                                                <div class="fore2">
+                                                    <small><empty name="info.paypwd">启用支付密码功能，为您资产账户安全加把锁。<else/>已启用，支付订单时候请输入该密码</empty></small>
+                                                </div>
+                                            </div>
+
+                                            <div class="fore3">
+                                                <a href="{:U('Member/safety',array('option'=>'setpay'))}">
+                                                    <div class="am-btn am-btn-secondary"><empty name="info.paypwd">立即启用<else/>修改</empty></div>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <i class="i-safety-iphone <eq name='info.verify_mobile' value='1'>on</eq>"></i> 
+                                            <div class="m-left">
+                                                <div class="fore1">手机验证</div>
+                                                <div class="fore2"><small><eq name='info.verify_mobile' value='1'>您验证的手机：{$info.mobile}， <else/>请验证手机号，</eq>若已丢失或停用，请立即更换</small></div>
+                                            </div>
+                                            <div class="fore3">
+                                                <a href="{:U('Member/safety',array('option'=>'bindphone'))}">
+                                                    <div class="am-btn am-btn-secondary"><eq name='info.verify_mobile' value='1'>换绑<else/>绑定</eq></div>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <i class="i-safety-mail <eq name='info.verify_email' value='1'>on</eq>"></i>
+                                            <div class="m-left">
+                                                <div class="fore1">邮箱验证</div>
+                                                <div class="fore2"><small><eq name='info.verify_email' value='1'>您验证的邮箱：{$info.email}，<else/>请验证邮箱，</eq>可用于快速找回登录密码</small></div>
+                                            </div>
+                                            <div class="fore3">
+                                                <a href="{:U('Member/safety',array('option'=>'bindemail'))}">
+                                                    <div class="am-btn am-btn-secondary"><eq name='info.verify_email' value='1'>换绑<else/>绑定</eq></div>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <i class="i-safety-idcard <eq name='info.idcard_check' value='2'>on</eq>"></i>
+                                            <div class="m-left">
+                                                <div class="fore1">实名认证</div>
+                                                <div class="fore2">
+                                                    <small>
+                                                        <if condition="$info['idcard_check'] eq 1">
+                                                            等待认证，请耐心等待认证，我们会在3个工作日内处理完毕。
+                                                        <elseif condition="$info['idcard_check'] eq 2"/>
+                                                            已认证，用于提升账号的安全性和信任级别，认证后不能修改认证信息。
+                                                        <elseif condition="$info['idcard_check'] eq 3"/>
+                                                            未通过认证，请重新申请认证！
+                                                        <else/>
+                                                            用于提升账号的安全性和信任级别，认证后不能修改认证信息。
+                                                        </if>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                            <div class="fore3">
+                                                <if condition="($info['idcard_check'] eq 0) or ($info['idcard_check'] eq 3)">
+                                                    <a href="{:U('Member/safety',array('option'=>'idcard'))}"><div class="am-btn am-btn-secondary"><eq name="info.idcard_check" value="2">重新认证<else/>认证</eq></div></a>
+                                                <else/>
+                                                    <a href="javascript:void(0);"><div class="am-btn am-btn-default"><eq name="info.idcard_check" value="2">已认证<else/>待审核</eq></div></a>
+                                                </if>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <i class="i-safety-security <notempty name='info.question'>on</notempty>"></i>
+                                            <div class="m-left">
+                                                <div class="fore1">安全问题</div>
+                                                <div class="fore2"><small>保护账户安全，验证您身份的工具之一。</small></div>
+                                            </div>
+                                            <div class="fore3">
+                                                <empty name='info.question'>
+                                                    <a href="{:U('Member/safety',array('option'=>'question'))}">
+                                                        <div class="am-btn am-btn-secondary">设置</div>
+                                                    </a>
+                                                    <else/>
+                                                    <a href="javascript:void(0);">
+                                                        <div class="am-btn am-btn-default">已设置</div>
+                                                    </a>
+                                                </empty>
+                                                
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </empty>
+                        <!-- 重置密码【 -->
+                        <eq name="option" value="password">
+                            <div class="am-cf on-user-title">
+                                <div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">修改密码</strong> / <small>Password</small></div>
+                            </div>
+                            <!--进度条-->
+                            <div class="m-progress">
+                                <div class="m-progress-list">
+                                    <span class="step-1 step">
+                                        <em class="u-progress-stage-bg"></em>
+                                        <i class="u-stage-icon-inner">1<em class="bg"></em></i>
+                                        <p class="stage-name">重置密码</p>
+                                    </span>
+                                    <span class="step-2 step">
+                                        <em class="u-progress-stage-bg"></em>
+                                        <i class="u-stage-icon-inner">2<em class="bg"></em></i>
+                                        <p class="stage-name">完成</p>
+                                    </span>
+                                    <span class="u-progress-placeholder"></span>
+                                </div>
+                                <div class="u-progress-bar total-steps-2">
+                                    <div class="u-progress-bar-inner"></div>
+                                </div>
+                            </div>
+                            <form id="safetyForm" class="am-form am-form-horizontal">
+                                <notempty name="info.pwd">
+                                    <div class="am-form-group">
+                                        <label for="user-old-password" class="am-form-label">原密码</label>
+                                        <div class="am-form-content">
+                                            <input name="data[pwd]" type="password" id="user-old-password" placeholder="请输入原登录密码" minlength="6" required>
+                                        </div>
+                                    </div>
+                                </notempty>
+                                <div class="am-form-group">
+                                    <label for="user-new-password" class="am-form-label">新密码</label>
+                                    <div class="am-form-content">
+                                        <input name="data[new_pwd]" id="pwd-1" type="password" id="user-new-password" placeholder="由数字、字母组合" minlength="8" required>
+                                        <div class="pwdtip"><span>*</span>密码为8-30个字符必须包含字母、数字、特殊字符</div>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="user-confirm-password" class="am-form-label">确认密码</label>
+                                    <div class="am-form-content">
+                                        <input name="data[new_pwded]" id="pwd-2" type="password" id="user-confirm-password" placeholder="请再次输入上面的密码" minlength="8" data-equal-to="#pwd-1" required>
+                                    </div>
+                                </div>
+
+                                <div class="am-form-group formVerifyImg">
+                                    <label for="pwd" class="am-form-label">验证码</label>
+                                    <div class="am-form-content">
+                                        <input class="input vcode" class="input" id="verify_code" name="verify_code" type="number" placeholder="验证码" required />
+                                    <img class="verifyImg" src="{:U('Login/verify_code')}"  title="看不清？单击此处刷新" onclick="this.src+='?rand='+Math.random();" />
+                                    </div>
+                                </div>
+                                <div class="info-btn">
+                                    <input type="hidden" name="option" value="{$option}">
+                                    <input type="submit" name="" value="保存修改" class="am-btn am-btn-danger am-btn-sm submitBtn">
+                                </div>
+                                {__TOKEN__}
+                            </form>
+                        </eq>
+                        <!-- 重置密码】 -->
+                        <!-- 支付密码【 -->
+                        <eq name="option" value="setpay">
+                            <div class="am-cf on-user-title">
+                                <div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">支付密码</strong> / <small>Set&nbsp;Pay&nbsp;Password</small></div>
+                            </div>
+                            <!--进度条-->
+                            <div class="m-progress">
+                                <div class="m-progress-list">
+                                    <span class="step-1 step">
+                                        <em class="u-progress-stage-bg"></em>
+                                        <i class="u-stage-icon-inner">1<em class="bg"></em></i>
+                                        <p class="stage-name">设置支付密码</p>
+                                    </span>
+                                    <span class="step-2 step">
+                                        <em class="u-progress-stage-bg"></em>
+                                        <i class="u-stage-icon-inner">2<em class="bg"></em></i>
+                                        <p class="stage-name">完成</p>
+                                    </span>
+                                    <span class="u-progress-placeholder"></span>
+                                </div>
+                                <div class="u-progress-bar total-steps-2">
+                                    <div class="u-progress-bar-inner"></div>
+                                </div>
+                            </div>
+                            <form id="safetyForm" class="am-form am-form-horizontal">
+                                <div class="am-form-group bind">
+                                    <label for="user-phone" class="am-form-label">验证手机</label>
+                                    <div class="am-form-content">
+                                        <span id="user-phone">{$info.mobile}</span>
+                                        <input type="hidden" id="shadow-d" value="{$info.mobile}">
+                                    </div>
+                                </div>
+                                <div class="am-form-group code">
+                                    <label for="user-code" class="am-form-label">验证码</label>
+                                    <div class="am-form-content">
+                                        <input type="tel" name="data[verify_mobile]" id="user-code" placeholder="短信验证码">
+                                    </div>
+                                    <a class="btn am-btn am-btn-danger on-bthtm checkbtnto" sendyn="0" checktp="mobile" shadow="shadow-d" href="javascript:void(0);">验证码</a>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="paypwd" class="am-form-label">支付密码</label>
+                                    <div class="am-form-content">
+                                        <input type="password" id="paypwd" name="data[paypwd]" class="js-pattern-paypwd" placeholder="6位数字" minlength="6" required>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="user-confirm-password" class="am-form-label">确认密码</label>
+                                    <div class="am-form-content">
+                                        <input type="password" id="user-confirm-password" name="data[paypwded]"  data-equal-to="#paypwd" placeholder="请再次输入上面的密码" minlength="6" required>
+                                    </div>
+                                </div>
+                                <div class="info-btn">
+                                    <input type="hidden" name="option" value="{$option}">
+                                    <input type="submit" name="" value="保存修改" class="am-btn am-btn-danger am-btn-sm submitBtn">
+                                </div>
+                                {__TOKEN__}
+                            </form>
+                        </eq>
+                        <!-- 支付密码】 -->
+                        <!-- 手机验证【 -->
+                        <eq name="option" value="bindphone">
+                            <div class="am-cf on-user-title">
+                                <div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">绑定手机</strong> / <small>Bind&nbsp;Phone</small></div>
+                            </div>
+                            
+                            <!--进度条-->
+                            <div class="m-progress">
+                                <div class="m-progress-list">
+                                    <span class="step-1 step">
+                                        <em class="u-progress-stage-bg"></em>
+                                        <i class="u-stage-icon-inner">1<em class="bg"></em></i>
+                                        <p class="stage-name">绑定手机</p>
+                                    </span>
+                                    <span class="step-2 step">
+                                        <em class="u-progress-stage-bg"></em>
+                                        <i class="u-stage-icon-inner">2<em class="bg"></em></i>
+                                        <p class="stage-name">完成</p>
+                                    </span>
+                                    <span class="u-progress-placeholder"></span>
+                                </div>
+                                <div class="u-progress-bar total-steps-2">
+                                    <div class="u-progress-bar-inner"></div>
+                                </div>
+                            </div>
+                            <form id="safetyForm" class="am-form am-form-horizontal">
+                                <notempty name="info.mobile">
+                                    <div class="am-form-group bind">
+                                        <label for="shadow-a" class="am-form-label">验证手机</label>
+                                        <div class="am-form-content">
+                                            <span id="user-phone">{$info.mobile}</span>
+                                            <input type="hidden" id="shadow-a" value="{$info.mobile}">
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group code">
+                                        <label for="user-code" class="am-form-label">验证码</label>
+                                        <div class="am-form-content">
+                                            <input type="tel" id="user-code" name="data[verify_mobile]" placeholder="短信验证码" required>
+                                        </div>
+                                        <a class="btn am-btn am-btn-danger on-bthtm checkbtnto" sendyn="0" checktp="mobile" shadow="shadow-a" href="javascript:void(0);">验证码</a>
+                                    </div>
+                                </notempty>
+                                <div class="am-form-group">
+                                    <label for="shadow-b" class="am-form-label">验证手机</label>
+                                    <div class="am-form-content">
+                                        <input type="tel" id="shadow-b" name="data[new_mobile]" placeholder="绑定新手机号" class="js-pattern-mobile" required>
+                                    </div>
+                                </div>
+                                <div class="am-form-group code">
+                                    <label for="user-new-code" class="am-form-label">验证码</label>
+                                    <div class="am-form-content">
+                                        <input type="tel" id="user-new-code" name="data[new_verify_mobile]"  placeholder="短信验证码" required>
+                                    </div>
+                                    <a class="btn am-btn am-btn-danger on-bthtm checkbtnto" sendyn="0" checktp="mobile" shadow="shadow-b" href="javascript:void(0);">验证码</a>
+                                </div>
+                                <div class="info-btn">
+                                    <input type="hidden" name="option" value="{$option}">
+                                    <input type="submit" name="" value="保存修改" class="am-btn am-btn-danger am-btn-sm submitBtn">
+                                </div>
+                                {__TOKEN__}
+                            </form>
+                        </eq>
+                        <!-- 手机验证 -->
+                        <!-- 邮箱验证【 -->
+                        <eq name="option" value="bindemail">
+                            <div class="am-cf on-user-title">
+                                <div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">绑定邮箱</strong> / <small>Email</small></div>
+                            </div>
+                            
+                            <!--进度条-->
+                            <div class="m-progress">
+                                <div class="m-progress-list">
+                                    <span class="step-1 step">
+                                        <em class="u-progress-stage-bg"></em>
+                                        <i class="u-stage-icon-inner">1<em class="bg"></em></i>
+                                        <p class="stage-name">验证邮箱</p>
+                                    </span>
+                                    <span class="step-2 step">
+                                        <em class="u-progress-stage-bg"></em>
+                                        <i class="u-stage-icon-inner">2<em class="bg"></em></i>
+                                        <p class="stage-name">完成</p>
+                                    </span>
+                                    <span class="u-progress-placeholder"></span>
+                                </div>
+                                <div class="u-progress-bar total-steps-2">
+                                    <div class="u-progress-bar-inner"></div>
+                                </div>
+                            </div>
+                            <form id="safetyForm" class="am-form am-form-horizontal">
+                                <div class="am-form-group">
+                                    <label for="shadow-c" class="am-form-label">验证邮箱</label>
+                                    <div class="am-form-content">
+                                        <input type="email"  id="shadow-c" name="data[email]" placeholder="请输入邮箱地址" class="js-pattern-email" required>
+                                    </div>
+                                </div>
+                                <div class="am-form-group code">
+                                    <label for="user-code" class="am-form-label">验证码</label>
+                                    <div class="am-form-content">
+                                        <input type="tel" id="user-code" name="data[verify_email]" placeholder="验证码" required>
+                                    </div>
+                                    <a class="btn am-btn am-btn-danger on-bthtm checkbtnto" sendyn="0" checktp="email" shadow="shadow-c" href="javascript:void(0);">验证码</a>
+                                </div>
+                                <div class="info-btn">
+                                    <input type="hidden" name="option" value="{$option}">
+                                    <input type="submit" name="" value="保存修改" class="am-btn am-btn-danger am-btn-sm submitBtn">
+                                </div>
+                                {__TOKEN__}
+                            </form>
+                        </eq>
+                        <!-- 邮箱验证 -->
+                        <!-- 身份验证【 -->
+                        <eq name="option" value="idcard">
+                            <div class="am-cf on-user-title">
+                                <div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">实名认证</strong> / <small>Real&nbsp;authentication</small></div>
+                            </div>
+                            <form id="safetyForm" class="am-form-horizontal">
+                            <div class="authentication">
+                                <p class="tip">请填写您身份证上的真实信息，以用于报关审核</p>
+                                <div class="authenticationInfo">
+                                    <p class="title">填写个人信息</p>
+
+                                    <div class="am-form-group">
+                                        <label for="truename" class="am-form-label">真实姓名</label>
+                                        <div class="am-form-content">
+                                            <input type="text" id="truename" name="data[truename]" value="{$info.truename}" placeholder="请输入您的真实姓名" minlength="2" required>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="idcard" class="am-form-label">身份证号</label>
+                                        <div class="am-form-content">
+                                            <input type="text" id="idcard" name="data[idcard]" value="{$info.idcard}" placeholder="请输入您的身份证信息" class="js-pattern-idcard" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="authenticationPic">
+                                    <p class="title">上传身份证照片</p>
+                                    <p class="tip">请按要求上传身份证</p>
+                                    <ul class="cardlist">
+                                        <li>
+                                            <div class="cardPic">
+
+                                                <img id="idcard_front_show" src="<empty name='info.idcard_front'>__IMG__/cardbg.jpg<else/>{$upWholeUrl}{$info.idcard_front}</empty>">
+                                                <div class="cardText"><i class="am-icon-plus"></i>
+                                                    <p>正面照片</p>
+                                                </div>
+                                                <p class="titleText">身份证正面</p>
+                                                <input type="file" showimg="idcard_front" class="upInput" name="file" max="5" maxsize="5120" allowexts="gif,jpeg,jpg,png,bmp" accept="image/*">
+                                                
+                                            </div>
+                                            <div class="cardExample">
+                                                <img src="__IMG__/cardimgA.png">
+                                                <p class="titleText">示例</p>                                     
+                                            </div>
+                                            <input id="idcard_front" type="hidden" name="data[idcard_front]" value="{$info.idcard_front}" required>
+                                        </li>
+                                        <li>
+                                            <div class="cardPic">
+                                                <img id="idcard_behind_show" src="<empty name='info.idcard_behind'>__IMG__/cardbg.jpg<else/>{$upWholeUrl}{$info.idcard_behind}</empty>">
+                                                <div class="cardText"><i class="am-icon-plus"></i>
+                                                    <p>背面照片</p>
+                                                </div>
+                                                <input type="file" showimg="idcard_behind" class="upInput" name="file" max="5" maxsize="5120" allowexts="gif,jpeg,jpg,png,bmp" accept="image/*">
+                                                <p class="titleText">身份证背面</p>
+                                            </div>
+                                            <div class="cardExample">
+                                                <img src="__IMG__/cardimgB.png">
+                                                <p class="titleText">示例</p>                                     
+                                            </div>
+                                            <input id="idcard_behind" type="hidden" name="data[idcard_behind]" value="{$info.idcard_behind}" required>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="info-btn">
+                                    <input type="hidden" name="option" value="{$option}">
+                                    <input type="submit" name="" value="提 交" class="am-btn am-btn-danger am-btn-sm submitBtn">
+                                </div>
+                            </div>
+                            {__TOKEN__}
+                            </form>
+                        </eq>
+                        <!-- 身份验证 -->
+                        <!-- 安全问题【 -->
+                        <eq name="option" value="question">
+                            <div class="am-cf on-user-title">
+                                <div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">设置安全问题</strong> / <small>Set&nbsp;Safety&nbsp;Question</small></div>
+                            </div>
+                            
+                            <!--进度条-->
+                            <div class="m-progress">
+                                <div class="m-progress-list">
+                                    <span class="step-1 step">
+                                        <em class="u-progress-stage-bg"></em>
+                                        <i class="u-stage-icon-inner">1<em class="bg"></em></i>
+                                        <p class="stage-name">设置安全问题</p>
+                                    </span>
+                                    <span class="step-2 step">
+                                        <em class="u-progress-stage-bg"></em>
+                                        <i class="u-stage-icon-inner">2<em class="bg"></em></i>
+                                        <p class="stage-name">完成</p>
+                                    </span>
+                                    <span class="u-progress-placeholder"></span>
+                                </div>
+                                <div class="u-progress-bar total-steps-2">
+                                    <div class="u-progress-bar-inner"></div>
+                                </div>
+                            </div>
+                            <form id="safetyForm" class="am-form am-form-horizontal">
+                                <div class="am-form-group select">
+                                    <label for="user-question1" class="am-form-label">问题一</label>
+                                    <div class="am-form-content">
+                                        <select name="data[question][1][w]" data-am-selected required>
+                                            <option value="" selected>请选择安全问题</option>
+                                            <foreach name="question.1" item="v">
+                                                <option value="{$v}">{$v}</option>
+                                            </foreach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="user-answer1" class="am-form-label">答案</label>
+                                    <div class="am-form-content">
+                                        <input type="text" name="data[question][1][d]" id="user-answer1" placeholder="请输入安全问题答案" required>
+                                    </div>
+                                </div>
+                                <div class="am-form-group select">
+                                    <label for="user-question2" class="am-form-label">问题二</label>
+                                    <div class="am-form-content">
+                                        <select name="data[question][2][w]" data-am-selected required>
+                                            <option value="" selected>请选择安全问题</option>
+                                            <foreach name="question.2" item="v">
+                                                <option value="{$v}">{$v}</option>
+                                            </foreach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="user-answer2" class="am-form-label">答案</label>
+                                    <div class="am-form-content">
+                                        <input type="text" name="data[question][2][d]" id="user-answer2" placeholder="请输入安全问题答案" required>
+                                    </div>
+                                </div>
+                                <div class="info-btn">
+                                    <input type="hidden" name="option" value="{$option}">
+                                    <input type="submit" name="" value="保存修改" class="am-btn am-btn-danger am-btn-sm submitBtn">
+                                </div>
+                                {__TOKEN__}
+                            </form>
+                        </eq>
+                        <!-- 安全问题 -->
+                    </div>
+                </div>
+                <!--底部-->
+                <include file="Common:footer"/>
+            </div>
+            <include file="Member:menu"/>
+        </div>
+<div id="on-upimg-modal-loading" class="am-modal am-modal-loading am-modal-no-btn" tabindex="-1">
+    <div class="am-modal-dialog">
+        <div id="on-loading-no" class="am-modal-hd">正在载入...</div>
+        <div class="am-modal-bd">
+            <span class="am-icon-spinner am-icon-spin"></span>
+        </div>
+    </div>
+</div>
+<js href="--PUBLIC--/assets/js/jquery.form.js"/>
+<js href="--PUBLIC--/PhotoClipJs/lrz.all.bundle.js"/>
+<script type="text/javascript">
+var uid = "{$info.uid}";
+var sendCodeUlrl = "{:U('Login/sendCode')}";
+var uplode_url = '{:U("Upload/upIdcardPic")}';
+
+var option = '{$option}';
+var wait=60;
+    $(function(){
+        // 上传身份证照片【
+        $('.cardPic').on('change','.upInput',function(){
+            var showimg = $(this).attr('showimg');
+            if (this.files.length) {
+                for (var i = 0; i < this.files.length; i++) {
+                    lrz(this.files[i], { width: 1000, quality: 1 }).then(function(rst) {
+                        var $upingLoading = $('#on-upimg-modal-loading').modal();
+
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('POST', uplode_url);
+                        xhr.onload = function () {
+                            var data = JSON.parse(xhr.response);
+                            if (xhr.status === 200) {
+                                $upingLoading.modal('close');
+                                $('#'+showimg+'_show').attr('src',data.showurl);
+                                $('#'+showimg).attr('value',data.path);
+                                // 上传成功
+                            } else {
+                                AMUI.dialog.alert({ title: '', content: data.msg});
+                                this.value = null;
+                                // 处理其他情况
+                            }
+                        };
+                        xhr.onerror = function () {
+                            AMUI.dialog.alert({ title: '', content: '未知错误:' + JSON.stringify(err, null, 2)});
+                            this.value = null;
+                        };
+                        if (xhr.upload) {
+                            try {
+                                xhr.upload.addEventListener('progress', function (e) {
+                                    if (!e.lengthComputable) return false;
+                                    // 上传进度
+                                    load = parseInt(((e.loaded / e.total) || 0) * 100);
+                                    $("#on-loading-no").html(load + "%");
+                                });
+                            } catch (err) {
+                                console.error('进度展示出错了,似乎不支持此特性?', err);
+                            }
+                        }
+                        // 添加参数
+                        // rst.formData.append('fileLen', rst.fileLen);
+                        // 触发上传
+                        xhr.send(rst.formData);
+                        return rst;
+                    }).catch(function (err) {
+                        // 万一出错了，这里可以捕捉到错误信息
+                        // 而且以上的then都不会执行
+                        alert(err);
+                    }).always(function () {
+                        // 不管是成功失败，这里都会执行
+                    });
+                }
+            }
+        });
+        // 上传身份证照片【
+
+
+
+
+
+        // 发送验证码【
+        $('.checkbtnto').click(function(){
+            var obj = $(this);
+            if (obj.attr('sendyn')==0) {
+                var $loading = AMUI.dialog.loading({title:'发送中...'}); 
+                var checkadr = $('#'+$(this).attr('shadow')).val();
+                var checktp = $(this).attr('checktp');
+                $.post(sendCodeUlrl,{'checkadr':checkadr,'checktp':checktp,'how':'verify','uid':uid},function(data){
+                    $loading.modal('close');
+                    if (data.status) {
+                        AMUI.dialog.alert({ title: '', content: data.info});
+                        $('.checkadrbox input').attr("disabled", 'disabled');
+                        time(obj);
+                    } else {
+                        AMUI.dialog.alert({ title: '', content: data.info});
+                    }
+                },'json');
+            }else{
+                AMUI.dialog.alert({ title: '', content: '请等待倒计时结束，再次发送'});
+            }
+        });
+        // 发送验证码】
+        // 表单提交
+        var $form = $('#safetyForm');
+        var $subbtn = $(".submitBtn");
+        if ($.AMUI && $.AMUI.validator) {
+            $.AMUI.validator.patterns.mobile = /^\s*1\d{10}\s*$/;
+            $.AMUI.validator.patterns.paypwd = /^\d{6}$/;
+            $.AMUI.validator.patterns.idcard = /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/;
+        }
+        $form.validator({
+            submit: function() {
+
+                
+                if (option=='password') {
+                    var pwdval = $("input[name='data[new_pwd]']").val();
+                    var pwdRegex = new RegExp('(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,30}');
+                    if (!pwdRegex.test(pwdval)) {
+                         AMUI.dialog.alert({ content: '您的新密码复杂度太低（密码为8-30个字符且必须包含字母、数字、特殊字符）,请重新设定！'});
+                         return false;
+                    }
+                }
+
+                var formValidity = this.isFormValid();
+                if (formValidity) {
+                    // 验证成功的逻辑
+                    $subbtn.button('loading');
+                    // 验证成功的逻辑
+                    $form.ajaxSubmit({url:document.URL,data:'',type:"POST",
+                        success:function(data, st) {
+                            // 提示框
+                            AMUI.dialog.alert({ title: data.title, content: data.info});
+                            if(data.status!=1){
+                                $subbtn.button('reset');
+                                // 重置验证码
+                                restVerifyImg();
+                            }
+                            if (data.url) {
+                                setTimeout(function(){
+                                    top.window.location.href = data.url;
+                                },1000);
+                            }
+                            return false;
+                        }
+                    });
+                } else {
+                    $subbtn.button('reset');
+                    // 重置验证码
+                    restVerifyImg();
+                // 验证失败的逻辑
+                }
+            //阻止原生form提交
+            return false;
+            }
+        });
+    });
+// 重新发送验证码
+function time(o) {
+    if (wait == 0) {
+        o.attr("sendyn", 0);
+        o.html('重新发送');       
+        wait = 60;
+    } else {
+        o.attr("sendyn", 1);
+        o.html('重新发送(' + wait + ')');
+        wait--;
+        setTimeout(function() {
+            time(o)
+        },
+        1000)
+    }
+}
+</script>
+</body>
+</html>

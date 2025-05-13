@@ -1,0 +1,51 @@
+<include file="Common:meta" />
+<title>提现明细-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/wallet.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+		<div class="center">
+			<div class="col-main">
+				<div class="main-wrap">
+					<div class="main-wrap-box">
+						<div class="user-logistics">
+							<!--标题 -->
+							<div class="am-cf on-user-title">
+								<div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">提现明细</strong> / <small>Withdrawals&nbsp;details</small></div>
+							</div>
+							<div class="package-title">
+								<div class="item-info">
+									<p class="log-status">提现：<span>{$info.money}</span> </p>
+									<notempty name="info.bank"><p>银行：{$info.bank}</p></notempty>
+									<notempty name="info.bankhome"><p>开户行：{$info.bankhome}</p></notempty>
+									<notempty name="info.name"><p>开户名：{$info.name}</p></notempty>
+									<notempty name="info.account"><p>账号：{$info.account}</p></notempty>
+									<p>提现留言：{$info.remark}</p>
+									<p>申请时间：{$info.time|date='Y-m-d H:i',###}</p>
+									<p>提现状态：
+										<eq name="info.status" value="0">等待提现</eq>
+	                                    <eq name="info.status" value="1">已转账（{$info.dtime|date='Y-m-d H:i',###}）</eq>
+	                                    <eq name="info.status" value="2">被驳回（{$info.cause}）[{$info.dtime|date='Y-m-d H:i',###}]</eq>
+                                    </p>
+								</div>
+	                         <div class="clear"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--底部-->
+                <include file="Common:footer"/>
+            </div>
+            <include file="Member:menu"/>
+        </div>
+<script type="text/javascript">
+    $(function(){
+
+    });
+</script>
+	</body>
+</html>

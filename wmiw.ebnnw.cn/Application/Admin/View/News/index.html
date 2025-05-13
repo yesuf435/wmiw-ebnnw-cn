@@ -1,0 +1,117 @@
+<include file="Common:meta" />
+<title><eq name="ACTION_NAME" value="search">文章搜索结果<else/>文章列表</eq>-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+        <eq name="ACTION_NAME" value="search">
+            <div class="container-fluid">
+                <p class="page-header-description">在<span class="am-text-danger">{$keys.name}</span>分类下找到<span class="am-text-danger">{$keys.count}</span>个<if condition="$keys['keyword'] != ''">与<span class="am-text-danger">{$keys.keyword}</span>相关的</if>文章！</p>
+            </div>
+        </eq>
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl"><eq name="ACTION_NAME" value="search">文章搜索结果<else/>文章列表</eq></div>
+                            </div>
+                            <div class="widget-body am-cf">
+                                <form id="searchForm" action="{:U('News/search')}" method='get' class="am-form tpl-form-border-form tpl-form-border-br  am-u-sm-12 am-u-md-12 am-u-lg-5 am-fr am-cf">
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-5">
+                                        <div class="am-form-group am-input-group-sm">
+                                            <input type="text" class="am-form-field " value="{$keys.keyword}" name="keyword" placeholder="搜索标题的关键字"/>
+                                         </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-5">
+                                        <div class="am-form-group am-input-group-sm">
+                                            <select name="cid" data-am-selected="{btnSize: 'sm'}">
+                                                <option value="">所有分类</option>
+                                                    <volist name="cate" id="vo">
+                                                        <if condition="$vo[cid] eq $keys[cid]">
+                                                            <option value="{$vo.cid}" selected="selected">{$vo.fullname}</option>
+                                                            <else/>
+                                                            <option value="{$vo.cid}">{$vo.fullname}</option>
+                                                        </if>
+                                                    </volist>
+                                            </select>
+                                         </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-2">
+                                        <div class="am-btn-group am-btn-group-xs" style="width: 100%;">
+                                            <input style="line-height: 21px;" type="submit" value="筛选" act="0" class="am-btn tpl-table-list-field am-u-sm-12 am-u-md-12 am-u-lg-12 am-btn-success">
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="am-u-sm-12">
+                                    <empty name="list">
+                                    <div class="on-none">未查询到数据</div>
+                                    <else/>
+                                        <table width="100%" id="example-r" class="am-table am-table-compact tpl-table-black " >
+                                            <thead>
+                                                <tr>
+                                                    <td>ID</td>
+                                                    <td>新闻标题</td>
+                                                    <td>所在分类</td>
+                                                    <td>状态</td>
+                                                    <td>发布时间</td>
+                                                    <td>发布人</td>
+                                                    <td>操作</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <volist name="list" id="vo">
+                                                    <tr id="{$vo.id}">
+                                                        <td>{$vo.id}</td>
+                                                        <td>{$vo.title}</td>
+                                                        <td>{$vo.cidName}</td>
+                                                        <td>{$vo.status}</td>
+                                                        <td>{$vo.published|date="Y-m-d H:i:s",###}</td>
+                                                        <td>{$vo.aidName}</td>
+                                                        <td>
+                                                            <div class="tpl-table-black-operation">
+                                                                <a href="{:U('News/edit',array('id'=>$vo['id']))}"><i class="am-icon-pencil"></i>编辑</a>
+                                                                <notin name="vo.id" value="$lock_id[art_sun]">
+                                                                    <a link="{:U('News/del',array('id'=>$vo['id']))}" href="javascript:void(0)" name="{$vo.title}" class="tpl-table-black-operation-del del"><i class="am-icon-trash-o"></i>删除</a>
+                                                                </notin>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </volist>
+                                            </tbody>
+                                        </table>
+                                        <div class="am-u-lg-12 am-cf">
+                                            <div class="am-fr">
+                                                <div class="am-pagination tpl-pagination">
+                                                    {$page}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </empty>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<script type="text/javascript">
+    $(function(){
+        $(".del").click(function(){
+            var delLink=$(this).attr("link");
+            AMUI.dialog.confirm({ title: '温馨提示', content:'你真的打算删除【<b>'+$(this).attr("name")+'</b>】吗?', onConfirm: function() {
+                top.window.location.href=delLink;
+            }, onCancel: function() { console.log('onCancel') } });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<include file="Common:meta" />
+<title>回复反馈-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">回复反馈</div>
+                            </div>
+
+                            <div class="widget-body am-fr">
+                                <form id="replyForm" class="am-form tpl-form-border-form tpl-form-border-br">
+                                    <div class="am-form-group">
+                                        <label for="title" class="am-u-sm-3 am-form-label">回复关于</label>
+                                        <div class="am-u-sm-9" style="line-height: 34px;">
+                                            <span class="am-text-danger">{$info.account}</span>提交的意见反馈：“<span class="am-text-danger">{$info.content}</span>”的回复。
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="reply" class="am-u-sm-3 am-form-label">回复内容</label>
+                                        <div class="am-u-sm-9">
+                                            <textarea class="" rows="3" id="reply" name="data[reply]" placeholder="请输入文章内容">{$info.reply}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <input type="hidden" name="data[id]" value="{$info.id}" />
+                                            <input type="submit" name="" value="提交" class="am-btn am-btn-primary tpl-btn-bg-color-success submitBtn">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<script type="text/javascript">
+    $(function(){
+
+    });
+    // 表单提交
+        var $form = $('#replyForm');
+        var $subbtn = $(".submitBtn");
+        $form.validator({
+            submit: function() {
+                var formValidity = this.isFormValid();
+                if (formValidity) {
+                    // 验证成功的逻辑
+                    $subbtn.button('loading');
+                    // 验证成功的逻辑
+                    $form.ajaxSubmit({url:document.URL,data:'',type:"POST",
+                        success:function(data, st) {
+                            // 提示框
+                            AMUI.dialog.alert({ title: data.title, content: data.info});
+                            if(data.status==1){
+                                setTimeout(function(){
+                                    top.window.location.href = data.url;
+                                },1000);
+                            }else{
+                                $subbtn.button('reset');
+                            }
+                            return false;
+                        }
+                    });
+                } else {
+                    $subbtn.button('reset');
+                // 验证失败的逻辑
+                }
+            //阻止原生form提交
+            return false;
+            }
+        });
+</script>
+</body>
+</html>

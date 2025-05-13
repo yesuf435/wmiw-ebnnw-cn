@@ -1,0 +1,252 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="keywords" content="{$site.SITE_INFO.keyword}" />
+		<meta name="description" content="{$site.SITE_INFO.description}" />
+        <title>编辑图文-我是卖家-{$site.SITE_INFO.title}</title>
+        <include file="Common:intoHead" />
+		<css href="__CSS__/user.css"/>
+		<js href="--PUBLIC--/Js/jquery_raty/jquery.raty.min.js"/>
+		<js href="__JS__/user.js"/>
+    </head>
+    <body>
+    <include file="Common:head_narrow" />
+<div id="container_white">
+    <div class="main_b9">
+        <div class="main_b3_top"><a href="">首　页</a>&nbsp;&gt;&gt;&nbsp;我是卖家&nbsp;&gt;&gt;&nbsp;编辑图文</div>
+        <div class="main_b9_1 clearfix">
+            <!--左侧导航开始-->
+            <include file="Member:menu" />
+            <!--左侧导航结束-->
+            <!---右侧开始-->
+            <div class="sider">
+                <ul class="inquiry">
+                    <li class="hover"><a href="{:U('Member/editweisend')}">编辑图文</a></li>
+                </ul>
+                <div class="inquiry-con">
+                     <form id="weisend">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="on-form-table">
+                            <tr>
+                                <th width="100">图文标题：</th>
+                                <td>
+                                    <input id="weiname" type="text" class="input" size="30" name="weixin[name]" value="{$weixin.name}"/>
+                                    <span id="weinameTip"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>链接地址：</th>
+                                <td>{$weixin.url}<input id="url" type="hidden" class="input" size="50" name="weixin[url]" value="{$weixin.url}"/></td>
+                            </tr>
+                            
+                            <tr>
+                                <th>图文说明：</th>
+                                <td>
+                                    <textarea id="weicomment" type="text" class="input" style="height: 60px; width: 400px;" name="weixin[comment]">{$weixin.comment}</textarea>
+                                    <span id="weicommentTip"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>头条图片：</th>
+                                <td id="topPicBox">
+                                    <div class="up_btn_box"><div class="up_explain">图片格式：*.gif; *.jpg; 尺寸：宽{:C('WEI_TOP_WIDTH')}&nbsp; 高{:C('WEI_TOP_HEIGHT')}。不上传则使用对应拍品第一张图片</div>
+                                    <div id="topPic_upload" class="sbtn up_but"><div class="up_but_ico"></div>头条图片</div>
+                                    <div class="clearfix"></div>
+                                    <ul id="uploadImageList" class="clearfix">
+                                        <notempty name="weixin.toppic">
+                                        <li class="photo"><img id="upImgSize" src="{$upWholeUrl}{$weixin.toppic}"/>
+                                        <div class="imper">
+                                        <a class="bigImg" href="{$upWholeUrl}{$weixin.toppic}"  target="_blank"></a></div>
+                                        <input type="hidden" name="weixin[toppic]" value="{$weixin.toppic}" />
+                                        </li>
+                                        </notempty>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>列表图片：</th>
+                                <td id="listPicBox">
+                                    <div class="up_btn_box"><div class="up_explain">图片格式：*.gif; *.jpg; 尺寸：宽{:C('WEI_LIST_WIDTH')}&nbsp; 高{:C('WEI_LIST_HEIGHT')}。不上传则使用对应拍品第一张图片</div>
+                                    <div id="listPic_upload" class="sbtn up_but"><div class="up_but_ico"></div>列表图片</div>
+                                    <div class="clearfix"></div>
+                                    <ul id="uploadImageList" class="clearfix">
+                                        <notempty name="weixin.picture">
+                                        <li class="photo"><img id="upImgSize" src="{$upWholeUrl}{$weixin.picture}"/>
+                                        <div class="imper">
+                                        <a class="bigImg" href="{$upWholeUrl}{$weixin.picture}"  target="_blank"></a></div>
+                                        <input type="hidden" name="weixin[picture]" value="{$weixin.picture}" />
+                                        </li>
+                                        </notempty>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>是否推送：</th>
+                                <td>
+                                    <label>
+                                        <input id="send" name="weixin[send]" checked="checked" type="radio" value="0"/>以后推送 
+                                    </label>
+                                    <label>
+                                        <input id="send1" name="weixin[send]" type="radio" value="1"/>立即推送 
+                                    </label>
+                                    <span id="sendTip"></span>
+                                </td>
+                            </tr>
+
+                            <input type="hidden" name="weixin[type]" value="{$weixin.type}" />
+                        </table>
+                        <input type="hidden" name="weixin[id]" value="{$weixin.id}" />
+                    </form>
+                    <div id="btn_box">
+                        <button class="on-btn on-btn-red submit">提交</button>
+                    </div>
+                </div>
+            </div>
+            <!---右侧结束-->
+        </div>
+        <!--auction.html结束-->
+    </div>
+</div>
+<!---底部开始-->
+<include file="Common:help_narrow" />
+<include file="Common:footer"/>
+<!-- 表单验证【 -->
+
+<js href="--PUBLIC--/Js/formValidator/formValidator-4.1.3.js"/>
+<js href="--PUBLIC--/Js/formValidator/formValidatorRegex.js"/>
+<!-- 表单验证】 -->
+<!-- 上传插件【 -->
+<script type="text/javascript" src="__STATIC__/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" src="__STATIC__/plupload/jquery.plupload.queue/jquery.plupload.queue.min.js"></script>
+<script type="text/javascript" src="__STATIC__/plupload/i18n/zh_CN.js"></script>
+<!-- 上传插件】 -->
+<script type="text/javascript">
+        // 上传变量配置【
+        var moxieswf = "__STATIC__/plupload/Moxie.swf";
+        var moxiesxap = "__STATIC__/plupload/Moxie.xap";
+        // 上传变量配置】
+    $(function(){
+        // 表单验证【
+        $.formValidator.initConfig({formID:"weisend"});
+        $(".submit").click(function(){
+            if($.formValidator.pageIsValid('1')==true){
+                commonAjaxSubmit();
+            }
+            return false;
+        });
+        $(":radio[name='weixin[send]']").formValidator({tipID:"sendTip",onShow:"仅推送与官方公众号有过交流不超过48小时且关注过您和与您交易过的用户",onFocus:"仅推送与官方公众号有过交流不超过48小时且关注过您和与您交易过的用户",onCorrect:"仅推送与官方公众号有过交流不超过48小时且关注过您和与您交易过的用户"});
+
+        $("#weiname").formValidator({onShow:"请填写推送标题",onFocus:"要求最少2个不超过8个字",onCorrect:"输入正确"}).inputValidator({min:3,max:300,onError:"你输入的标题不正确,请确认"});
+        $("#weicomment").formValidator({onShow:"请填写推送描述",onFocus:"要求最少2个不超过8个字",onCorrect:"输入正确"}).inputValidator({min:3,max:300,onError:"你输入的标题不正确,请确认"});
+        // 表单验证】
+
+
+
+        //上传初始化变量【
+        var uplode_weitop_url = '{:U("Upload/upWeiTopPic")}';//PHP处理脚本地址
+        var uplode_weilist_url = '{:U("Upload/upWeiListPic")}';//PHP处理脚本地址
+        var uplode_path = '__PUBLIC__'; //插件公共目录
+        var sid = '{:session_id()}';//sessionID
+        var upPathRoot="{$upWholeUrl}"; //图片上传根目录完整路径
+        var uploadPath ="{:C('UPLOADS_PICPATH')}"; //图片上传根目录
+        var topPicW = "{:C('WEI_TOP_WIDTH')}";
+        var topPicH = "{:C('WEI_TOP_HEIGHT')}";
+        var listPicW = "{:C('WEI_LIST_WIDTH')}";
+        var listPicH = "{:C('WEI_LIST_HEIGHT')}";
+        //上传初始化变量】
+        // 微信头条图片上传【
+                <literal>
+                    var uploaderTop = new plupload.Uploader({//创建实例的构造方法
+                        runtimes: 'html5,flash,silverlight,html4', //上传插件初始化选用那种方式的优先级顺序
+                        browse_button: 'topPic_upload', // 上传按钮
+                        url: uplode_weitop_url, //远程上传地址
+                        flash_swf_url: moxieswf, //flash文件地址
+                        silverlight_xap_url: moxiesxap, //silverlight文件地址
+                        filters: {
+                            max_file_size: '4mb', //最大上传文件大小（格式100b, 10kb, 10mb, 1gb）
+                            mime_types: [//允许文件上传类型
+                                {title: "files", extensions: "jpg,gif"}
+                            ]
+                        },
+                        multi_selection: false, //true:ctrl多文件上传, false 单文件上传
+                        init: {
+                            FilesAdded: function(up, files) { //文件上传前
+                                if ($("#topPicBox #uploadImageList").children("li").length > 1) {
+                                    alert("您上传的图片太多了！");
+                                    uploaderTop.destroy();
+                                } else {
+                                    var li = '';
+                                    plupload.each(files, function(file) { //遍历文件
+                                        li += "<li class='photo' id='" + file['id'] + "'><div class='progress'><span class='bar'></span><span class='percent'>0%</span></div></li>";
+                                    });
+                                    $("#topPicBox #uploadImageList").html(li);
+                                    uploaderTop.start();
+                                }
+                            },
+                            UploadProgress: function(up, file) { //上传中，显示进度条
+                         var percent = file.percent;
+                                $("#" + file.id).find('.bar').css({"width": percent + "%"});
+                                $("#" + file.id).find(".percent").text(percent + "%");
+                            },
+                            FileUploaded: function(up, file, info) { //文件上传成功的时候触发
+                                var data = JSON.parse(info.response);
+                                 $("#" + file.id).html('<img id="upImgSize" src="'+upPathRoot+data.path+'" width="'+topPicW+'" height="'+topPicH+'"/><div class="imper"><a class="bigImg" href="'+uploadPath+data.path+'"  target="_blank"></a></div><input type="hidden" name="weixin[toppic]" value="'+data.path+'" />');
+                            },
+                            Error: function(up, err) { //上传出错的时候触发
+                                alert(err.message);
+                            }
+                        }
+                    });
+                    uploaderTop.init();
+                </literal>
+                // 微信头条图片上传】
+                // 微信列表图片上传【
+                <literal>
+                    var uploaderList = new plupload.Uploader({//创建实例的构造方法
+                        runtimes: 'html5,flash,silverlight,html4', //上传插件初始化选用那种方式的优先级顺序
+                        browse_button: 'listPic_upload', // 上传按钮
+                        url: uplode_weilist_url, //远程上传地址
+                        flash_swf_url: moxieswf, //flash文件地址
+                        silverlight_xap_url: moxiesxap, //silverlight文件地址
+                        filters: {
+                            max_file_size: '4mb', //最大上传文件大小（格式100b, 10kb, 10mb, 1gb）
+                            mime_types: [//允许文件上传类型
+                                {title: "files", extensions: "jpg,gif"}
+                            ]
+                        },
+                        multi_selection: false, //true:ctrl多文件上传, false 单文件上传
+                        init: {
+                            FilesAdded: function(up, files) { //文件上传前
+                                if ($("#listPicBox #uploadImageList").children("li").length > 1) {
+                                    alert("您上传的图片太多了！");
+                                    uploaderList.destroy();
+                                } else {
+                                    var li = '';
+                                    plupload.each(files, function(file) { //遍历文件
+                                        li += "<li class='photo' id='" + file['id'] + "'><div class='progress'><span class='bar'></span><span class='percent'>0%</span></div></li>";
+                                    });
+                                    $("#listPicBox #uploadImageList").html(li);
+                                    uploaderList.start();
+                                }
+                            },
+                            UploadProgress: function(up, file) { //上传中，显示进度条
+                         var percent = file.percent;
+                                $("#" + file.id).find('.bar').css({"width": percent + "%"});
+                                $("#" + file.id).find(".percent").text(percent + "%");
+                            },
+                            FileUploaded: function(up, file, info) { //文件上传成功的时候触发
+                                var data = JSON.parse(info.response);
+                                 $("#" + file.id).html('<img id="upImgSize" src="'+upPathRoot+data.path+'" width="'+listPicW+'" height="'+listPicH+'"/><div class="imper"><a class="bigImg" href="'+uploadPath+data.path+'"  target="_blank"></a></div><input type="hidden" name="weixin[picture]" value="'+data.path+'" />');
+                            },
+                            Error: function(up, err) { //上传出错的时候触发
+                                alert(err.message);
+                            }
+                        }
+                    });
+                    uploaderList.init();
+                </literal>
+                // 微信列表图片上传】
+    });
+</script>
+</body>
+</html>

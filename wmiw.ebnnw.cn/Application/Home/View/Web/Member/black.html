@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="keywords" content="{$site.SITE_INFO.keyword}" />
+        <meta name="description" content="{$site.SITE_INFO.description}" />
+        <title>我屏蔽的<eq name="selbuy" value="buy">卖家-我是买家<else/>买家-我是卖家</eq>-{$site.SITE_INFO.title}</title>
+        <include file="Common:intoHead" />
+		<css href="__CSS__/user.css"/>
+		<js href="__JS__/user.js"/>
+    </head>
+    <body>
+    <include file="Common:head_narrow" />
+<div id="container_white">
+    <div class="main_b9">
+        <div class="h8 clearfix"></div>
+        <div class="main_b3_top"><a href="">首　页</a>&nbsp;&gt;&gt;&nbsp;<eq name="selbuy" value="buy">我是卖家&nbsp;&gt;&gt;&nbsp;我屏蔽的买家<else/>我是买家&nbsp;&gt;&gt;&nbsp;我屏蔽的卖家</eq></div>
+
+        
+        <div class="main_b9_1 clearfix">
+            <!--左侧导航开始-->
+            <include file="Member:menu" />
+            <!--左侧导航结束-->
+            <!---右侧开始-->
+            <div class="sider">
+                <ul class="inquiry">
+                    <li class="hover" >
+                        <eq name="selbuy" value="buy">我屏蔽的买家<else/>我屏蔽的卖家</eq>
+                    </li>
+                </ul>
+                <div class="inquiry-con">
+                    <table width="100%" cellspacing="0" cellpadding="0" class="systemTable" id="tabList">
+                        <tbody>
+                            <tr class="xiaoxzt">
+                                <th width="60%">
+                                    <eq name="selbuy" value="buy">买家<else/>卖家</eq>
+                                </th>
+                                <th width="20%">屏蔽时间</th>
+                                <th width="20%">操作</th>
+                            </tr>
+                            <empty name="list">
+                                <tr><td colspan="4">没有屏蔽任何人！</td></tr>
+                            </empty>
+                            <notempty name="list">
+                                <volist name="list" id="svo">
+                                    <tr>
+                                        <td class="suse">
+                                            <img style="width: 34px; padding: 2px;" src="{$svo.sendid|getUserpic=###,2}">
+                                            <div class="susnm fl"  style="text-align: left;">
+                                                <span class="ac-show-userbox" cardtips="0" uid="{$svo.xid}" seller="1" <eq name="selbuy" value="buy"> selbuy="buy"<else/>selbuy="sel"</eq>>
+                                                    <span class="userrole"><eq name="selbuy" value="buy">买家<else/>卖家</eq>：</span>
+                                                    <a target="_blank" class="ac-show-usercard" <eq name="selbuy" value="buy"> href="javascript:void(0);"<else/> href="{:U('Seller/index',array('sellerid'=>$svo['xid']))}"</eq>>{$svo.xinfo.organization}</a>
+                                                </span><br/>
+                                                <div class="clearfix"><div class="th">等级：</div><div class="td"><img src="{$svo.xinfo.leval}"></div></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {$svo.time||date='Y-m-d H:i',###}
+                                        </td>
+                                        <td>
+                                            <a class="aw-card-shield on" black="1" xid="{$svo.xid}" pilot="{$selbuy}" href="javascript:void(0);"><span></span><eq name="selbuy" value="buy">不让他看拍品<else/>不看他的拍品</eq></a>
+                                        </td>
+                                    </tr>
+                                </volist>
+                            </notempty>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!---右侧结束-->
+        </div>
+    </div>
+</div>
+<!---底部开始-->
+<include file="Common:help_narrow" />
+<include file="Common:footer"/>
+</body>
+</html>

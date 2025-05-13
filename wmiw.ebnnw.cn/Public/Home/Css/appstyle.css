@@ -1,0 +1,44 @@
+@charset "utf-8";
+/* CSS Document */
+.comment-main{padding-bottom:10px ;}
+.item-pic {width: 90px;height: 90px;border: 1px solid #EEE;float: left;overflow: hidden; margin-left:5px;margin-right: 10px;}
+.item-pic img{ width: 100%;}
+textarea {width:100%;margin:10px 0px;min-height:80px;border: 0px none;resize: none;outline: 0px none;overflow: hidden;}
+.item-opinion{border-top: 1px solid #F5F8FA;width: 100%;overflow: hidden;padding:10px 0px ;}
+.item-opinion li{float:left;width: 33.33%;text-align: center;font-size:14px ;cursor: pointer;}
+.item-opinion li i{display:inline-block;width:16px;height:16px;margin-right: 5px;}
+.item-opinion li i.op1,.item-opinion li i.op2{background:url(../Img/iconfont-evaluate.png);background-size:16px 16px;}
+.item-opinion li i.op3{background:url(../Img/iconfont-bad.png);background-size:16px 16px;}
+
+.item-opinion li i.op1.active{background:url(../Img/iconfont-good.png);background-size:16px 16px;}
+.item-opinion li i.op2.active{background:url(../Img/iconfont-middle.png);background-size:16px 16px;}
+.item-opinion li i.op3.active{background:url(../Img/iconfont-badon.png);background-size:16px 16px;}
+
+
+
+.info-btn{text-align: center;}
+
+
+
+@media only screen and (min-width: 640px){
+
+/*多个商品评价*/
+.comment-list{margin: 0 5px;
+    padding-bottom: 10px;
+    position: relative;}
+.item-goods{ float: left;}
+.item-pic{width: 150px;height: auto;float: none;}
+.item-title{width:150px ;overflow: hidden;}
+.item-pay-logis{display: none;}
+.item-name p,.comment-list .info-little span{height: 18px;line-height: 18px;overflow: hidden;}
+.item-commentBox{ float: right; width: 75%;}
+.item-opinion{width: auto;max-width:600px ;}
+.item-comment{max-width:600px ;}
+textarea{min-height:120px ;border: 1px solid #F5F8FA;;padding:10px ;margin: 0px 0px;}
+.user-comment{max-width:1000px;margin:0px auto;}
+}
+
+
+
+
+

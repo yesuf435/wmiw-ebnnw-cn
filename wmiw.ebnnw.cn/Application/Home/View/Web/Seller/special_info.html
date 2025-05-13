@@ -1,0 +1,75 @@
+<include file="Common:meta" />
+<title>专场信息-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+<div class="center">
+    <div class="col-main">
+        <div class="main-wrap">
+            <div class="main-wrap-box" >
+                    <!--标题 -->
+                    <div class="am-cf on-user-title">
+                        <div class="am-fl am-cf">
+                            <strong class="am-text-danger am-text-lg">专场信息</strong> / <small>Info&nbsp;Special</small>
+                        </div>
+                    </div>
+                    <div class="addgoods">
+                            <div class="am-form-group">
+                                <label for="pname" class="am-form-label">专场名称</label>
+                                <div class="am-form-content">{$info.sname}</div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="pname" class="am-form-label">专场描述</label>
+                                <div class="am-form-content">{$info.description}</div>
+                            </div>
+                            
+                            <div class="am-form-group">
+                                <label for="start_time" class="am-form-label">开始时间</label>
+                                <div class="am-form-content">{$info.starttime|date='Y-m-d H:i',###}</div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="end_time" class="am-form-label">结束时间</label>
+                                <div class="am-form-content">{$info.endtime|date='Y-m-d H:i',###}</div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="succtype" class="am-form-label">保证金</label>
+                                <div class="am-form-content">
+                                    <eq name="info.special_pledge_type" value="0">专场扣除/{$info.spledge}</eq>
+                                    <eq name="info.special_pledge_type" value="1">分别扣除</eq>
+                                </div>
+                            </div> 
+                            <div class="am-form-group">
+                                <label for="end_time" class="am-form-label">拍品数量</label>
+                                <div class="am-form-content">{$info.count}件</div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="end_time" class="am-form-label">专场状态</label>
+                                <div class="am-form-content">
+                                    <strong class="am-text-secondary">{$info.st}&nbsp;&nbsp;</strong>
+                                    <notempty name="chengjiao">成交：{$info.chengjiao}件&nbsp;&nbsp;</notempty>
+                                    <notempty name="liupai">流拍：{$info.liupai}件&nbsp;&nbsp;</notempty>
+                                    <notempty name="chepai">撤拍：{$info.chepai}件&nbsp;&nbsp;</notempty>
+                                </div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="pname" class="am-form-label" style="line-height: 110px;">列表图</label>
+                                <div class="am-form-content"><img style="max-height: 100px;" src="{$upWholeUrl}{$info.spicture}"></div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="pname" class="am-form-label" style="line-height: 110px;">BANNER图</label>
+                                <div class="am-form-content"><img style="max-height: 100px;" src="{$upWholeUrl}{$info.sbanner}"></div>
+                            </div>
+                    </div>
+            </div>
+        </div>
+        <!--底部-->
+    <include file="Common:footer"/>
+    </div>
+    <include file="Seller:menu" />
+</div>
+    </body>
+</html>

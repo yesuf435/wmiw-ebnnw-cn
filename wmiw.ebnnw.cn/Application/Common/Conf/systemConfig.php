@@ -1,0 +1,7 @@
+<?php	return array ( 'SITE_INFO' => array ( 'name' => 'CHRISTIE’S 佳士得', 'summary' => '於1766年創立的佳士得，是享譽全球的藝術品及奢侈品拍賣翹楚，專門舉行由專家悉心策劃的現場拍賣和網上專場拍賣，並提供專屬的私人洽購服務，深受廣大藏家信賴。 佳士得為客戶提供完善的全球服務，涵蓋藝術品估值、藝術品融資、國際房地產及藝術教育等。', 'version' => '', 'icp' => '', 'service' => '', 'tel' => '', 'address' => ' 6/F, The Henderson, 2 Murray Rd, Central, 香港', 'title' => 'CHRISTIE’S 佳士得', 'keyword' => 'CHRISTIE’S 佳士得', 'description' => '佳士得拍卖行，1766年由詹姆士·佳士得（James Christie）在伦敦创立，为世界上历史最悠久的艺术品拍卖行。并在香港设有分支机构。香港佳士得拍卖行自2010年开设以来，已成为亚洲市场上重要的艺术品和奢侈品拍卖平台之一。
+
+佳士得拍卖行以其专业的拍卖服务和卓越的艺术品鉴定能力著称，涵盖了多个领域，包括中国艺术品、欧洲古董、现代和当代艺术、珠宝、汽车、奢侈品以及手表等。香港作为亚洲的金融和文化中心，佳士得在此的拍卖活动吸引了大量本地及国际买家和收藏家。
+
+佳士得拍卖行在香港举办的拍卖会一般包括定期的春季和秋季拍卖，拍品范围从珍贵的艺术品到高端奢侈品。凭借着在全球拍卖市场中的声誉，香港佳士得拍卖行在推动东西方艺术品交流方面起到了重要作用。
+
+通过提供定制化的拍卖服务，佳士得致力于为客户提供最佳的拍卖体验，并且以透明、公正的方式进行拍卖，确保每一位客户的需求都能得到满足。', ), 'WEB_ROOT' => 'https://wauw.dskjba3.com/', 'AUTH_CODE' => NULL, 'CACHE_FIX' => 'cmq0Bn', 'ADMIN_AUTH_KEY' => 'super@ebnnw.cn', 'DB_HOST' => '127.0.0.1', 'DB_NAME' => 'wmiw_ebnnw_cn', 'DB_USER' => 'wmiw_ebnnw_cn', 'DB_PWD' => 'YyGsWQdMiJB4sa5X', 'DB_PORT' => '3306', 'DB_PREFIX' => 'on_', 'webPath' => '/', 'TOKEN' => array ( 'admin_marked' => 'CHRISTIE’S 佳士得', 'admin_timeout' => '3600', 'member_marked' => 'CHRISTIE’S 佳士得', 'member_timeout' => '3600', ), );?>

@@ -1,0 +1,68 @@
+<include file="Common:meta" />
+<title><eq name="ACTION_NAME" value="search">分享记录<else/>分享搜索</eq>-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl"><eq name="ACTION_NAME" value="search">分享记录<else/>分享搜索</eq></div>
+                            </div>
+                            <div class="widget-body am-cf">
+                                <div class="am-u-sm-12">
+                                    <empty name="list">
+                                    <div class="on-none">未查询到数据</div>
+                                    <else/>
+                                        <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black ">
+                                            <thead>
+                                                <tr>
+                                                    <td>ID</td>
+                                                    <td>分享用户</td>
+                                                    <td>分享至</td>
+                                                    <td>分享标题</td>
+                                                    <td>分享链接</td>
+                                                    <td>奖励信誉额度</td>
+                                                    <td>分享时间</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <foreach name="list" item="vo">
+                                                    <tr align="center">
+                                                        <td>{$vo.id}</td>
+                                                        <td align="left">账号：{$vo.account}<br/>昵称：{$vo.nickname}</td>
+                                                        <td>{$vo.sharename}</td>
+                                                        <td align="left">{$vo.title}</td>
+                                                        <td align="left">{$vo.link}</td>
+                                                        <td>{$vo.limsum}</td>
+                                                        <td>{$vo.time|date="Y-m-d H:i:s",###}</td>
+                                                    </tr>
+                                                </foreach>
+                                            </tbody>
+                                        </table>
+                                        <div class="am-u-lg-12 am-cf">
+                                            <div class="am-fr">
+                                                <div class="am-pagination tpl-pagination">
+                                                    {$page}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </empty>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+</body>
+</html>

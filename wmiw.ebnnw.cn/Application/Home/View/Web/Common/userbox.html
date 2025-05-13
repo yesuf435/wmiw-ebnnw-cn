@@ -1,0 +1,163 @@
+<include file="Common:meta" />
+<title> <eq name="CONTROLLER_NAME" value="Seller"><eq name="ACTION_NAME" value="myfensi">我的粉丝</eq><eq name="ACTION_NAME" value="blacklist">屏蔽买家</eq></eq><eq name="CONTROLLER_NAME" value="Member"><eq name="ACTION_NAME" value="attseller">关注的卖家</eq><eq name="ACTION_NAME" value="blacklist">屏蔽的卖家</eq></eq>-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/uslisttyle.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+        <div class="center">
+            <div class="col-main">
+                <div class="main-wrap">
+                    <div class="main-wrap-box">
+                        <div class="user-collection">
+                            <!--标题 -->
+                            <div class="am-cf on-user-title">
+                                <div class="am-fl am-cf">
+                                    <eq name="CONTROLLER_NAME" value="Seller">
+                                        <eq name="ACTION_NAME" value="myfensi"><strong class="am-text-danger am-text-lg">我的粉丝</strong> / <small>My&nbsp;fans</small></eq>
+                                        <eq name="ACTION_NAME" value="blacklist"><strong class="am-text-danger am-text-lg">屏蔽买家</strong> / <small>Blocked&nbsp;buyers</small></eq>
+                                    </eq>
+                                    <eq name="CONTROLLER_NAME" value="Member">
+                                        <eq name="ACTION_NAME" value="attseller"><strong class="am-text-danger am-text-lg">关注的卖家</strong> / <small>Concerned&nbsp;sellers</small></eq>
+                                        <eq name="ACTION_NAME" value="blacklist"><strong class="am-text-danger am-text-lg">屏蔽的卖家</strong> / <small>Shielded&nbsp;seller</small></eq>
+                                    </eq>
+                                </div>
+                            </div>
+                            <div class="on-user-list">
+                                <empty name="list">
+                                    哎哟！这里空空如也！
+                                <else/>
+                                    <ul class="am-avg-sm-2 am-avg-md-4">
+                                        <volist name="list" id="lv">
+                                            <li <eq name="ACTION_NAME" value="blacklist">class="Js-user-listbox"</eq>>
+                                                <div class="on-user-box">
+                                                    <eq name="CONTROLLER_NAME" value="Member">
+                                                        <a class="user-info" href="{:U('Shop/index',array('sellerid'=>$lv['uid']))}">
+                                                            <img src="<empty name='lv.avatar'>__IMG__/getAvatar.do.jpg<else/>{$lv.uid|getUserpic=###,1,'sel'}</empty>">
+                                                            <div class="on-user-con">
+                                                                <p class="am-text-truncate user-nickname" >{$lv.organization}</p>
+                                                                <p class="user-intr">{$lv.intro|default='这家伙很懒，什么也没有留下！'}</p>
+                                                            </div>
+                                                        </a>
+                                                    </eq>
+                                                    <eq name="CONTROLLER_NAME" value="Seller">
+                                                        <div class="user-info">
+                                                            <img src="<empty name='lv.avatar'>__IMG__/getAvatar.do.jpg<else/>{$lv.uid|getUserpic=###,1}</empty>">
+                                                            <div class="on-user-con">
+                                                                <p class="am-text-truncate user-nickname">{$lv.nickname}</p>
+                                                                <p class="user-intr">{$lv.intr|default='这家伙很懒，什么也没有留下！'}</p>
+                                                            </div>
+                                                        </div>
+                                                    </eq>
+                                                    <ul class="am-avg-sm-2 user-action">
+                                                        <li><a class="user-liuyan" href="{:U('Member/sendmsg',array('how'=>'sel','uid'=>$lv['uid']))}"><i class="am-icon-envelope"></i>私信</a></li>
+                                                        <li>
+                                                            <eq name="CONTROLLER_NAME" value="Seller">
+                                                                <if condition="($lv['black'] eq 1) or (ACTION_NAME eq 'blacklist')">
+                                                                    <a class="user-lahei aw-card-shield" black="1" xid="{$lv.uid}" pilot="buy" href="javascript:void(0);"><i class="am-icon-minus-circle"></i><span class="Js-black-txt">取消屏蔽</span></a>
+                                                                <else/>
+                                                                    <a class="user-lahei aw-card-shield" black="0" xid="{$lv.uid}" pilot="buy" href="javascript:void(0);"><i class="am-icon-minus-circle"></i><span class="Js-black-txt">屏蔽买家</span></a>
+                                                                </if>
+                                                            </eq>
+                                                            <eq name="CONTROLLER_NAME" value="Member">
+                                                                <if condition="($lv['black'] eq 1) or (ACTION_NAME eq 'blacklist')">
+                                                                    <a class="user-lahei aw-card-shield" black="1" xid="{$lv.uid}" pilot="sel" href="javascript:void(0);"><i class="am-icon-minus-circle"></i><span class="Js-black-txt">取消屏蔽</span></a>
+                                                                <else/>
+                                                                    <a class="user-lahei aw-card-shield" black="0" xid="{$lv.uid}" pilot="sel" href="javascript:void(0);"><i class="am-icon-minus-circle"></i><span class="Js-black-txt">屏蔽卖家</span></a>
+                                                                </if>
+                                                            </eq>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </volist>
+                                    </ul>
+                                    {$page}
+                                </empty> 
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!--底部-->
+                <!--底部-->
+                <include file="Common:footer"/>
+            </div>
+            <eq name="CONTROLLER_NAME" value="Member"><include file="Member:menu"/></eq>
+            <eq name="CONTROLLER_NAME" value="Seller"><include file="Seller:menu"/></eq>
+        </div>
+<script type="text/javascript">
+$(function(){
+    // 取消关注
+    $('.s-tp').on("click",".Js-att",function(){
+        var thisObj = $(this);
+        var gid = $(this).attr('pid');
+        var rela = $(this).attr('rela');
+        $.post(attUrl,{'gid':gid , 'rela':rela, 'yn':'y'},function(data){
+            if (data.status) {
+                thisObj.parents('.s-tp').remove();
+            } else {
+                // 提示框
+                AMUI.dialog.alert({ title: data.title, content: data.info});
+            }
+        },'json');  
+         
+    });
+});
+
+
+// 结束倒计时
+function endDown(etime,ntime,boxobj,day_elem,hour_elem,minute_elem,second_elem){
+    var now_time = new Date(ntime*1000);
+    var end_time = new Date(etime*1000);
+    var sys_second = (end_time-now_time)/1000;
+    var timer = setInterval(function(){
+        if (sys_second > 0) {
+            sys_second -= 1;
+            var day = Math.floor((sys_second / 3600) / 24);
+            var hour = Math.floor((sys_second / 3600) % 24);
+            var minute = Math.floor((sys_second / 60) % 60);
+            var second = Math.floor(sys_second % 60);
+            day_elem && $(day_elem).text(day);//计算天
+            $(hour_elem).text(hour<10?"0"+hour:hour);//计算小时
+            $(minute_elem).text(minute<10?"0"+minute:minute);//计算分
+            $(second_elem).text(second<10?"0"+second:second);// 计算秒
+        } else { 
+            clearInterval(timer);
+            $('#bidTimeStatus').remove();
+            $(boxobj).html('');
+            $(boxobj).addClass('end');
+        }
+    }, 1000);
+}
+// 开始倒计时
+function startDown(etime,ntime,boxobj,day_elem,hour_elem,minute_elem,second_elem){
+    var now_time = new Date(ntime*1000);
+    var end_time = new Date(etime*1000);
+    var sys_second = (end_time-now_time)/1000;
+    var timer = setInterval(function(){
+        if (sys_second > 0) {
+            sys_second -= 1;
+            var day = Math.floor((sys_second / 3600) / 24);
+            var hour = Math.floor((sys_second / 3600) % 24);
+            var minute = Math.floor((sys_second / 60) % 60);
+            var second = Math.floor(sys_second % 60);
+            day_elem && $(day_elem).text(day);//计算天
+            $(hour_elem).text(hour<10?"0"+hour:hour);//计算小时
+            $(minute_elem).text(minute<10?"0"+minute:minute);//计算分
+            $(second_elem).text(second<10?"0"+second:second);// 计算秒
+        } else { 
+            $('.noStartBidTbox .th').html('拍卖已开始');
+            $(boxobj).html('');
+            $(boxobj).addClass('into');
+        }
+    }, 1000);
+}
+
+
+</script>
+    </body>
+</html>

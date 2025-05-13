@@ -1,0 +1,430 @@
+<!-- 侧边导航栏 -->
+<div class="left-sidebar">
+    <!-- 用户信息 -->
+    <div class="tpl-sidebar-user-panel">
+        <div class="tpl-user-panel-slide-toggleable">
+            <div class="tpl-user-panel-profile-picture">
+                <empty name="my_info.avatar">
+                    <img src="Public/Img/superadmin.gif">
+                <else/>
+                    <img src="{:C('UPLOADS_PICPATH')}{$my_info.avatar|picRep=###,1,'user'}">
+                </empty>
+            </div>
+            <span class="user-panel-logged-in-text">
+      <i class="am-icon-circle-o am-text-success tpl-user-panel-status-icon"></i>
+      {$my_info.nickname}
+  </span>
+            <a href="{:U('Index/myinfo')}" class="tpl-user-panel-action-link"> <span class="am-icon-pencil"></span> 修改密码</a>
+        </div>
+    </div>
+
+    <!-- 菜单 -->
+    <ul class="sidebar-nav">
+        <li class="sidebar-nav-link">
+            <a href="javascript:;" class="sidebar-nav-sub-title <eq name='CONTROLLER_NAME' value='Index'>active</eq>">
+                <i class="am-icon-home sidebar-nav-link-logo"></i> 首页
+                <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico <eq name='CONTROLLER_NAME' value='Index'>sidebar-nav-sub-ico-rotate</eq>"></span>
+            </a>
+            <ul class="sidebar-nav sidebar-nav-sub" <eq name='CONTROLLER_NAME' value='Index'>style="display: block;"</eq>>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Index/index')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 默认页
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Index/statistics')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 资金统计
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Index/take')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 提现管理
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Index/cache')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 缓存管理
+                    </a>
+                </li>
+            </ul>
+        </li>
+        
+		<li class="sidebar-nav-link">
+            <a href="javascript:;" class="sidebar-nav-sub-title <eq name='CONTROLLER_NAME' value='Member'>active</eq>">
+                <i class="am-icon-user sidebar-nav-link-logo"></i> 注册/用户管理
+                <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico <eq name='CONTROLLER_NAME' value='Member'>sidebar-nav-sub-ico-rotate</eq>"></span>
+            </a>
+            <ul class="sidebar-nav sidebar-nav-sub" <eq name='CONTROLLER_NAME' value='Member'>style="display: block;"</eq>>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Member/add')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 添加用户
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Member/index')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 用户管理
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Member/walletbill')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 账户记录
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Member/webmail')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 站内信管理
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Member/feedback')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 推广反馈
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Member/set_member')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 用户设置
+                    </a>
+                </li>
+
+            </ul>
+        </li>
+        <li class="sidebar-nav-link">
+            <a href="javascript:;" class="sidebar-nav-sub-title <eq name='CONTROLLER_NAME' value='Goods'>active</eq>">
+                <i class="am-icon-shopping-cart sidebar-nav-link-logo"></i> 商品管理
+                <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico <eq name='CONTROLLER_NAME' value='Goods'>sidebar-nav-sub-ico-rotate</eq>"></span>
+            </a>
+            <ul class="sidebar-nav sidebar-nav-sub" <eq name='CONTROLLER_NAME' value='Goods'>style="display: block;"</eq>>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Goods/add')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 发布商品
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Goods/index')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 商品管理
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Goods/category')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 频道分类管理
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Goods/filtrate')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 商品属性管理
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Goods/cate_filt')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 分类与属性关联
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Goods/fields_list')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 扩展字段管理
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Goods/cate_extend')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 分类与扩展字段关联
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="sidebar-nav-link">
+            <a href="javascript:;" class="sidebar-nav-sub-title <eq name='CONTROLLER_NAME' value='Auction'>active</eq>">
+                <i class="am-icon-gavel sidebar-nav-link-logo"></i> 拍卖管理
+                <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico <eq name='CONTROLLER_NAME' value='Auction'>sidebar-nav-sub-ico-rotate</eq>"></span>
+            </a>
+            <ul class="sidebar-nav sidebar-nav-sub" <eq name='CONTROLLER_NAME' value='Auction'>style="display: block;"</eq>>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Auction/index')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 拍卖管理
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Auction/special_add')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 添加专场
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Auction/special')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 专场管理
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Auction/meeting_add')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 添加拍卖会
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Auction/meeting')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 拍卖会管理
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Auction/repeat')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 重复拍设置
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Auction/set_auction')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 拍卖配置
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Auction/seller_pledge')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 卖家保证金
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="sidebar-nav-link">
+            <a href="javascript:;" class="sidebar-nav-sub-title <eq name='CONTROLLER_NAME' value='Order'>active</eq>">
+                <i class="am-icon-table sidebar-nav-link-logo"></i> 订单管理
+                <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico <eq name='CONTROLLER_NAME' value='Order'>sidebar-nav-sub-ico-rotate</eq>"></span>
+            </a>
+            <ul class="sidebar-nav sidebar-nav-sub" <eq name='CONTROLLER_NAME' value='Order'>style="display: block;"</eq>>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Order/index',array('typ'=>'biding'))}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 拍卖订单
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Order/set_order',array('typ'=>'biding'))}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 订单配置
+                    </a>
+                </li>
+               
+            </ul>
+        </li>
+        
+        <li class="sidebar-nav-link">
+            <a href="javascript:;" class="sidebar-nav-sub-title <eq name='CONTROLLER_NAME' value='News'>active</eq>">
+                <i class="am-icon-file-word-o sidebar-nav-link-logo"></i> 文章管理
+                <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico <eq name='CONTROLLER_NAME' value='News'>sidebar-nav-sub-ico-rotate</eq>"></span>
+            </a>
+            <ul class="sidebar-nav sidebar-nav-sub" <eq name='CONTROLLER_NAME' value='News'>style="display: block;"</eq>>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('News/add')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 发布文章
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('News/index')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 文章列表
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('News/category')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 文章分类管理
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="sidebar-nav-link">
+            <a href="javascript:;" class="sidebar-nav-sub-title <eq name='CONTROLLER_NAME' value='Advertising'>active</eq>">
+                <i class="am-icon-rss sidebar-nav-link-logo"></i> 广告管理
+                <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico <eq name='CONTROLLER_NAME' value='Advertising'>sidebar-nav-sub-ico-rotate</eq>"></span>
+            </a>
+            <ul class="sidebar-nav sidebar-nav-sub" <eq name='CONTROLLER_NAME' value='Advertising'>style="display: block;"</eq>>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Advertising/index')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 广告管理
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Advertising/position')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 广告位管理
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="sidebar-nav-link">
+            <a href="javascript:;" class="sidebar-nav-sub-title <eq name='CONTROLLER_NAME' value='Payment'>active</eq>">
+                <i class="am-icon-paypal sidebar-nav-link-logo"></i> 支付管理
+                <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico <eq name='CONTROLLER_NAME' value='Payment'>sidebar-nav-sub-ico-rotate</eq>"></span>
+            </a>
+            <ul class="sidebar-nav sidebar-nav-sub" <eq name='CONTROLLER_NAME' value='Payment'>style="display: block;"</eq>>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Payment/index')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 支付订单
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Payment/pay_gallery')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 支付接口
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Payment/rechargeable')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 充值卡管理
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Payment/add_rechargeable')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 生成充值卡
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="sidebar-nav-link">
+            <a href="javascript:;" class="sidebar-nav-sub-title <eq name='CONTROLLER_NAME' value='Weixin'>active</eq>">
+                <i class="am-icon-weixin sidebar-nav-link-logo"></i> 微信管理
+                <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico <eq name='CONTROLLER_NAME' value='Weixin'>sidebar-nav-sub-ico-rotate</eq>"></span>
+            </a>
+            <ul class="sidebar-nav sidebar-nav-sub" <eq name='CONTROLLER_NAME' value='Weixin'>style="display: block;"</eq>>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Weixin/index')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 关键词回复
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Weixin/addurl')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 添加关键词回复
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Weixin/weimenu')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 微信自定义菜单
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Weixin/weiconfig')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 微信接口和分享配置
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Weixin/sharerecord')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 用户分享记录
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="sidebar-nav-link">
+            <a href="{:U('Link/index')}" class="sidebar-nav-sub-title <eq name='CONTROLLER_NAME' value='Link'>active</eq>">
+                <i class="am-icon-link sidebar-nav-link-logo"></i> 友情链接
+            </a>
+        </li>
+        <li class="sidebar-nav-link">
+            <a href="javascript:;" class="sidebar-nav-sub-title <eq name='CONTROLLER_NAME' value='SysData'>active</eq>">
+                <i class="am-icon-database sidebar-nav-link-logo"></i> 数据管理
+                <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico <eq name='CONTROLLER_NAME' value='SysData'>sidebar-nav-sub-ico-rotate</eq>"></span>
+            </a>
+            <ul class="sidebar-nav sidebar-nav-sub" <eq name='CONTROLLER_NAME' value='SysData'>style="display: block;"</eq>>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('SysData/index')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 数据库备份
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('SysData/restore')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 数据库导入
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('SysData/zipList')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 数据库压缩包
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('SysData/repair')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 数据库优化修复
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="sidebar-nav-link">
+            <a href="javascript:;" class="sidebar-nav-sub-title <eq name='CONTROLLER_NAME' value='Access'>active</eq>">
+                <i class="am-icon-group sidebar-nav-link-logo"></i> 权限管理
+                <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico <eq name='CONTROLLER_NAME' value='Access'>sidebar-nav-sub-ico-rotate</eq>"></span>
+            </a>
+            <ul class="sidebar-nav sidebar-nav-sub" <eq name='CONTROLLER_NAME' value='Access'>style="display: block;"</eq>>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Access/index')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 管理员列表
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Access/addAdmin')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 添加管理员
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Access/nodeList')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 节点管理
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Access/addNode')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 添加节点
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Access/roleList')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 角色管理
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Access/addRole')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 添加角色
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="sidebar-nav-link">
+            <a href="javascript:;" class="sidebar-nav-sub-title <eq name='CONTROLLER_NAME' value='Webinfo'>active</eq>">
+                <i class="am-icon-gear sidebar-nav-link-logo"></i> 网站配置
+                <span class="am-icon-chevron-down am-fr am-margin-right-sm sidebar-nav-sub-ico <eq name='CONTROLLER_NAME' value='Webinfo'>sidebar-nav-sub-ico-rotate</eq>"></span>
+            </a>
+            <ul class="sidebar-nav sidebar-nav-sub" <eq name='CONTROLLER_NAME' value='Webinfo'>style="display: block;"</eq>>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Webinfo/steWebConfig')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 基本配置
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Webinfo/setEmailConfig')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 邮箱配置
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Webinfo/setNoteConfig')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 短信配置
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Webinfo/setSafeConfig')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 安全配置
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Webinfo/setUserAgreement')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 用户协议
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Webinfo/setBuyLevel')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 买家等级管理
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Webinfo/setSellerLevel')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 卖家等级管理
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{:U('Webinfo/express')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 快递配置及管理
+                    </a>
+                </li>
+                <!-- <li class="sidebar-nav-link">
+                    <a href="{:U('Webinfo/navigation')}">
+                        <span class="am-icon-angle-right sidebar-nav-link-logo"></span> 前台导航、链接管理
+                    </a>
+                </li> -->
+                
+            </ul>
+        </li>
+    </ul>
+</div>

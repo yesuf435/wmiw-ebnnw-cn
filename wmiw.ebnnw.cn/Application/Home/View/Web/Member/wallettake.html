@@ -1,0 +1,79 @@
+<include file="Common:meta" />
+<title>提现-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/wallet.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+        <div class="center">
+            <div class="col-main">
+                <div class="main-wrap">
+                    <div class="main-wrap-box">
+                        <div class="am-cf on-user-title">
+                            <div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">提现</strong> / <small>Withdrawals</small></div>
+                        </div>
+                        
+                        <div class="take-option">
+                            <ul class="am-cf take-money">
+                                <li><p>余额:<span>{$info.wallet_pledge}</span></p></li>
+                                <li><p>可提现:<span>{$info.usable}</span></p></li>
+                                
+                            </ul>
+                            <a class="take-abtn-type" href="{:U('wallettake',array('take'=>'form'))}">申请提现</a>
+                        </div>
+                        <div class="on-tips">
+                            <p>提交申请后，保证金将暂时冻结；直到完成提现才会扣除！<br/>提现后请耐心等待！我们会在两个工作日（节假日顺延）内将您提现的金额转账到您指定账户！注意：转账产生的手续费将会从您提现金额内扣除！ </p>
+                        </div>
+                        
+                        <div class="takeList">
+                            <div class="takeTitle">
+                                <li class="time">申请时间</th>
+                                <li class="name">收款银行/收款人</th>
+                                <li class="amount">提现金额</th>
+                                <li class="balance">状态</th>
+                                <li class="wusable">操作</th>
+                            </div>
+                            <div class="clear"></div>
+                            <div class="takeCont">
+                                <volist name="take_list" id="bv">
+                                    <li class="am-cf" >
+                                        <div class="time">
+                                            <p>{$bv.time|date='Y-m-d H:i',###}</p>
+                                        </div>
+                                        <div class="title name">
+                                            {$bv.bank}/{$bv.name}
+                                        </div>
+                                        <div class="amount">
+                                            <span class="amount-pay">{$bv.money}</span>
+                                        </div>
+                                        <div class="balance">
+                                            <eq name="bv.status" value="0">等待提现</eq>
+                                            <eq name="bv.status" value="1">已转账</eq>
+                                            <eq name="bv.status" value="2">被驳回</eq>
+                                        </div>
+                                        <div class="wusable">
+                                            <a href="{:U('Member/takedetails',array('tid'=>$bv['tid']))}">[查看]</a>
+                                        </div>
+                                    </li>
+                                </volist>
+                            </div>
+                            <!--分页-->
+                            {$page}
+                        </div>
+                    </div>
+                </div>
+                <!--底部-->
+                <include file="Common:footer"/>
+            </div>
+            <include file="Member:menu"/>
+        </div>
+<script type="text/javascript">
+    $(function(){
+
+    });
+</script>
+    </body>
+</html>

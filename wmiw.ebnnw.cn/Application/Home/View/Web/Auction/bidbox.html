@@ -1,0 +1,87 @@
+<empty name="list">
+<li class="datanull">没有相应数据</li>
+<else/>
+<foreach name="list" item="lv">
+    <li class="{$lv.stage} abox-li">
+        <dl class="bidthe">
+            <eq name="lv.stage" value="biding"><dd class="ing">出价中</dd></eq>
+            <eq name='lv.stage' value='bidend'><dd class="end">已结束</dd></eq>
+            <eq name="lv.stage" value="future"><dd class="fut">未开始</dd></eq>
+            <eq name="lv.type" value="0"><dd class="pm">竞拍</dd></eq>
+            <eq name="lv.type" value="1"><dd class="jb">竞标</dd></eq>
+            <in name="lv.pattern" value="3,4">
+                <dd class="meet"><if condition="(ACTION_NAME neq 'meetul') and (CONTROLLER_NAME neq 'Meeting')">拍卖会<else/><neq name="lv.msort" value="0">{$lv.msort}号拍品</neq></if></dd>
+            </in>
+            <in name="lv.pattern" value="1,2"><dd class="spec">专场拍</dd></in>
+        </dl>
+        <div class="abox">
+            <a href="<if condition="$lv['mid'] eq 0">{:U('Auction/details',array('pid'=>$lv['pid']))}<else />{:U('Auction/details',array('mid'=>$lv['mid'],'pid'=>$lv['pid']))}</if>">
+                <img title="{$lv.pname}" src="{$upWholeUrl}{$lv.pictures|getPicUrl=###,2,0}" />
+            </a>
+            <p class="title"><a href="<if condition="$lv['mid'] eq 0">{:U('Auction/details',array('pid'=>$lv['pid']))}<else />{:U('Auction/details',array('mid'=>$lv['mid'],'pid'=>$lv['pid']))}</if>">{$lv.pname}</a></p>
+            <ul class="abox-info">
+                <li class="abox-price">
+                    <b>￥</b>
+                    <eq name="lv.stage" value="future">
+                        <strong>{$lv.onset|wipezero=###}</strong><span class="status">起拍</span>
+                    </eq>
+                    <eq name="lv.stage" value="biding">
+                        <eq name="lv.type" value="1">
+                            <!-- 竞标显示起拍价 -->
+                            <strong>{$lv.onset|wipezero=###}</strong><span class="status">起拍</span>
+                        <else/>
+                            <!-- 竞拍显示当前价 -->
+                            <strong>{$lv.nowprice|wipezero=###}</strong><span class="status">当前价</span>
+                        </eq>
+                    </eq>
+                    <eq name="lv.stage" value="bidend">
+                        <strong>{$lv.nowprice|wipezero=###}</strong><span class="status">
+                            <eq name="lv.endstatus" value="1">成交</eq>
+                            <in name="lv.endstatus" value="2,3">流拍</in>
+                            <eq name="lv.endstatus" value="4">撤拍</eq>
+                        </span>
+                    </eq>
+                </li>
+                <in name='lv.stage' value='biding,future'>
+                    <li><span class="th">保证金:</span> <span class="td">{:pledgeShow($lv['pattern'],$lv['pledge_type'],$lv['onset'],$lv['pledge'],$lv['spledge'],$lv['mpledge'])}</span></li>
+                </in>
+                <eq name="lv.stage" value="future"><li><span class="th">开始时间:</span> <span class="td">{$lv.starttime|date='m-d H:i',###}</span></li></eq>
+                <eq name="lv.stage" value="biding">
+                    <li><span class="th">结束时间:</span> <span class="td">{$lv.endtime|date='m-d H:i',###}</span></li></eq>
+
+                <eq name="lv.stage" value="bidend">
+                    <li><span class="th">起拍价:</span> <span class="td">{$lv.onset|wipezero=###}</span></li>
+                    <li><span class="th">成交时间:</span> <span class="td">{$lv.endtime|date='m-d H:i',###}</span></li>
+                </eq>
+                <neq name="isbc" value="1">
+                    <neq name="CONTROLLER_NAME" value="Shop">
+                        <li class="am-cf songpai">
+                            <span class="ac-show-userbox" cardtips="0" uid="{$lv.sellerid}" pid="{$lv.pid}" seller="1">
+                                <span class="th userrole">送拍：</span>
+                                <a class="td selname" target="_blank" class="ac-show-usercard" href="{:U('Shop/index',array('sellerid'=>$lv['sellerid']))}">{$lv.organization}</a>
+                            </span>
+                        </li>
+                    </neq>
+                </neq>
+            </ul>
+        </div>
+        <div class="abox-showcount">
+            <eq name="lv.stage" value="future">
+                <a class="countshow" href="<if condition="$lv['mid'] eq 0">{:U('Auction/details',array('pid'=>$lv['pid']))}<else />{:U('Auction/details',array('mid'=>$lv['mid'],'pid'=>$lv['pid']))}</if>">
+                    <div class="count-num">{$lv.clcount}</div>
+                    <div class="count-txt">人想拍</div>
+                </a>
+            </eq>
+            <in name='lv.stage' value='biding,bidend'>
+                <a class="countshow" href="<if condition="$lv['mid'] eq 0">{:U('Auction/details',array('pid'=>$lv['pid']))}<else />{:U('Auction/details',array('mid'=>$lv['mid'],'pid'=>$lv['pid']))}</if>">
+                    <div class="count-num">{$lv.bidcount}</div>
+                    <div class="count-txt">次出价</div>
+                </a>
+            </in>
+        </div>
+        <div class="abox-follow">
+            
+        </div>
+    </li>
+</foreach>
+</empty>

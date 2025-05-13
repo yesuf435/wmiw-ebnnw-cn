@@ -1,0 +1,178 @@
+<div class="special-page am-cf">
+    <div class="group-list">
+        <ul class="am-avg-sm-1">
+            <empty name="list">
+                <li class="datanull">暂时没有{$saytyp.ch|default=今日专场}</li>
+               <else /> 
+               <volist name="list" id="vo">
+                    <li class="group-item li{$vo.sid} <eq name="vo.saytyp.get" value="biding">biding</eq><eq name="vo.saytyp.get" value="future">future</eq><eq name="vo.saytyp.get" value="bidend">bidend</eq>" >
+                            <a title="{$vo.sname}" target="_blank" class="group-abox am-cf" href="{:U('Special/speul',array('sid'=>$vo['sid']))}">
+                                <div class="group-img">
+                                    <notempty name="vo.spicture">
+                                        <img alt="{$vo.sname}" src="{$upWholeUrl}{$vo.spicture}">
+                                        <else/>
+                                        <img alt="{$vo.sname}" src="__IMG__/spec_bg.png">
+                                    </notempty>
+                                </div>
+                                <div class="group-info <neq name='vo.saytyp.get' value='bidend'>pdb</neq>">
+                                    <p title="{$vo.sname}" class="item-title am-text-truncate">{$vo.sname}</p>
+                                    <p class="item-describe">
+                                        {$vo.description}
+                                    </p>
+                                    <ul class="am-avg-sm-2">
+                                        <li>保证金：<span class="am-text-primary"><strong><eq name="vo.special_pledge_type" value="0">¥{$vo.spledge}<else/>分别收取</eq></strong></span></li>
+                                        <li>拍品数量：<span class="am-text-secondary"><strong>{$vo.bcount}</strong>件</span></li>
+                                        <eq name="vo.saytyp.get" value="bidend">
+                                            <li>成交总额：<span class="am-text-warning"><span>¥</span><strong class="f14 red1">{$vo.countprc}</strong></span></li>
+                                        </eq>
+                                        <neq name="vo.saytyp.get" value="future">
+                                            <li>结束时间：{$vo.endtime|date='m-d H:i',###}</li>
+                                        </neq>
+                                    </ul>
+                                    <div class="timeDown am-cf specialBidTbox">
+                                        <!-- 正在进行 -->
+                                        <eq name="vo.saytyp.get" value="biding"> 
+                                            <dt class="th" id="bidTimeStatus">
+                                            距结束：
+                                            </dt>
+                                            <dd class="timeShowbox onBidtime{$vo.sid}" id="onBidtime">
+                                                <span class="day">-</span>
+                                                <span class="dw">天</span>
+                                                <span class="hour">-</span>
+                                                <span class="dw">时</span>
+                                                <span class="minute">-</span>
+                                                <span class="dw">分</span>
+                                                <span class="second">-</span>
+                                                <span class="dw">秒</span>
+                                                <span class="msec">-</span>
+                                            </dd>
+                                            <script type="text/javascript">
+                                                $(function(){
+                                                    specialCountDown("cke","{$vo.sid}","{$vo.endtime}","{$nowtime}",".onBidtime{$vo.sid}",".onBidtime{$vo.sid} .day",".onBidtime{$vo.sid} .hour",".onBidtime{$vo.sid} .minute",".onBidtime{$vo.sid} .second",".onBidtime{$vo.sid} .msec");
+                                                });
+                                            </script>
+                                        </eq>
+                                        <!-- 正在进行——end -->
+                                        <!-- 未开始 -->
+                                        <eq name="vo.saytyp.get" value="future">
+                                            <dt class="th" id="bidTimeStatus">
+                                            距开始：
+                                            </dt>
+                                            <dd class="timeShowbox onBidtime{$vo.sid}" id="onBidtime">
+                                                <span class="day">-</span>
+                                                <span class="dw">天</span>
+                                                <span class="hour">-</span>
+                                                <span class="dw">时</span>
+                                                <span class="minute">-</span>
+                                                <span class="dw">分</span>
+                                                <span class="second">-</span>
+                                                <span class="dw">秒</span>
+                                                <span class="msec">-</span>
+                                            </dd>
+                                            <script type="text/javascript">
+                                                $(function(){
+                                                    specialCountDown("cks","{$vo.sid}","{$vo.starttime}","{$nowtime}",".onBidtime{$vo.sid}",".onBidtime{$vo.sid} .day",".onBidtime{$vo.sid} .hour",".onBidtime{$vo.sid} .minute",".onBidtime{$vo.sid} .second",".onBidtime{$vo.sid} .msec");
+                                                });
+                                            </script>
+                                        </eq>
+                                        <!-- 未开始——end -->
+                                    </div>
+
+                                    <!-- 已结束 -->
+                                    <eq name="vo.saytyp.get" value="bidend"><div class="speend_bg"></div></eq>
+                                    <!-- 已结束——end -->
+                                    <div class="abox-showcount">
+                                        <eq name="vo.saytyp.get" value="biding">
+                                            <span class="count-num">{$vo.scount}</span>
+                                            <span class="count-txt">次出价</span>
+                                        </eq>
+                                        <eq name="vo.saytyp.get" value="future">
+                                            <span class="count-num">{$vo.clcount}</span>
+                                            <span class="count-txt">人想拍</span>
+                                        </eq>
+                                        <eq name="vo.saytyp.get" value="bidend">
+                                            <span class="count-num">{$vo.endcount}</span>
+                                            <span class="count-txt">件成交</span>
+                                        </eq>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </volist>
+            </empty>
+        </ul>
+    </div>
+    {:W('Oncoo/special_hot',array($limit))}
+</div>
+
+<script type="text/javascript">
+var ajaxGetSpecialTime = "{:U('Special/ajaxspecialgettime')}";
+var ajaxCheckSpecialSucc = "{:U('Special/checkspecialsucc')}";
+var endDowntimer = [];
+// 结束倒计时
+function specialCountDown(ck, sid, etime, ntime, boxobj, day_elem, hour_elem, minute_elem, second_elem, msec_elem) {
+    var end_time = new Date(etime * 1000);
+    var native_end_time = end_time.getTime() - now_cha;
+    endDowntimer[sid] = setInterval(function() {
+        var now_time = new Date().getTime();
+        var diff_time = native_end_time - now_time;
+        if (diff_time > 0) {
+            var day = Math.floor(diff_time / (1000 * 60 * 60 * 24));
+            var hour = Math.floor((diff_time / (1000 * 60 * 60)) % 24);
+            var minute = Math.floor((diff_time / (1000 * 60)) % 60);
+            var second = Math.floor((diff_time / 1000) % 60);
+            var msec = Math.floor((diff_time % 1000) / 100);
+            day_elem.text(day);
+            hour_elem.text(hour);
+            minute_elem.text(minute);
+            second_elem.text(second);
+            if (msec_elem) { msec_elem.text(msec); }
+        } else {
+            clearInterval(endDowntimer[sid]);
+            boxobj.html(ck ? "已结束" : "等待开始");
+        }
+    }, 100);
+}
+        // 检查本地时间是否更改
+        if(Math.abs(native_time - new Date().getTime())>5000){
+            clearInterval(endDowntimer[sid]);
+            $.post(ajaxGetSpecialTime, {'ck':ck,'sid':sid},function(data){
+                clearInterval(endDowntimer[sid]);
+                specialCountDown(ck,sid,data.cktime,data.nowtime,boxobj,day_elem,hour_elem,minute_elem,second_elem,msec_elem);
+            });
+        }
+        sys_second = (native_end_time - new Date().getTime())/100; //本地结束剩余时间
+        if (sys_second > 0) {
+            sys_second -= 1;
+            var day = Math.floor((sys_second / 36000) / 24);
+            var hour = Math.floor((sys_second / 36000) % 24);
+            var minute = Math.floor((sys_second / 600) % 60);
+            var second = Math.floor((sys_second/10) % 60);
+            var msec = Math.floor(sys_second % 10); //毫秒
+            day_elem && $(day_elem).text(day);//计算天
+            $(hour_elem).text(hour<10?"0"+hour:hour);//计算小时
+            $(minute_elem).text(minute<10?"0"+minute:minute);//计算分
+            $(second_elem).text(second<10?"0"+second:second);// 计算秒
+            $(msec_elem).text(msec);// 计算秒的1/10
+            native_time = new Date().getTime();
+        } else { 
+            clearInterval(endDowntimer[sid]);
+            // 本地时间结束提交服务器验证是否结束
+            $.post(ajaxCheckSpecialSucc, {'ck':ck,'sid':sid},function(cdata){
+                if(cdata.status==0){
+                    clearInterval(endDowntimer[sid]);
+                    specialCountDown(ck,sid,cdata.cktime,cdata.nowtime,boxobj,day_elem,hour_elem,minute_elem,second_elem,msec_elem);
+                }else{
+                    $('.li'+sid).remove();
+                    // popup.success(cdata.info);
+                    // setTimeout(function(){
+                    //     popup.close("asyncbox_success");
+                    // },2000);
+                    
+                }
+            });
+        }
+    }, 100);
+}
+
+</script>

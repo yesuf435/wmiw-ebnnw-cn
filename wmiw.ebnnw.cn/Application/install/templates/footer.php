@@ -1,0 +1,1 @@
+<div class="footer"> &copy; 2012-2014，<a href="http://www.oncoo.net" target="_blank" >ONCOO.NET</a> 昂酷网络 </div>

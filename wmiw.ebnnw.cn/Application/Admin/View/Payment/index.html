@@ -1,0 +1,127 @@
+<include file="Common:meta" />
+<title><eq name="ACTION_NAME" value="search">支付订单搜索结果<else/>支付订单列表</eq>-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl"><eq name="ACTION_NAME" value="search">支付订单搜索结果<else/>支付订单列表</eq></div>
+                            </div>
+                            <div class="widget-body am-cf">
+                                <form id="searchForm" action="{:U('search')}" method='get' class="am-form tpl-form-border-form tpl-form-border-br  am-u-sm-12 am-u-md-12 am-u-lg-7 am-fr am-cf">
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                                        <div class="am-form-group am-input-group-sm">
+                                            <input type="text" class="am-form-field " id="start_time"size="17" value="{$keys.start_time}" name="start_time" placeholder="起始时间"/>
+                                         </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                                        <div class="am-form-group am-input-group-sm">
+                                            <input type="text" class="am-form-field " id="end_time" size="17" value="{$keys.end_time}" name="end_time" placeholder="结束时间"/>
+                                         </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                                        <div class="am-form-group am-input-group-sm">
+                                            <select name="status" data-am-selected="{btnSize: 'sm'}">
+                                                <option value="" <eq name="keys[status]" value="">selected="selected"</eq>>所有</option>
+                                                <option value="0" <eq name="keys[status]" value="0">selected="selected"</eq>>未支付</option>
+                                                <option value="1" <eq name="keys[status]" value="1">selected="selected"</eq>>已支付</option>
+                                            </select>
+                                         </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                                        <div class="am-btn-group am-btn-group-xs" style="width: 100%;">
+                                            <input style="line-height: 21px;" type="submit" value="筛选" act="0" class="am-btn tpl-table-list-field am-u-sm-6 am-u-md-6 am-u-lg-6 am-btn-success on-btn zip">
+                                            <input style="line-height: 21px;" type="submit" value="导出excel" act="1" class="am-btn tpl-table-list-field am-u-sm-6 am-u-md-6 am-u-lg-6 am-btn-secondary on-btn">
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="am-u-sm-12">
+                                    <empty name="order">
+                                    <div class="on-none">未查询到数据</div>
+                                    <else/>
+                                        <table width="100%" id="example-r" class="am-table am-table-compact tpl-table-black " >
+                                            <thead>
+                                                <tr>
+                                                    <td>支付单号</td>
+                                                    <td>本站单号</td>
+                                                    <td>用户账号</td>
+                                                    <td>支付项</td>
+                                                    <td>在线支付方式</td>
+                                                    <td>支付金额</td>
+                                                    <td>其他支付</td>
+                                                    <td>订单更新时间</td>
+                                                    <td>支付状态</td>
+                                                    <td>操作</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <foreach name="order" item="v">
+                                                    <tr>
+                                                        <td>{$v.bill_no}</td>
+                                                        <td>{$v.order_no}</td>
+                                                        <td>{$v.account}</td>
+                                                        <td>{$v.purpose}</td>
+                                                        <td>{$v.paytype}</td>
+                                                        <td>{$v.money}</td>
+                                                        <td>
+                                                            <if condition="$v['yuemn'] eq 0 and $v['pledge'] eq 0">
+                                                                无
+                                                            <else/>
+                                                                <neq name="v.yuemn" value="0">余额支付：{$v.yuemn}</neq>
+                                                                <neq name="v.pledge" value="0">保证金支付：{$v.pledge}</neq>
+                                                            </if>
+                                                            
+                                                        </td>
+                                                        <td>{$v.update_time}</td>
+                                                        <td>
+                                                            <eq name="v[status]" value="1">已支付</eq>
+                                                            <eq name="v[status]" value="0">未支付</eq>
+                                                        </td>
+                                                        <td>
+                                                            <div class="tpl-table-black-operation">
+                                                            <a href="{:U('Payment/del',array('bill_no'=>$v['bill_no']))}" class="tpl-table-black-operation-del"><i class="am-icon-trash-o"></i>删除</a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </foreach>
+                                            </tbody>
+                                        </table>
+                                        <div class="am-u-lg-12 am-cf">
+                                            <div class="am-fr">
+                                                <div class="am-pagination tpl-pagination">
+                                                    {$page}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </empty>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<!-- 日期时间插件【 -->
+<link href="--PUBLIC--/datetimepicker/amazeui.datetimepicker.css" rel="stylesheet" type="text/css">
+<js href="--PUBLIC--/datetimepicker/amazeui.datetimepicker.js"/>
+<js href="--PUBLIC--/datetimepicker/locales/amazeui.datetimepicker.zh-CN.js"/>
+<!-- 日期时间插件 -->
+<script type="text/javascript">
+    //为input添加时间插件
+    $('#start_time').datetimepicker({language:  'zh-CN',format: 'yyyy-mm-dd hh:ii'});
+    $('#end_time').datetimepicker({language:  'zh-CN',format: 'yyyy-mm-dd hh:ii'});
+    //为input添加插件_end
+</script>
+</body>
+</html>

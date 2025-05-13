@@ -1,0 +1,336 @@
+<include file="Common:meta" />
+<title><eq name="ACTION_NAME" value="search">文章搜索结果<else/>资金统计</eq>-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="container-fluid">
+                <p class="page-header-description">
+                余额信息：共计：￥{$walletsum.wallet_pledge}&nbsp;&nbsp;&nbsp;&nbsp;
+                          冻结：￥{$walletsum.wallet_pledge_freeze} &nbsp;&nbsp;&nbsp;&nbsp;
+                          可用：￥{$walletsum.wallet_pledge_usable}<br/>
+                信誉额度信息：共计：￥{$walletsum.wallet_limsum}&nbsp;&nbsp;&nbsp;&nbsp;
+                            冻结：￥{$walletsum.wallet_limsum_freeze} &nbsp;&nbsp;&nbsp;&nbsp;
+                            可用：￥{$walletsum.wallet_limsum_usable}<br/>
+                            卖家{:C('Auction.broker_name')}：
+                            已收：￥{$walletsum.broker}&nbsp;&nbsp;&nbsp;&nbsp;
+                            待收：￥{$walletsum.broker_predict}<br/>
+                            买家{:C('Auction.broker_buy_name')}：
+                            已收：￥{$walletsum.broker_buy}&nbsp;&nbsp;&nbsp;&nbsp;
+                            待收：￥{$walletsum.broker_buy_predict}
+                </p>
+            </div>
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl"><eq name="ACTION_NAME" value="search">文章搜索结果<else/>资金统计</eq></div>
+                            </div>
+                            <div class="widget-body am-cf">
+                                <form id="searchForm" action="{:U('Index/statistics')}" method='get' class="am-form tpl-form-border-form tpl-form-border-br  am-u-sm-12 am-u-md-12 am-u-lg-5 am-fr am-cf">
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                                        <div class="am-form-group am-input-group-sm">
+                                            <input type="text" class="am-form-field " id="start_time" value="{$keys.start_time}" name="start_time" placeholder="起始时间"/>
+                                         </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                                        <div class="am-form-group am-input-group-sm">
+                                            <input type="text" class="am-form-field " id="end_time"  value="{$keys.end_time}" name="end_time" placeholder="结束时间"/>
+                                         </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                                        <div class="am-form-group am-input-group-sm">
+                                            <input type="text" class="am-form-field " id="account"  value="{$keys.account}" name="account" placeholder="用户账号"/>
+                                         </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-2">
+                                        <div class="am-btn-group am-btn-group-xs" style="width: 100%;">
+                                            <input style="line-height: 21px;" type="submit" value="筛选" act="0" class="am-btn tpl-table-list-field am-u-sm-12 am-u-md-12 am-u-lg-12 am-btn-success">
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="am-u-sm-12">
+                                        <div class="widget-sun-head" style="padding-top: 0px;"><empty name="keys.account">网站<else/>{$keys.account}</empty>账户余额详细</div>
+                                        <div class="container-fluid">
+                                            <p class="page-header-description">
+                                                <eq name="keys.start_time" value="">建站时间&nbsp;至&nbsp;<else/>{$keys.start_time}&nbsp;至&nbsp;</eq><eq name="keys.end_time" value="">当前时间<else/>{$keys.end_time}</eq>统计：<br/>
+                                                卖家{:C('Auction.broker_name')}：已收：￥{$walletsum.broker_where|default=0}&nbsp;&nbsp;&nbsp;&nbsp;待收：￥{$walletsum.broker_where_predict|default=0}&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+                                                买家{:C('Auction.broker_buy_name')}：已收：￥{$walletsum.broker_buy_where|default=0}&nbsp;&nbsp;&nbsp;&nbsp;待收：￥{$walletsum.broker_buy_where_predict|default=0}<br/>
+                                                余额：<strong>￥{$walletsum.wallet_pledge_where|default=0}</strong>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                冻结：<strong>￥{$walletsum.wallet_pledge_where_freeze|default=0}</strong>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                可用：<strong>￥{$walletsum.wallet_pledge_where_usable|default=0}</strong>
+                                            </p>
+                                        </div>
+                                        <ul class="am-avg-sm-5 ulbox">
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">拍卖冻结<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'changetype'=>'bid_freeze'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_pledge_bid_expend|default=0}</div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">发布拍卖冻结<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'changetype'=>'add_freeze'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_pledge_add_expend|default=0}</div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">管理员冻结<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'changetype'=>'admin_freeze'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_pledge_admin_freeze|default=0}</div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">提现冻结<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'changetype'=>'extract_freeze'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_pledge_take_freeze|default=0}</div>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">拍卖解冻<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'changetype'=>'bid_unfreeze'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_pledge_bid_income|default=0}</div>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">交易成功解冻<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'changetype'=>'add_unfreeze'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_pledge_add_income|default=0}</div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">管理员解冻<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'changetype'=>'admin_unfreeze'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_pledge_admin_unfreeze|default=0}</div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">在线充值<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'changetype'=>'pay_deposit'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_pledge_inlin_income|default=0}</div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">充值卡充值<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'changetype'=>'card_deposit'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_pledge_card_income|default=0}</div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">交易收入<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'changetype'=>'profit'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_pledge_profit_income|default=0}</div>
+                                                </div>
+                                            </li>
+
+                                            <!--                             <li>
+                                                <div class="licon">
+                                                <div class="lith">分享奖励：</div>
+                                                <div class="litd">￥{$walletsum.wallet_pledge_share_income|default=0}<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'changetype'=>'share'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                </div>
+                                            </li> -->
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">管理员充值<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'changetype'=>'admin_deposit'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_pledge_admin_income|default=0}</div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">买家订单过期收入<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'changetype'=>'seller_break_nopay'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_pledge_seller_break_nopay|default=0}</div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">卖家未按时发货收入<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'changetype'=>'buy_break_deliver'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_pledge_buy_break_deliver|default=0}</div>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">保证金抵货款<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'changetype'=>'pay_pledge'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_pledge_paypledge_expend|default=0}</div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">支付扣除<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'changetype'=>'pay_deduct'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_pledge_pay_expend|default=0}</div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                    <div class="lith">提现扣除<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'changetype'=>'extract'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                    <div class="litd">￥{$walletsum.wallet_pledge_take|default=0}</div>
+                                                    
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                    <div class="lith">管理员扣除<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'changetype'=>'admin_deduct'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                    <div class="litd">￥{$walletsum.wallet_pledge_admin_expend|default=0}</div>
+                                                    
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                    <div class="lith">订单过期扣除<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'changetype'=>'buy_break_nopay'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                    <div class="litd">￥{$walletsum.wallet_pledge_buy_break_nopay|default=0}</div>
+                                                    
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                    <div class="lith">未按时发货扣除<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'changetype'=>'seller_break_deliver'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                    <div class="litd">￥{$walletsum.wallet_pledge_seller_break_deliver|default=0}</div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <div class="widget-sun-head"><empty name="keys.account">网站<else/>{$keys.account}</empty>信誉额度详细</div>
+                                        <div class="container-fluid">
+                                            <p class="page-header-description">
+                                                <eq name="keys.start_time" value="">建站时间&nbsp;至&nbsp;<else/>{$keys.start_time}&nbsp;至&nbsp;</eq><eq name="keys.end_time" value="">当前时间<else/>{$keys.end_time}</eq>：<br/>
+                                                信誉额度：<strong>￥{$walletsum.wallet_limsum_where|default=0}</strong>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                冻结：<strong>￥{$walletsum.wallet_limsum_where_freeze|default=0}</strong>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                可用：<strong>￥{$walletsum.wallet_limsum_where_usable|default=0}</strong>
+                                            </p>
+                                        </div>
+                                        <ul class="am-avg-sm-5 ulbox">
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">拍卖冻结<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'wallet'=>'limsum','changetype'=>'bid_freeze'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_limsum_bid_expend|default=0}</td>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">发布拍卖冻结<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'wallet'=>'limsum','changetype'=>'add_freeze'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_limsum_add_expend|default=0}</td>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">管理员冻结<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'wallet'=>'limsum','changetype'=>'admin_freeze'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_limsum_admin_freeze|default=0}</td>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">拍卖解冻<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'wallet'=>'limsum','changetype'=>'bid_unfreeze'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_limsum_bid_income|default=0}</td>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">交易成功解冻<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'wallet'=>'limsum','changetype'=>'add_unfreeze'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_limsum_add_income|default=0}</td>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">管理员解冻<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'wallet'=>'limsum','changetype'=>'admin_unfreeze'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_limsum_admin_unfreeze|default=0}</td>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">分享奖励<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'wallet'=>'limsum','changetype'=>'share_add'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_limsum_share_income|default=0}</td>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">推广奖励<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'wallet'=>'limsum','changetype'=>'reward_add'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_limsum_reward_income|default=0}</td>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">买家订单过期收入<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'wallet'=>'limsum','changetype'=>'seller_break_nopay'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_limsum_seller_break_nopay|default=0}</td>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">卖家未按时发货收入<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'wallet'=>'limsum','changetype'=>'buy_break_deliver'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_limsum_buy_break_deliver|default=0}</td>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">订单过期扣除<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'wallet'=>'limsum','changetype'=>'buy_break_nopay'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_limsum_buy_break_nopay|default=0}</td>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">未按时发货扣除<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'wallet'=>'limsum','changetype'=>'seller_break_deliver'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_limsum_seller_break_deliver|default=0}</td>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">管理员充值<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'wallet'=>'limsum','changetype'=>'admin_deposit'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_limsum_admin_income|default=0}</td>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">充值卡充值<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'wallet'=>'limsum','changetype'=>'card_deposit'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_limsum_card_income|default=0}</td>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">管理员扣除<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'wallet'=>'limsum','changetype'=>'admin_deduct'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_limsum_admin_expend|default=0}</td>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                <div class="lith">订单过期扣除<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'changetype'=>'buy_break_nopay'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                <div class="litd">￥{$walletsum.wallet_limsum_buy_break_nopay|default=0}</td>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="licon">
+                                                    <div class="lith">未按时发货扣除<a class="widget-fluctuation-tpl-btn am-fr" target="_blank" href="{:U('Member/walletbill',array('start_time'=>$keys['start_time'],'end_time'=>$keys['end_time'],'account'=>$keys['account'],'changetype'=>'seller_break_deliver'))}"><i class="am-icon-list-ol"></i> 查看记录</a></div>
+                                                    <div class="litd">￥{$walletsum.wallet_limsum_seller_break_deliver|default=0}</td>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<!-- 日期时间插件【 -->
+<link href="--PUBLIC--/datetimepicker/amazeui.datetimepicker.css" rel="stylesheet" type="text/css">
+<js href="--PUBLIC--/datetimepicker/amazeui.datetimepicker.js"/>
+<js href="--PUBLIC--/datetimepicker/locales/amazeui.datetimepicker.zh-CN.js"/>
+<!-- 日期时间插件 -->
+<script type="text/javascript">
+    //为input添加时间插件
+    $('#start_time').datetimepicker({language:  'zh-CN',format: 'yyyy-mm-dd hh:ii'});
+    $('#end_time').datetimepicker({language:  'zh-CN',format: 'yyyy-mm-dd hh:ii'});
+    //为input添加插件_end
+</script>
+</body>
+</html>

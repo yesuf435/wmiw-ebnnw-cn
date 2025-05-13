@@ -1,0 +1,61 @@
+<div class="am-form-group">
+    <label for="title" class="am-u-sm-3 am-form-label">所属用户</label>
+    <div class="am-u-sm-9">
+        <div class="goods-user-box">
+            <ul id="Js-showuserlist" class="user-label-list am-cf">
+                <if condition="!empty($info['sellerid']) ||$info['sellerid']!=0">
+                    <li>
+                        <label class="am-checkbox">
+                          <input name="data[sellerid]" type="radio" value="{$info.sellerid}" data-am-ucheck checked>
+                          <div class="user-label-txt">
+                                <img class="ulb-img" src="{$info.sellerid|getUserpic=###,2}">
+                                <div class="ulb-txt">账号：{$info.account}<br>{$info.organization}</div>
+                                <input type="hidden" name="info[sellerid]" value="{$info.sellerid}" />
+                          </div>
+                        </label>
+                    </li>
+                    <else/>
+                    <li class="data-null">请查找选定用户</li>
+                </if>
+            </ul>
+            <div class="search-user-box am-cf">
+                <div class="user-li am-input-group-sm">
+                    <div class="user-txt">根据：</div>
+                    <select id="Js-searchfield" data-am-selected="{btnSize: 'sm'}">
+                        <option value="account">账号</option>
+                        <option value="nickname">昵称</option>
+                        <option value="email">邮箱</option>
+                        <option value="mobile">手机</option>
+                        <option value="uid">用户UID</option>
+                    </select>
+                </div>
+                <div class="user-li am-input-group-sm">
+                    <div class="user-txt">查找：</div>
+                    <input type="text" id="Js-searchkeyword" class="input" placeholder="搜索对应字段关键字" />
+                </div>
+                <div class="am-fl am-margin-bottom-sm">
+                    <a style="font-size: 14px;" href="javascript:void(0);" class="am-btn am-btn-default am-btn-success Js-searchUserBtn"><i class="am-icon-search"></i>查找</a>
+                </div>
+
+            </div>
+            <small>注意：店铺名称为空的用户不在查找范围内</small>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+// 搜索用户【
+var searchUserUrl = "{:U('Goods/search_user')}";
+$('.search-user-box').on("click",'.Js-searchUserBtn',function(){
+    var searchfield = $('#Js-searchfield').val();
+    var searchkeyword = $('#Js-searchkeyword').val();
+    $.post(searchUserUrl,{'field':searchfield,'keyword':searchkeyword},function(data){      //ajax后台
+        if (data.status==1) {
+            AMUI.dialog.alert({ title: '', content: '已找到'+data.count+'个符合条件的用户，请选择后发布商品！'});
+        }else{
+            AMUI.dialog.alert({ title: '', content: '没有找到对应的用户，请重新查找！'});
+        }
+        $('#Js-showuserlist').html(data.html);
+    },'json');        
+});
+// 搜索用户】
+</script>

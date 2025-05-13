@@ -1,0 +1,134 @@
+<include file="Common:meta" />
+<title>{$channelName}<eq name="screen" value="jscj">限时一口价</eq><eq name="screen" value="jianlou">0元捡漏</eq><eq name="screen" value="">拍卖</eq>-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<link href="__CSS__/demo.css" rel="stylesheet" type="text/css" />
+<link href="__CSS__/auctionlist.css" rel="stylesheet" type="text/css">
+<link href="__CSS__/filtstyle.css" rel="stylesheet" type="text/css">
+<link href="__CSS__/style.css" rel="stylesheet" type="text/css">
+<js href="__JS__/script.js"/>
+<body>
+<include file="Common:header_topnav" />
+<include file="Common:header_search" />
+<include file="Common:navigation" />
+    <div class="on-mt on-mb">
+        <div class="auction-list">
+                <div class="onionskin">
+                    <foreach name="chalist" item="clv">
+                        <a href="{:U(ACTION_NAME,array('gt'=>$clv['cid']))}">{$clv.name}</a>&nbsp;&gt;&gt;&nbsp;
+                    </foreach>
+                    <if condition="($stage eq 'biding')and($gt[6] eq 'a')">全部在拍</if>
+                    <if condition="($stage eq 'biding')and($gt[6] eq 'n')">在拍未出价</if>
+                    <if condition="($stage eq 'biding')and($gt[6] eq 'y')">在拍已出价</if>
+                    <if condition="($stage eq 'future')">即将开拍</if>
+                    <if condition="($stage eq 'bidend')">已成交</if>
+                    <eq name="screen" value="jscj">（限时一口价）</eq>
+                    <eq name="screen" value="jianlou">（0元捡漏）</eq>
+                </div>
+                <!-- 子分类列表【 -->
+                <ul class="catlist am-cf">
+                    <li class="title"><span><empty name="chalist.0.name">频道<else/>{$chalist.0.name}</empty> ：</span></li>
+                    <volist name="catli" id="cv">
+                        <li><a <eq name="gt.0" value="$cv['cid']">class="on"</eq> href="{:U(ACTION_NAME,array('screen'=>$screen,'gt'=>$cv['cid']))}">{$cv.name}</a></li>
+                    </volist>
+                </ul>
+                <!-- 子分类列表】 -->
+                <!-- 今日拍卖【 -->
+                <notempty name="clist">
+                    <div class="now-cate am-cf">
+                        <div class="now-cate-title">
+                            <eq name="stage" value="biding">在拍类别</eq>
+                            <eq name="stage" value="future">待拍类别</eq>
+                            <eq name="stage" value="bidend">成交类别</eq>
+                        </div>
+                        <div class="am-slider am-slider-default am-slider-carousel now-cate-content" data-am-flexslider="{itemWidth:70, itemMargin: 0, slideshow: false}">
+                            <ul class="am-slides" >
+                                <volist name="clist" id="cvo">
+                                    <li>
+                                        <a class="cate-a <eq name='cvo.cid' value='$gt.0'>now-catecur</eq>" title="{$cvo.name}" href="{:U('',array('stage'=>$stage,'gt'=>$cvo['gt']))}">
+                                            <span class="cate-imgbox">
+                                            <notempty name="cvo.ico"><img src="{$upWholeUrl}{$cvo.ico}"><else/><i class="am-icon-gavel"></i></notempty>
+                                            </span>
+                                            <font>{$cvo.name}</font>
+                                        </a>
+                                    </li>
+                                </volist>
+                            </ul>
+                        </div>
+                    </div>
+                </notempty>
+                <!-- 今日拍卖】 -->
+                <!-- 拍卖状态【 -->
+                <ul class="bid-status am-avg-sm-5">
+                    <li <if condition="($stage eq 'biding')and($gt[6] eq 'a')">class="active"</if>><a href="{:U('Auction/index',array('stage'=>'biding','gt'=>$cpid))}" title="全部在拍">全部在拍</a></li>
+                    <li <if condition="($stage eq 'biding')and($gt[6] eq 'n')">class="active"</if>><a href="{$ynUrl.n}" title="未出价">未出价</a></li>
+                    <li <if condition="($stage eq 'biding')and($gt[6] eq 'y')">class="active"</if>><a href="{$ynUrl.y}" title="已出价">已出价</a></li>
+                    <li <if condition="($stage eq 'future')">class="active"</if>><a href="{:U('Auction/index',array('stage'=>'future','screen'=>$screen,'gt'=>$cpid))}" title="即将开拍">即将开拍</a></li>
+                    <li <if condition="($stage eq 'bidend')">class="active"</if>><a href="{:U('Auction/index',array('stage'=>'bidend','screen'=>$screen,'gt'=>$cpid))}" title="已成交">已成交</a></li>
+                </ul>
+                <!-- 拍卖状态】 -->
+                
+                <div id="fielt-dropdown-justify">
+                    <div class="am-dropdown" data-am-dropdown="{justify: '#fielt-dropdown-justify'}">
+                        <button class="am-btn am-dropdown-toggle">条件筛选 <span class="am-icon-caret-down"></span></button>
+                        <div class="am-dropdown-content">
+                            <notempty name="filt_html">
+                                <div class="am-cf list_fielt_box">
+                                    {$filt_html}
+                                </div>
+                            </notempty>
+                            <!-- 拍卖时间段】 -->
+                            <notempty name="section_link">
+                                <div class="sort am-avg-sm-5 {$stage}">
+                                    <foreach name="section_link" item="sv">
+                                        <li <eq name="sv['key']" value="$gt.2"> class="first"</eq> ><a href="{$sv.href}" title="{$sv.name}">{$sv.name}({$sv.count})</a></li>
+                                    </foreach>
+                                </div>
+                            </notempty>
+                            <!-- 拍卖时间段】 -->
+                        </div>
+                    </div>
+                </div>
+                <div class="am-g am-g-fixed">
+                    <div class="am-u-sm-12 am-u-md-12">
+                        <div class="auction-content">
+                            <div class="clear"></div>
+                            <ul class="am-avg-sm-2 am-avg-md-3 am-avg-lg-4 boxes">
+                                <include file="Auction:bidbox"/>
+                            </ul>
+                        </div>
+                        <notempty name="list">
+                            <div class="am-cf">
+                                <div class="am-fr">{$page}</div>
+                                <div class="am-pagination am-pagination-right am-fr" style="margin-right: 5px;">
+                                    <li><span class='mod_page_lk'>每页显示</span></li>
+                                    <!-- 设置每页显示【 -->
+                                    <foreach name="set_page" item="svo">
+                                        <li>
+                                        <if condition="$svo['key'] == $gt[1]">
+                                            <span  class="current">{$svo.sz}</span>
+                                        <else />
+                                            <a  class="num" href='{$svo.href}'>{$svo.sz}</a>
+                                        </if>
+                                        </li>
+                                    </foreach>
+                                    <!-- 设置每页显示】 -->
+                                </div>
+                            </div>
+                        </notempty>
+                    </div>
+                </div>
+                
+        </div>
+    </div>
+    <include file="Common:footer"/>
+    <include file="Common:query_links"/>
+
+<script type="text/javascript">
+$(function() {
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+
+<include file="Common:meta" />
+<title>提醒方式-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+        <div class="center">
+            <div class="col-main">
+                <div class="main-wrap">
+                    <div class="main-wrap-box">
+                        <div class="am-cf on-user-title">
+                            <div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">提醒方式</strong> / <small>Reminder&nbsp;mode</small></div>
+                        </div>
+                        <div class="am-alert am-alert-danger" data-am-alert>
+                            <button type="button" class="am-close">&times;</button>
+                            <p>竞拍价格被超越、拍卖状态改变、竞拍成功、订单状态、账户余额变动、拍品上架等通知会通过以下设定的方式发送给您！</p>
+                        </div>
+                        <form id="tixingForm" class="am-form am-form-horizontal">
+                            <div class="am-form-group">
+                                <label for="email" class="am-form-label">邮件提醒</label>
+                                <div class="am-form-content">
+                                    <label class="am-checkbox am-danger on-checkbox" style="font-size: 13px;">
+                                        <input type="checkbox" id="email" value="1" name="email" data-am-ucheck <eq name='myinfo.verify_email' value='0'>disabled="disabled"</eq> <if condition="in_array('email',$alerttype)">checked</if>>
+                                        <eq name='myinfo.verify_email' value='0'>
+                                            未设置邮箱或未认证，请先<a target="_parent" href="{:U('Member/safety',array('option'=>'bindemail'))}">设置或认证</a>
+                                        <else/>
+                                            已认证邮箱：<span class="send-address">{$myinfo.email}</span>
+                                        </eq>
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- <div class="am-form-group">
+                                <label for="mobile" class="am-form-label">短信提醒</label>
+                                <div class="am-form-content">
+                                    <label class="am-checkbox am-danger on-checkbox" style="font-size: 13px;">
+                                        <input type="checkbox" id="mobile" value="1" name="mobile" data-am-ucheck <eq name='myinfo.verify_mobile' value='0'>disabled="disabled"</eq> <if condition="in_array('mobile',$alerttype)">checked</if>>
+                                        <eq name='myinfo.verify_mobile' value='0'>
+                                            未设置手机号或未认证，请先<a target="_parent" href="{:U('Member/safety',array('option'=>'bindphone'))}">设置或认证</a>
+                                        <else/>
+                                            已认证手机号：<span class="send-address">{$myinfo.mobile}</span>
+                                        </eq>
+                                    </label>
+                                </div>
+                            </div> -->
+                            <div class="am-form-group">
+                                <label for="weixin" class="am-form-label">微信提醒</label>
+                                <div class="am-form-content">
+                                    <label class="am-checkbox am-danger on-checkbox" style="font-size: 13px;">
+                                        <input type="checkbox" id="weixin" value="1" name="weixin" data-am-ucheck <eq name='myinfo.verify_weixin' value='0'>disabled="disabled"</eq> <if condition="in_array('weixin',$alerttype)">checked</if>>
+                                        <eq name='myinfo.verify_weixin' value='0'>未绑定微信，请登录微信进行绑定！</span><else/>已绑定微信</eq>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="am-form-group">
+                                <div class="am-form-content">
+                                <input type="submit" name="" value="保存修改" class="am-btn am-btn-primary am-btn-sm submitBtn">
+                                </div>
+                            </div>
+                            
+                        </form>
+
+                    </div>
+                </div>
+                <!--底部-->
+                <include file="Common:footer"/>
+            </div>
+            <include file="Member:menu"/>
+        </div>
+        <js href="--PUBLIC--/assets/js/jquery.form.js"/>
+        <script type="text/javascript">
+            // 表单提交
+            var $form = $('#tixingForm');
+            var $subbtn = $(".submitBtn");
+            $form.validator({
+                submit: function() {
+                    var formValidity = this.isFormValid();
+                    if (formValidity) {
+                        // 验证成功的逻辑
+                        $subbtn.button('loading');
+                        // 验证成功的逻辑
+                        $form.ajaxSubmit({url:document.URL,data:'',type:"POST",
+                            success:function(data, st) {
+                                // 提示框
+                                AMUI.dialog.alert({ title: data.title, content: data.info});
+                                if(data.status==1){
+                                    setTimeout(function(){
+                                        top.window.location.href = data.url;
+                                    },1000);
+                                }else{
+                                    $subbtn.button('reset');
+                                }
+                                return false;
+                            }
+                        });
+                    } else {
+                        $subbtn.button('reset');
+                    // 验证失败的逻辑
+                    }
+                //阻止原生form提交
+                return false;
+                }
+            });
+        </script>
+    </body>
+
+</html>

@@ -1,0 +1,2 @@
+set ws=wscript.createobject("wscript.shell")
+ws.run "F:\UPUPW_NP5.3\vhosts\c2camaze\scheduled_for_win.bat /start",0

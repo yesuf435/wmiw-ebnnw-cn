@@ -1,0 +1,27 @@
+<include file="Common:meta" />
+<title>{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<link href="__CSS__/demo.css" rel="stylesheet" type="text/css" />
+<link href="__CSS__/sortstyle.css" rel="stylesheet" type="text/css">
+<link href="__CSS__/hmstyle.css" rel="stylesheet" type="text/css">
+<js href="__JS__/script.js"/>
+<style type="text/css">
+.navfull{margin: 0 auto;}
+@media only screen and (min-width: 640px){
+	.navfull{width: 640px;}
+}
+@media only screen and (min-width: 1025px) {
+	.navfull{width: 1200px;
+    margin: 0 auto;}
+}
+</style>
+<body>
+	<include file="Common:header_topnav" />
+	<include file="Common:header_search" />	
+	{:W('Oncoo/allcate')}
+	<include file="Common:footer"/>
+</body>
+
+</html>

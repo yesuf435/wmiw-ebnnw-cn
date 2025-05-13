@@ -1,0 +1,455 @@
+<include file="Common:meta" />
+<title>添加/编辑商品-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">添加/编辑商品</div>
+                            </div>
+                            <div class="widget-body am-fr">
+                                <form id="addForm" class="am-form tpl-form-border-form tpl-form-border-br">
+                                    <include file="Common:form_user" />
+                                    <div class="am-form-group">
+                                        <label for="title" class="am-u-sm-3 am-form-label">商品标题</label>
+                                        <div class="am-u-sm-9">
+                                            <input id="title" type="text" placeholder="商品标题" name="data[title]" value="{$info.title}" minlength="3" maxlength="20" required/>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="catesel" class="am-u-sm-3 am-form-label">频道/分类</label>
+                                        <div class="am-u-sm-9 am-text-truncate">
+                                            <ul id="Js-channelCateBox" class="am-avg-sm-1">
+                                                <li>
+                                                    <select id="Js-channel" class="catesel" name="data[pid]" required>
+                                                        <option value="">选择频道</option>
+                                                        <volist name="channel" id="vo">
+                                                            <option value="{$vo.cid}" <if condition="$vo['cid'] eq $info['pid']">selected="selected"</if>>{$vo.name}</option>
+                                                        </volist>
+                                                    </select>
+                                                </li>
+                                                <li id="Js-cateSelectBox"></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group Js-filtHtml">
+                                        <label for="filtrate" class="am-u-sm-3 am-form-label">选择属性</label>
+                                        <div class="am-u-sm-9 sellfiltbox">
+                                            <div id="filtHtml"></div>
+                                            <input id="fielt" type="hidden" name="data[filtrate]" value="{$info.filtrate}" />
+                                        </div>
+                                    </div>
+                                    <include file="Common:location"/>
+                                    <div class="am-form-group">
+                                        <label for="price" class="am-u-sm-3 am-form-label">商品价格</label>
+                                        <div class="am-u-sm-9">
+                                            <input id="price" type="text" class="am-form-field" placeholder="商品价格(元)" name="data[price]" value="{$info.price}" required/>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="description" class="am-u-sm-3 am-form-label">商品描述</label>
+                                        <div class="am-u-sm-9">
+                                            <textarea id="description" placeholder="商品描述" name="data[description]" required>{$info.description}</textarea>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="am-form-group content-list">
+                                        <label for="description" class="am-u-sm-3 am-form-label">商品详情</label>
+                                        <div class="am-u-sm-9 am-tabs" data-am-tabs>
+                                          <ul id="Js-tab-menu" class="am-tabs-nav am-nav am-nav-tabs am-nav-justify">
+                                            <li class="Js-table-content am-active"><a href="#tab-0">商品详情</a></li>
+                                          </ul>
+                                          <div id="Js-tab-box" class="am-tabs-bd am-tabs-bd-ofv">
+                                            <div class="Js-table-content am-tab-panel am-active" id="tab-0">
+                                              <textarea id="content" name="data[content]">{$info.content}</textarea>
+                                            </div>
+                                          </div>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="pic" class="am-u-sm-3 am-form-label">上传图片</label>
+                                        <div class="am-u-sm-9">
+                                            <div class="uploadePic-box">
+                                                <ul id="uploadImageList"  data-am-widget="gallery" class="am-cf" data-am-gallery="{pureview:{target: 'a.showurl'}}">
+                                                    <notempty name="info[pictures]">
+                                                        <foreach name='info[pictures]' item='pv'>
+                                                            <li>
+                                                                <div class="upImg-list-box am-gallery-item">
+                                                                    <a class="am-icon-close delImg Js-delImg" imgurl="{$pv}" savepath="null" savename="null" href="javascript:void(0);"></a>
+                                                                    <a class="showurl" href="{:C('UPLOADS_PICPATH')}{$pv|picRep=###,1}" ><img src="{$upWholeUrl}{$pv|picRep=###,3}"><input name="pic[]" value="{$pv}" type="hidden"></a>
+                                                                </div>
+                                                            </li>
+                                                        </foreach>
+                                                    </notempty>
+                                                    <li class="upImg-lighthouse">
+                                                        <div class="upImg-list-box">
+                                                            <div class="filePic">
+                                                                <i class="am-icon-cloud-upload"></i><div class="txt">上传图片(<span class="picCount">0</span>/20)</div>
+                                                                <input type="file" class="upInputAdded" value="选择凭证图片" name="file" max="5" maxsize="5120" allowexts="gif,jpeg,jpg,png,bmp" accept="image/*" multiple>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                                <input name="list1SortOrder" type="hidden" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="pic" class="am-u-sm-3 am-form-label">上传视频</label>
+                                            <div class="am-u-sm-9">
+                                            <div id="Js-filelist"></div>
+                                            <button id="upfilebtn" type="button" class="am-btn am-btn-default am-btn-sm on-btn-uploader"><i class="am-icon-cloud-upload"></i> 上传拍品视频</button>
+                                        </div>
+                                    </div>
+                                    <!-- 文件上传 -->
+                                    <js href="--PUBLIC--/WebUploader/webuploader.min.js"/>
+                                    <script type="text/javascript">
+                                        initWebuploader();
+                                        function initWebuploader() {
+                                            var uploader = WebUploader.create({   
+                                                swf: '--PUBLIC--/WebUploader/uploader.swf', // swf文件路径
+                                                server: '{:U("Upload/upFile")}', // 文件接收服务端。
+                                                pick: '#upfilebtn', // 选择文件的按钮。可选
+                                                // chunked: true, //是否要分片处理大文件上传
+                                                // chunkSize:2*1024*1024, //分片上传，每片2M，默认是5M
+                                                duplicate :true,
+                                                // sendAsBinary:true,
+                                                // auto: true //选择文件后是否自动上传
+                                                chunkRetry : 2, //如果某个分片由于网络问题出错，允许自动重传次数
+                                                runtimeOrder: 'html5,flash',
+                                                accept: {
+                                                    title: 'video',
+                                                    extensions: 'mp4,MOV,webm,ogv,AVI,RM,WMV,ASF',
+                                                    mimeTypes: 'video/*'
+                                                }
+                                            });
+                                            // 当有文件被添加进队列的时候
+                                            uploader.on( 'fileQueued', function( file ) {
+                                                $('#Js-filelist').html('<div id="file-progress-box"><div id="file-progress" class="am-progress am-progress-striped am-progress-sm am-active "><div id="file-progress-bar" class="am-progress-bar am-progress-bar-secondary"></div></div></div>');
+                                                uploader.upload();
+                                                
+                                            });
+                                            // 文件上传过程中创建进度条实时显示。
+                                            uploader.on( 'uploadProgress', function( file, percentage ) {
+                                                $('#file-progress-bar').html(percentage * 100 + '%'+'（上传中）');
+                                                $('#file-progress-bar').css( 'width', percentage * 100 + '%' );
+                                            });
+                                            // 文件上传成功
+                                            uploader.on( 'uploadSuccess', function( file,resp) {
+                                                if (resp.status==1) {
+                                                    $('#file-progress').remove();
+                                                    $('#file-progress-bar').text(file['name']+'（已上传）');
+                                                    $('#file-progress-box').html('<div class="filecon"><div class="am-text-truncate">'+file['name']+'</div><a class="am-icon-close am-fr Js-file-del" href="javascript:void(0);"></a><input type="hidden" name="data[viedo]" value="'+resp.path+'" /></div>');
+                                                }else{
+                                                    AMUI.dialog.alert({ title: '', content: resp.msg});
+                                                }
+                                            });
+                                            // 文件上传失败，显示上传出错
+                                            uploader.on( 'uploadError', function( file ) {
+                                                $('#file-progress-bar').text('上传出错');
+                                            });
+                                            uploader.on('uploadFinished', function( file ) {
+                                                //销毁后再次启动
+                                                uploader.destroy();
+                                                initWebuploader();
+                                            });
+                                        }
+
+                                        $(document).on('click','.Js-file-del',function(){
+                                            $(this).parents('.filecon').remove();
+                                         });
+                                    </script>
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <input type="hidden" name="data[id]" value="{$info.id}" />
+                                            <input type="submit" name="" value="提交" class="am-btn am-btn-primary tpl-btn-bg-color-success submitBtn">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<js href="--PUBLIC--/PhotoClipJs/lrz.all.bundle.js"/>
+<js href="--PUBLIC--/ueditor/ueditor.config.js,--PUBLIC--/ueditor/ueditor.all.js,--PUBLIC--/ueditor/lang/zh-cn/zh-cn.js"/>
+<script type="text/javascript">
+var goodsId = "{$info.id}"; //商品图片id
+var cid = "{$info.cid|default=0}";
+
+// 通过频道获取分类【
+var getCateUrl ="{:U('Goods/getcate')}";
+getCateHtml($('#Js-channel').val(),cid);
+$('#Js-channel').on("change",function(){
+    var chePid = $(this).children('option:selected').attr('value');
+    cid = 0;
+    getCateHtml(chePid,cid);
+});
+// 获取分类select的html
+function getCateHtml(chePid){
+   $.post(getCateUrl,{'pid':chePid,'cid':cid},function(data){      //ajax后台
+    $('#Js-cateSelectBox').html('');
+    if (data.status) {
+            $('#Js-channelCateBox').removeClass("am-avg-sm-1").addClass('am-avg-sm-2');
+            $('#Js-cateSelectBox').html(data.htm);
+            $('#Js-cate').focus();
+        } else {
+            $('#Js-channelCateBox').removeClass("am-avg-sm-2").addClass('am-avg-sm-1');
+        }
+    },'json');
+}
+// 通过频道获取分类】
+// 上传操作【 
+var uplode_url = '{:U("Upload/upGoodsPic")}';//PHP处理脚本地址
+var picSize = 20;
+var picSizeEd = 0;
+$(document).on('change','.upInputAdded',function(){
+    if (this.files.length) {
+        if (this.files.length>picSize||picSizeEd+this.files.length>picSize) {
+            AMUI.dialog.alert({ title: '', content: "最多上传"+picSize+"张图片！还可以上传"+(picSize-picSizeEd)+"张图片！<br/>请重新选择"});
+        }else if (this.files.length==picSize||picSizeEd+this.files.length==picSize) {
+            AMUI.dialog.alert({ title: '', content: "最多上传"+picSize+"张图片！已上传"+picSize+"张图片！"});
+        }else{
+            for (var i = 0; i < this.files.length; i++) {
+                lrz(this.files[i], { width: 1000, quality: 1 }).then(function(rst) {
+                    console.log(rst.base64);
+                    var ranNub = parseInt(Math.random()*10000000);
+                    var load = 0;
+                    var newli = '<li id="'+ranNub+'"><div class="upImg-list-box up-progress"><div class="am-progress am-progress-striped am-progress-xs"><div class="am-progress-bar" style="width: 0%"></div></div></div></li>';
+                    $('.upImg-lighthouse').before(newli);
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', uplode_url);
+                    xhr.onload = function () {
+                        var data = JSON.parse(xhr.response);
+                        if (xhr.status === 200) {
+                            var newimg ='<div class="upImg-list-box am-gallery-item"><a class="am-icon-close delImg Js-delImg" savepath="'+data.savepath+'" savename="'+data.savename+'" href="javascript:void(0);"></a><a class="showurl" href="'+data.showurl+'"><img src="'+data.thumb+'"><input type="hidden" name="pic[]" value="'+data.savepath+data.savename+'" /></a></div>';
+                            $("#" + ranNub).html(newimg);
+                            picSizeEd +=1; 
+                            $('.picCount').html(picSizeEd);
+                            // 上传成功
+                        } else {
+                            alert(data.msg);
+                            $("#" + ranNub).remove();
+                            this.value = null;
+                            // 处理其他情况
+                        }
+                    };
+                    xhr.onerror = function () {
+                        AMUI.dialog.alert({ title: '', content: '未知错误:' + JSON.stringify(err, null, 2)});
+                        $("#" + ranNub).remove();
+                        this.value = null;
+                    };
+                    if (xhr.upload) {
+                        try {
+                            xhr.upload.addEventListener('progress', function (e) {
+                                if (!e.lengthComputable) return false;
+                                // 上传进度
+                                load = parseInt(((e.loaded / e.total) || 0) * 100);
+                                $("#" + ranNub).find('.am-progress-bar').css({"width": load + "%"});
+                            });
+                        } catch (err) {
+                            console.error('进度展示出错了,似乎不支持此特性?', err);
+                        }
+                    }
+                    // 添加参数
+                    // rst.formData.append('fileLen', rst.fileLen);
+                    // 触发上传
+                    xhr.send(rst.formData);
+                    return rst;
+                }).catch(function (err) {
+                    // 万一出错了，这里可以捕捉到错误信息
+                    // 而且以上的then都不会执行
+                    alert(err);
+                }).always(function () {
+                    // 不管是成功失败，这里都会执行
+                });
+            }
+        }
+    }
+});
+// 上传操作】
+
+
+// 商品图片删除【
+    var delPicUrl = "{:U('goods_delpic')}";
+    $('#uploadImageList').on("click",'.Js-delImg',function(){
+        var delImgUrl = $(this).attr('imgurl');
+        var delDiv = $(this);
+        if (delImgUrl) {
+            $.post(delPicUrl,{'goodsId':goodsId,'imgUrl':delImgUrl},function(){
+                picSizeEd -=1;
+                $('.picCount').html(picSizeEd);
+                delDiv.parents('li').remove();
+            },'json'); 
+        }else{
+            var savepath = $(this).attr('savepath');
+            var savename = $(this).attr('savename');
+            var delDiv = $(this);
+            $.post(delPicUrl,{'goodsId':goodsId,'savepath':savepath,'savename':savename},function(){
+                picSizeEd -=1;
+                $('.picCount').html(picSizeEd);
+                delDiv.parents('li').remove();
+            },'json');       
+        }    
+    });
+// 商品图片删除】
+// 表单提交【
+        var $form = $('#addForm');
+        var $subbtn = $(".submitBtn");
+        $form.validator({
+            submit: function() {
+                var formValidity = this.isFormValid();
+                if (formValidity) {
+                    // 验证成功的逻辑
+                    $subbtn.button('loading');
+                    // 验证成功的逻辑
+                    $form.ajaxSubmit({url:document.URL,data:'',type:"POST",
+                        success:function(data, st) {
+                            // 提示框
+                            AMUI.dialog.alert({ title: data.title, content: data.info});
+                            if(data.status==1){
+                                setTimeout(function(){
+                                    top.window.location.href = data.url;
+                                },1000);
+                            }else{
+                                $subbtn.button('reset');
+                            }
+                            return false;
+                        }
+                    });
+                } else {
+                    $subbtn.button('reset');
+                // 验证失败的逻辑
+                }
+            //阻止原生form提交
+            return false;
+            }
+        });
+// 表单提交】
+
+
+
+
+// 百度编辑器
+window.UEDITOR_CONFIG.imageUrl = "{:U('Upload/editorUpload')}";
+window.UEDITOR_CONFIG.wordImageUrl = "{:U('Upload/editorUpload')}";
+window.UEDITOR_CONFIG.imagePath = '{$upWholeUrl}';
+window.UEDITOR_CONFIG.wordImagePath = '{$upWholeUrl}';
+window.UEDITOR_CONFIG.savePath = ['{$upWholeUrl}'];
+// var editor = new UE.ui.Editor({initialFrameHeight:400,initialFrameWidth:1180 });  
+// editor.render("content"); 
+UE.getEditor('content');
+// 百度编辑器_end
+// 选择分类获取匪类对应筛选条件
+var getFiltUrl = "{:U('getFilt')}"; //获取筛选条件的提交地址
+var getExtendsUrl = "{:U('getExtends')}"; //获取字段扩展的提交地址
+getFilHtml(cid,$('input[name="data[filtrate]"]').val()); //初始化筛选条件
+getExtendsHtml(cid,goodsId); //初始化扩展字段
+$(document).on("change",'.catesel',function(){
+    var cateCid = $(this).children('option:selected').attr('value');
+    $('input[name="data[filtrate]"]').val(''); //更换分类把筛选设置成空的
+    // 初始化tab
+    $('#Js-tab-menu ul li').eq(1).addClass("selected");
+    $("#Js-tab-box>div").eq(1).show();
+    getFilHtml(cateCid);
+    getExtendsHtml(cateCid,goodsId);
+});
+
+// 函数------获取筛选条件html
+function getFilHtml(cateCid,filtStr){
+    $.post(getFiltUrl,{'cid':cateCid,'filtStr':filtStr},function(data){      //ajax后台
+    if (data.status) {
+            
+            if (data.html) {
+                $('#filtHtml').html(data.html);
+                $('.Js-filtHtml').show();
+            }else{
+                $('.Js-filtHtml').hide();
+            }
+            
+        } else {
+            
+            alert(data.msg);
+        }
+    },'json'); 
+}
+// 函数------获取扩展字段
+function getExtendsHtml(cateCid,goodsId){
+    $.post(getExtendsUrl,{'cid':cateCid,'gid':goodsId},function(data){      //ajax后台
+    $('.ext').remove();
+    $('.Js-table-content').addClass('am-active');
+    if (data.status) {
+            if(data.region!='no' && data.region!=0){
+                $('#Js-region-box').show();
+            }else{
+                $('#Js-region-box').hide();
+            }
+            $('#Js-tab-menu').append(data.ulhtml);
+            $('#Js-tab-box').append(data.divhtml);
+            $(data.textarr).each(function(i,val) {
+                UE.getEditor(val);
+            });
+        } else {
+            alert(data.msg);
+        }
+    },'json'); 
+}
+// ------点击获取子级条件
+var getChildUrl = "{:U('getChild')}";
+$(document).on('click','.filtParent',function(){
+    
+    var filtFid = $(this).attr('fid');
+    var newFilt = $(this).parents('ul');
+
+    newFilt.nextUntil('ul').each(function(i, o){
+        if($(o).attr('fid')==filtFid){
+            $(o).css("display", "block");
+        }else{
+            $(o).css("display", "none");
+            $(o).find('.filtParent').removeClass('current');
+        }
+    });
+    newFilt.find('.filtParent').removeClass('current');
+    $(this).addClass('current');
+    getFiltArr(); //设置表单data[filtrate]"]的值
+    // if(newFilt.next('.filtLi').attr('fid') != filtFid){ //判断是否已经加载过子条件，加载过不在请求
+    //    newFilt.find('.filtParent').removeClass('current');
+    //     $(this).addClass('current');
+    //     getFiltArr(); //设置表单data[filtrate]"]的值
+    //     newFilt.next('.filtLi').remove();
+    //     $.post(getChildUrl,{'fid':filtFid},function(data){      //ajax后台
+    //         if (data.status) {
+    //             newFilt.after(data.msg);
+    //         } else {
+    //             alert(data.msg);
+    //         }
+    //     },'json'); 
+    // }
+});
+// -----生成条件表单data[filtrate]的值
+function getFiltArr(){
+    var filtId = '';
+    $('.filtParent.current').each(function(i, o){
+        filtId += $(o).attr('fid')+'_';
+    });
+    filtId=filtId.substring(0,filtId.length-1);
+    $('input[name="data[filtrate]"]').val(filtId);  
+}
+ 
+</script>
+</body>
+</html>

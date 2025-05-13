@@ -1,0 +1,216 @@
+<include file="Common:meta" />
+<title><eq name="ACTION_NAME" value="search_meeting">拍卖会搜索结果<else/>拍卖会列表</eq>-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">  
+            
+                <div class="container-fluid">
+                    <p class="page-header-description">
+                        <neq name="ACTION_NAME" value="search_meeting">
+                            <eq name="saytyp.get" value="biding">
+                            <span class="am-text-danger">提示：发布的拍卖会一旦开始您将不能对其进行编辑!请谨慎操作！</span>
+                            </eq>
+                            <eq name="saytyp.get" value="future">
+                            <span class="am-text-danger">提示：在拍卖会未开始状态；且拍卖会下没有拍品，您才能对拍卖会进行编辑！如果您在拍卖会下发布了拍品，请先删除拍品在进行编辑。</span>
+                            </eq>
+                            <eq name="saytyp.get" value="bidend">
+                            <span class="am-text-danger">提示：为了数据安全！结束的拍卖会将无法进行编辑和删除！</span>
+                            </eq>
+                        <else/>
+                            在<span class="am-text-danger">{$saytyp.ch}</span>
+                            找到保证金缴纳类型为
+                            <span class="am-text-danger">
+                            <eq name="keys.type" value="">全部</eq>
+                            <eq name="keys.type" value="0">拍卖会扣除</eq>
+                            <eq name="keys.type" value="1">分别扣除</eq>
+                            </span>的
+                            <span class="am-text-danger">{$keys.count}</span>个<if condition="$keys['keyword'] != ''">与<span class="am-text-danger">{$keys.keyword}</span>相关的</if>拍卖会！
+                        </neq>
+                    </p>
+                </div>
+            
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl"><eq name="ACTION_NAME" value="search">拍卖会搜索结果<else/>拍卖会列表</eq></div>
+                            </div>
+                            <div class="widget-body am-cf">
+                                <div class="am-u-sm-12 am-u-md-12 am-u-lg-4">
+                                    <div class="am-form-group">
+                                        <div class="am-btn-toolbar">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <a href="{:U('Auction/meeting')}" class="am-btn am-btn-default <eq name="saytyp.get" value="">am-btn-success</eq>">全部拍卖会</a>
+                                                <a href="{:U('Auction/meeting',array('typ'=>'biding'))}" class="am-btn am-btn-default <eq name="saytyp.get" value="biding">am-btn-success</eq>">已开拍拍卖会</a>
+                                                <a href="{:U('Auction/meeting',array('typ'=>'future'))}" class="am-btn am-btn-default <eq name="saytyp.get" value="future">am-btn-success</eq>">未开拍拍卖会</a>
+                                                <a href="{:U('Auction/meeting',array('typ'=>'bidend'))}" class="am-btn am-btn-default <eq name="saytyp.get" value="bidend">am-btn-success</eq>">已结束拍卖会</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form id="searchForm" action="{:U('search_meeting')}" method='get' class="am-form tpl-form-border-form tpl-form-border-br  am-u-sm-12 am-u-md-12 am-u-lg-5 am-fr am-cf">
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-4">
+                                        <div class="am-form-group am-input-group-sm">
+                                            <input type="text" class="am-form-field " value="{$keys.keyword}" name="keyword" placeholder="关键字"/>
+                                         </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-4">
+                                        <div class="am-form-group am-input-group-sm">
+                                            <select name="meeting_pledge_type">
+                                                <!-- <option value="" <eq name="keys.type" value="">selected="selected"</eq> >全部缴纳方式</option>
+                                                <option value="0" <eq name="keys.type" value="0">selected="selected"</eq>>拍卖会缴纳</option> -->
+                                                <option value="1" <eq name="keys.type" value="1">selected="selected"</eq>>分别缴纳</option>
+                                            </select>
+                                         </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-4">
+                                        <div class="am-btn-group am-btn-group-xs" style="width: 100%;">
+                                            <input type="hidden" value="{$saytyp.get}" name="typ" class="input"/>
+                                            <input style="line-height: 21px;" type="submit" value="筛选" act="0" class="am-btn tpl-table-list-field am-u-sm-12 am-u-md-12 am-u-lg-12 am-btn-success">
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="am-u-sm-12">
+                                    <empty name="list">
+                                    <div class="on-none">未查询到数据</div>
+                                    <else/>
+                                        <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black ">
+                                            <thead>
+                                                <tr>
+                                                    <td>SID</td>
+                                                    <td>拍卖会名</td>
+                                                    <td width="15%">描述</td>
+                                                    <td>开始时间</td>
+                                                    <td>其他时间</td>
+                                                    <td>结束时间</td>
+                                                    <!-- <td width="10%">冻结模式/保证金</td> -->
+                                                    <td>状态</td>
+                                                    <td>发布人</td>
+                                                    <td>操作</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <volist name="list" id="vo">
+                                                    <tr>
+                                                        <td>{$vo.mid}</td>
+                                                        <td>
+                                                            <a target="_blank" href="{:U('Home/Meeting/meetul',array('mid'=>$vo['mid']))}">
+                                                            <img src="{$upWholeUrl}{$vo.mpicture}" height="37">
+                                                            {$vo.mname}</a>
+                                                        </td>
+                                                        <td>{$vo.description}</td>
+                                                        <td title="{$vo.starttime|date="Y-m-d H:i",###}">{$vo.starttime|date="Y-m-d H:i",###}</td>
+                                                        <td>
+                                                            流拍:{$vo.losetime|conversionM_S=###}<br>
+                                                            拍卖:{$vo.bidtime|conversionM_S=###}<br>
+                                                            间隔:{$vo.intervaltime|conversionM_S=###}
+                                                        </td>
+                                                        <td>
+                                                            <neq name="vo.endtime" value="0">
+                                                                <neq name="vo.sten" value="bidend">最快</neq>
+                                                                {$vo.endtime|date="Y-m-d H:i",###}
+                                                            <else />
+                                                                未确定
+                                                            </neq>
+                                                        </td>
+                                                        <!-- <td> 
+                                                        <eq name="vo.meeting_pledge_type" value="0">拍卖会扣除/{$vo.mpledge}</eq>
+                                                        <eq name="vo.meeting_pledge_type" value="1">分别扣除</eq>
+                                                        </td> -->
+                                                        <td class="am-text-warning">{$vo.st}</td>
+                                                        <td>
+                                                            <div class="ushow">
+                                                                <img class="uimg" src="{$vo.sellerid|getUserpic=###,2}" alt="" />
+                                                                <div class="utxt">账号：{$vo.account}<br/>{$vo.organization}</div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="tpl-table-black-operation">
+                                                                <empty name="vo.repeat">
+                                                                    <a href="{:U('Auction/repeat_add',array('type'=>2,'rid'=>$vo['mid']))}"><i class="am-icon-gear"></i> 设置重复拍</a>
+                                                                <else/>
+                                                                    <a href="{:U('Auction/repeat_edit',array('id'=>$vo['repeat']))}"><i class="am-icon-wrench"></i> 编辑重复拍</a>
+                                                                </empty>
+                                                                <neq name="vo.sten" value="bidend">
+                                                                <a href="{:U('Auction/meeting_edit',array('mid'=>$vo['mid']))}"><i class="am-icon-pencil"></i>修改</a>
+                                                                <a link="{:U('Auction/meeting_del/',array('mid'=>$vo['mid']))}" href="javascript:void(0)"  name="{$vo.title}" class="tpl-table-black-operation-del del"><i class="am-icon-trash-o"></i>删除</a>
+                                                                <else/>
+                                                                    <a href="javascript:void(0)"><i class="am-icon-ban"></i>禁止编辑/删除</a>
+                                                                </neq>
+                                                                <a mid="{$vo.mid}" hid="{$vo.hide}" href="javascript:void(0)" name="{$vo.mname}" class="tpl-table-black-operation-del Js-hideshow"><eq name="vo.hide" value="1" >显示<else/>隐藏</eq></a>
+                                                                <a href="{:U('auction/meeting_info',array('mid'=>$vo['mid']))}">详情</a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </volist>
+                                            </tbody>
+                                        </table>
+                                        <div class="am-u-lg-12 am-cf">
+                                            <div class="am-fr">
+                                                <div class="am-pagination tpl-pagination">
+                                                    {$page}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </empty>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<script type="text/javascript">
+
+            $(function(){
+                // 拍卖会显示隐藏设置
+                var hideshowLink = "{:U('meeting_hideshow')}";
+                $(".Js-hideshow").click(function(){
+                    var altch = '';
+                    var theobj = $(this);
+                    var delmid = $(this).attr('mid');
+                    var hid = $(this).attr('hid');
+                    if (hid==1) {
+                        altch = '是否将拍卖会【<b>'+$(this).attr("name")+'</b>】在前台页面显示?';
+                    }else{
+                        altch = '是否将拍卖会【<b>'+$(this).attr("name")+'</b>】隐藏?<br/>隐藏后前台页面将不显示该拍卖会！';
+                    }
+                    AMUI.dialog.confirm({ title: '温馨提示', content: altch, onConfirm: function() { 
+                        $.post(hideshowLink,{'mid':delmid,'hid':hid},function(data){      //ajax后台
+                            if (data.status) {
+                                if (hid==1) {
+                                    theobj.html('隐藏');
+                                    theobj.attr('hid',0);
+                                }else{
+                                    theobj.html('显示');
+                                    theobj.attr('hid',1);
+                                }
+                            }
+                            AMUI.dialog.alert({ title: '', content: data.msg}); 
+                            },'json');
+                    }, onCancel: function() { console.log('onCancel') } }); 
+                });
+                // 拍卖会删除
+                getCateHtml($('#Js-channel').val(),cid);
+                $(".del").click(function(){
+                    var delLink=$(this).attr("link");
+                    popup.confirm('你真的打算删除【<b>'+$(this).attr("name")+'</b>】吗?','温馨提示',function(action){
+                        if(action == 'ok'){
+                            top.window.location.href=delLink;
+                        }
+                    });
+                    return false;
+                });
+            });
+        </script>
+</body>
+</html>

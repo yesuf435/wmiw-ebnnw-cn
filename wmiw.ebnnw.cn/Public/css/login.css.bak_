@@ -1,0 +1,312 @@
+/* 高端古董拍卖网站登录/注册页面样式 */
+/* 基于酒红+米白色系，适合45-70岁用户群体 */
+
+/* 全局样式 */
+body {
+  font-family: "Microsoft YaHei", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f9f5f0; /* 米白色背景 */
+  /* 移除背景图片以简化移动端显示，或使用更适合移动端的背景 */
+  /* background-image: url('/Public/images/bg-art.jpg'); */
+  /* background-size: cover; */
+  /* background-attachment: fixed; */
+  /* background-position: center; */
+  /* background-repeat: no-repeat; */
+  /* background-blend-mode: overlay; */
+}
+
+/* 登录/注册容器样式 */
+.login-wrap {
+  background-color: rgba(255, 255, 255, 0.98); /* 略微调整透明度 */
+  border-radius: 8px; /* 调整圆角 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  margin: 50px auto; /* 居中显示 */
+  max-width: 500px; /* 限制最大宽度 */
+}
+
+/* 标题样式 */
+.login-title {
+  color: #8B0000; /* 酒红色 */
+  font-size: 26px; /* 调整字体大小 */
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* 标签页样式 */
+.tabMenuLink {
+  border-bottom: 2px solid #eee; /* 调整边框颜色 */
+  margin-bottom: 30px;
+}
+.tabMenuLink li {
+  margin-bottom: -2px; /* 使激活项边框与底部边框重合 */
+}
+.tabMenuLink li a {
+  font-size: 18px; /* 调整字体大小 */
+  color: #555; /* 调整颜色 */
+  padding: 10px 15px;
+  border: none !important; /* 移除默认边框 */
+  border-bottom: 3px solid transparent; /* 准备激活状态 */
+}
+.tabMenuLink li.on-mli a {
+  color: #8B0000; /* 酒红色 */
+  border-bottom-color: #8B0000;
+  font-weight: 600;
+}
+
+/* 表单样式 */
+.am-form .am-form-group {
+  margin-bottom: 20px; /* 增加表单项间距 */
+}
+
+.am-form label {
+  font-size: 16px; /* 调整标签字体大小 */
+  font-weight: 500;
+  color: #444; /* 调整标签颜色 */
+  margin-bottom: 8px;
+  display: block; /* 确保标签独占一行 */
+}
+
+.am-form input[type="text"],
+.am-form input[type="password"],
+.am-form input[type="email"],
+.am-form input[type="number"],
+.am-form input[type="search"],
+.am-form input[type="tel"] {
+  font-size: 16px; /* 调整输入框字体大小 */
+  height: 48px; /* 调整高度 */
+  padding: 10px 12px;
+  border-radius: 4px;
+  border: 1px solid #ccc; /* 调整边框颜色 */
+  width: 100%; /* 确保输入框占满宽度 */
+  box-sizing: border-box; /* 包含padding和border */
+}
+
+/* 验证码区域特定样式 */
+.am-form-group.verification {
+  margin-bottom: 20px;
+}
+
+.verification .am-u-sm-3 {
+    width: 100%;
+    padding: 0;
+    text-align: left;
+}
+
+.verification .am-u-sm-9 {
+    width: 100%;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.verification .input {
+  flex-grow: 1; /* 输入框占据剩余空间 */
+  margin-right: 10px;
+}
+
+.verifyImg {
+  height: 48px; /* 与输入框高度一致 */
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  flex-shrink: 0; /* 防止图片被压缩 */
+}
+
+/* 错误信息样式 */
+.form-error-msg {
+    color: #ff0000;
+    background-color: #ffebeb;
+    border: 1px solid #ffc8c8;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* 复选框样式 */
+.am-checkbox label {
+  font-size: 14px; /* 调整字体大小 */
+  font-weight: normal;
+  color: #555;
+}
+.am-checkbox input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+/* 按钮样式优化 */
+.am-btn {
+  font-size: 18px;
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-weight: 500;
+  width: 100%; /* 按钮占满宽度 */
+  box-sizing: border-box;
+}
+
+.am-btn-primary {
+  background-color: #8B0000; /* 酒红色 */
+  border-color: #8B0000;
+  color: #fff;
+}
+
+.am-btn-primary:hover, .am-btn-primary:focus {
+  background-color: #a52a2a;
+  border-color: #a52a2a;
+  color: #fff;
+}
+
+/* 底部链接 */
+.am-text-center p {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
+}
+
+/* 链接样式 */
+a {
+  color: #8B0000; /* 酒红色 */
+  text-decoration: none;
+}
+
+a:hover {
+  color: #a52a2a;
+  text-decoration: underline;
+}
+
+/* 响应式设计 - 平板和小型桌面 */
+@media only screen and (max-width: 768px) {
+  .login-wrap {
+    padding: 30px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    max-width: 90%; /* 调整最大宽度 */
+  }
+
+  .login-title {
+    font-size: 24px;
+  }
+
+  .tabMenuLink li a {
+    font-size: 17px;
+    padding: 10px 12px;
+  }
+
+  .am-form label {
+    font-size: 15px;
+  }
+
+  .am-form input[type="text"],
+  .am-form input[type="password"],
+  .am-form input[type="email"],
+  .am-form input[type="number"],
+  .am-form input[type="search"],
+  .am-form input[type="tel"] {
+    font-size: 15px;
+    height: 45px;
+  }
+
+  .verifyImg {
+    height: 45px;
+  }
+
+  .am-btn {
+    font-size: 17px;
+    padding: 11px 18px;
+  }
+}
+
+/* 响应式设计 - 手机 */
+@media only screen and (max-width: 480px) {
+  body {
+      background-image: none; /* 手机端移除背景图，提升性能和简洁性 */
+      background-color: #f9f5f0;
+  }
+  .login-wrap {
+    padding: 20px; /* 调整内边距 */
+    margin: 20px auto; /* 调整外边距 */
+    max-width: 95%; /* 调整最大宽度 */
+    box-shadow: none; /* 移除阴影 */
+    border: 1px solid #eee; /* 添加细边框 */
+  }
+
+  .login-title {
+    font-size: 22px;
+    margin-bottom: 25px;
+  }
+
+  .tabMenuLink {
+      margin-bottom: 25px;
+  }
+  .tabMenuLink li a {
+    font-size: 16px;
+    padding: 8px 10px;
+  }
+
+  .am-form .am-form-group {
+    margin-bottom: 18px;
+  }
+
+  .am-form label {
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .am-form input[type="text"],
+  .am-form input[type="password"],
+  .am-form input[type="email"],
+  .am-form input[type="number"],
+  .am-form input[type="search"],
+  .am-form input[type="tel"] {
+    font-size: 14px;
+    height: 42px;
+    padding: 8px 10px;
+  }
+
+  /* 移动端验证码布局调整 */
+  .verification .am-u-sm-9 {
+      flex-direction: column; /* 垂直排列 */
+      align-items: flex-start; /* 左对齐 */
+  }
+  .verification .input {
+      width: 100%; /* 输入框占满 */
+      margin-right: 0;
+      margin-bottom: 8px; /* 输入框和图片间距 */
+  }
+  .verifyImg {
+      height: 42px; /* 与输入框高度一致 */
+      align-self: flex-start; /* 图片靠左 */
+  }
+
+  .am-checkbox label {
+    font-size: 13px;
+  }
+
+  .am-btn {
+    font-size: 16px;
+    padding: 10px 16px;
+  }
+  
+  .am-text-center p {
+      margin-top: 15px;
+      font-size: 13px;
+  }
+}
+
+/* 超小屏幕适配 */
+@media only screen and (max-width: 360px) {
+    .login-wrap {
+        padding: 15px;
+    }
+    .login-title {
+        font-size: 20px;
+    }
+    .tabMenuLink li a {
+        font-size: 15px;
+    }
+}

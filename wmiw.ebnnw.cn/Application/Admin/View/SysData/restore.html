@@ -1,0 +1,270 @@
+<include file="Common:meta" />
+<title>数据库备份-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div id="opStatus" class="container-fluid" style="display: none;">
+                <p class="page-header-description"></p>
+            </div>
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">数据库备份</div>
+                            </div>
+                            <div class="widget-body am-cf">
+                                <empty name="list">
+                                没有备份的数据库
+                                <else/>
+                                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                                        <div class="am-form-group">
+                                            <div class="am-btn-toolbar">
+                                                <div class="am-btn-group am-btn-group-xs">
+                                                    <button type="button" class="am-btn am-btn-default am-btn-success on-btn zip"><span class="am-icon-file-zip-o"></span> 压缩SQL为ZIP</button>
+                                                    <button type="button" class="am-btn am-btn-default am-btn-secondary on-btn sendSql"><span class="am-icon-send"></span> 发送SQL到邮箱</button>
+                                                    <button type="button" class="am-btn am-btn-default am-btn-danger on-btn delSqlFiles"><span class="am-icon-trash-o"></span> 删除所选</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="am-u-sm-12">
+                                        <form id="restoreForm" class="am-form tpl-form-border-form tpl-form-border-br">
+                                            <table width="100%" id="example-r" class="am-table am-table-compact tpl-table-black " >
+                                                <thead>
+                                                    <tr>
+                                                        <td>
+                                                            <label class="am-checkbox am-margin-right-sm am-fl"><input class="chooseAll" type="checkbox" data-am-ucheck>全选</label>
+                                                            <label class="am-checkbox am-margin-right-sm am-fl"><input class="unsetAll" type="checkbox" data-am-ucheck>反选</label>
+                                                        </td>
+                                                        <td>备份时间</td>
+                                                        <td>类型</td>
+                                                        <td>文件大小</td>
+                                                        <td>文件备注</td>
+                                                        <td>导入</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <volist name="list" id="sql">
+                                                        <tr>
+                                                            <td>
+                                                                <label class="am-checkbox"><input pre="{$sql.pre}" type="checkbox" name="sqlFiles[]" value="{$sql.name}" data-am-ucheck>
+                                                                <a href="{:U('SysData/downFile',array('file'=>$sql['name'],'type'=>'sql'))}" >{$sql.name}</a>
+                                                                </label>
+                                                            </td>
+                                                            <td>{$sql.time}</td>
+                                                            <td>{$sql.type}</td>
+                                                            <td>{$sql.size}</td>
+                                                            <td class="description" title="{$sql.description}">查看备注信息</td>
+                                                            <td>
+                                                                <div class="tpl-table-black-operation">
+                                                                <a class="restore" sqlPre="{$sql.pre}" href="javascript:;">
+                                                                    <i class="am-icon-share on-btn"></i> 导入
+                                                                </a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </volist>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td>
+                                                            <label class="am-checkbox am-margin-right-sm am-fl"><input class="chooseAll" type="checkbox" data-am-ucheck>全选</label>
+                                                            <label class="am-checkbox am-fl"><input class="unsetAll" type="checkbox" data-am-ucheck>反选</label>
+                                                        </td>
+                                                        <td>备份时间</td>
+                                                        <td>类型</td>
+                                                        <td>总计：{$total}</td>
+                                                        <td>文件备注</td>
+                                                        <td>导入</td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                            <input type="hidden" name="to" id="to" value="" />
+                                        </form>
+                                    </div>
+                                </empty>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+<div class="am-modal am-modal-prompt" tabindex="-1" id="sendTOemail">
+  <div class="am-modal-dialog">
+    <div class="am-modal-hd">请输入接收邮箱</div>
+    <div class="am-modal-bd">
+      <input type="text" class="am-modal-prompt-input">
+    </div>
+    <div class="am-modal-footer">
+      <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+      <span class="am-modal-btn" data-am-modal-confirm>确定发送邮件</span>
+    </div>
+  </div>
+</div>
+
+<include file="Common:footer_link" />
+<script type="text/javascript">
+    var form = $('#restoreForm');
+    $(function(){
+        //刷新操作
+        var repeat=function(url,type){
+            $.post(url, function(json){
+                if(json.status==1){
+                    if(json.url){
+                        $("#opStatus").show();
+                        $("#opStatus .page-header-description").html(json.info);
+                        repeat(json.url,type);
+                    }else{
+                        AMUI.dialog.confirm({content: '噢...耶！', onConfirm: function() {
+                            $("#opStatus").hide('solw');
+                            $("."+type).html(type=="sendSql"?"<span class='am-icon-send'></span>发送SQL到邮箱":"<i class='am-icon-share'></i>导入");
+                        }, onCancel: function() { console.log('onCancel') } }); 
+                        $("."+type).button('reset');
+                    }
+                }else{
+                    AMUI.dialog.alert({content: json.info});
+                }
+            });
+        }
+        // 发送SQL到邮箱
+        var sendUrl = "{:U('SysData/sendSql')}";
+        $(".sendSql").click(function(){
+            if($(this).attr("disabledSubmit")){
+                AMUI.dialog.alert({content: '已提交，系统在处理中...'});
+                return false;
+            }
+            if($("table input[type='checkbox']:checked").size()==0){
+                AMUI.dialog.alert({content: '请先选择你要发送到邮件中的数据库表吧'});
+                return false;
+            }
+            $('#sendTOemail').modal({
+                relatedTarget: this,
+                onConfirm: function(e) {
+                    var email=e.data;
+                        var Reg =/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+                        if (Reg.test(email)) {
+                            $("#to").val(email);
+                            $(".on-btn").attr("disabledSubmit",true);
+                            var loading = AMUI.dialog.loading({title: '发送中...'}); 
+                            $("form").ajaxSubmit({url:sendUrl,type:"POST",success:function(json, st) {
+                                    loading.modal('close');
+                                    if(json.status==1){
+                                        if(json.url){
+                                            $("#opStatus").show();
+                                            $("#opStatus .page-header-description").html(json.info);
+                                            repeat(json.url,"sendSql");
+                                        }else{
+                                            AMUI.dialog.alert({content: json.info});
+                                        }
+                                    }else{
+                                        AMUI.dialog.alert({content: json.info});
+                                    }
+                                }
+                            });
+                        }else{
+                            AMUI.dialog.alert({content: '你输入的电子邮件地址格式错误'});
+                        }
+                        return false;
+                },
+                onCancel: function(e) {
+                    
+                }
+            });
+            return false;
+        });
+        clickCheckbox();//全新反选
+        //同一备份版本任意一个卷选中则选中该卷所有文件
+        $("table input[type='checkbox']").click(function(){$("table input[type='checkbox'][pre='"+$(this).attr("pre")+"']").prop("checked",$(this).prop('checked'));});
+        //提交数据恢复操作
+        $(".restore").click(function(){
+            if($(this).attr("disabledSubmit")){
+                AMUI.dialog.alert({content: '已提交，系统在处理中...'});
+                return false;
+            }
+            var sqlPre=$(this).attr("sqlPre");
+            $(".restore[sqlPre='"+sqlPre+"']").attr("disabledSubmit",true).html("导入中...");
+            $(".on-btn").attr("disabledSubmit",true);
+            $.getJSON("__URL__/restoreData", {sqlPre:sqlPre}, function(json){
+                if(json.status==1){
+                    if(json.url){
+                        $("#opStatus").show();
+                        $("#opStatus .page-header-description").html(json.info);
+                        repeat(json.url,"restore");
+                    }
+                }
+            });
+            return false;
+        });
+        //删除备份文件
+        var delUrl = "{:U('SysData/delSqlFiles')}";
+        $(".delSqlFiles").click(function(){
+            if($(this).attr("disabledSubmit")){
+                AMUI.dialog.alert({content: '已提交，系统在处理中...'});
+                return false;
+            }
+            if($("table input[type='checkbox']:checked").size()==0){
+                AMUI.dialog.alert({content: '请先选择你要删除的数据库表吧'});
+                return false;
+            }
+            AMUI.dialog.confirm({ title: '温馨提示', content: '你确定要删除备份文件吗？', onConfirm: function() {
+                $(".on-btn").attr("disabledSubmit",true);
+                form.ajaxSubmit({
+                    url:delUrl,
+                    type:"POST",
+                    success:function(data, st) {
+                        AMUI.dialog.alert({ title: data.title, content: data.info});
+                        if(data.url&&data.url!=''){
+                            setTimeout(function(){
+                                top.window.location.href=data.url;
+                            },2000);
+                        }
+                    }
+                });
+            }, onCancel: function() { console.log('onCancel') } });
+
+            return false;
+        });
+
+        //删除备份文件
+        var zipUrl = "{:U('SysData/zipSql')}";
+        $(".zip").click(function(){
+            if($(this).attr("disabledSubmit")){
+                AMUI.dialog.alert({content: '已提交，系统在处理中...'});
+                return false;
+            }
+            if($("table input[type='checkbox']:checked").size()==0){
+                AMUI.dialog.alert({content: '请先选择你要压缩的数据库表吧'});
+                return false;
+            }
+            var loading = AMUI.dialog.loading({title: '处理中...'}); 
+            // 提交表单
+            form.ajaxSubmit({
+                url:zipUrl,
+                type:"POST",
+                success:function(data, st) {
+                    loading.modal('close');
+                    AMUI.dialog.alert({ title: data.title, content: data.info});
+                    if(data.url&&data.url!=''){
+                        setTimeout(function(){
+                            top.window.location.href=data.url;
+                        },2000);
+                    }
+                }
+            });
+            $(".on-btn").attr("disabledSubmit",true);
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

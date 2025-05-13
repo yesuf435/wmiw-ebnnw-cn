@@ -1,0 +1,64 @@
+<include file="Common:meta" />
+<title>管理员列表-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">管理员列表</div>
+                            </div>
+                            <div class="widget-body">
+                                <div class="am-u-sm-12">
+                                    <table width="100%" id="example-r" class="am-table am-table-compact tpl-table-black " >
+                                        <thead>
+                                            <tr>
+                                                <td>AID</td>
+                                                <td>账号</td>
+                                                <td>昵称</td>
+                                                <td>所属组</td>
+                                                <td>备注</td>
+                                                <td>开通时间</td>
+                                                <td>状态</td>
+                                                <td>操作</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <volist name="list" id="vo">
+                                                <tr aid="{$vo.aid}">
+                                                    <td>{$vo.aid}</td>
+                                                    <td>{$vo.email}</td>
+                                                    <td>{$vo.nickname}</td>
+                                                    <td><eq name="vo.group" value="">无<else/>{$vo.group}</eq></td>
+                                                    <td>{$vo.remark}</td>
+                                                    <td>{$vo.time|date='Y-m-d H:i:s',###}</td>
+                                                    <td>{$vo.statusTxt}</td>
+                                                    <td>
+                                                        <div class="tpl-table-black-operation">
+                                                            <if condition="$vo.email eq C('ADMIN_AUTH_KEY')">--<else/><a href="{:U('Access/editAdmin',array('aid'=>$vo['aid']))}"><i class="am-icon-pencil"></i>编辑</a></if>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </volist>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+</body>
+</html>

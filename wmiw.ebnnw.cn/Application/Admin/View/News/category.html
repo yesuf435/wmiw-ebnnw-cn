@@ -1,0 +1,121 @@
+<include file="Common:meta" />
+<title>文章分类管理-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">文章分类管理</div>
+                            </div>
+                            <div class="widget-body">
+                                <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                                    <div class="am-form-group">
+                                        <div class="am-btn-toolbar">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <a href="{:U('News/category_add')}" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 添加分类</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="am-u-sm-12">
+                                    <table width="100%" id="example-r" class="am-table am-table-compact tpl-table-black " >
+                                        <thead>
+                                            <tr>
+                                                <td>原分类CID</td>
+                                                <td>原分类结构 <b title="单击分类隐藏/显示该分类下在子类">[i]</b></td>
+                                                <td>排序</td>
+                                                <td>操作</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <volist name="list" id="tree">
+                                                <tr pid="{$tree.pid}" id="{$tree.cid}">
+                                                    <td>{$tree.cid}<input type="hidden" name="cid" value="{$tree.cid}"/></td>
+                                                    <td class="tree" style="cursor: pointer;">{$tree.fullname}</td>
+                                                    <td>
+                                                        <div class="ajax_order">
+                                                            <a class="rising" href="javascript:void(0)"><i title="加" class="am-icon-plus"></i></a>
+                                                            <div class="input-box">
+                                                                <div class="input" odid="{$tree.cid}">{$tree.sort}</div>
+                                                            </div>
+                                                            <a class="drop" href="javascript:void(0)"><i title="减" class="am-icon-minus"></i></a>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="tpl-table-black-operation">
+                                                            <notin name="tree.cid" value="$lock_id[article]">
+                                                                <a href="{:U('News/category_edit',array('cid'=>$tree['cid']))}"><i class="am-icon-pencil"></i>编辑</a>
+                                                                <a cid="{$tree.cid}" href="javascript:void(0)" name="{$tree.name}" class="tpl-table-black-operation-del Js-del"><i class="am-icon-trash-o"></i>删除</a>
+                                                            <else />
+                                                                <a href="javascript:void(0)"><i class="am-icon-ban"></i>禁止编辑/删除</a>
+                                                            </notin>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </volist>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<script type="text/javascript">
+var odUrl = "{:U('News/order_category')}"; 
+
+// 删除分类
+var delLink = "{:U('News/category_del')}";
+// 删除分类【
+$(".Js-del").click(function(){
+    var cid = $(this).attr("cid");
+    var name = $(this).attr("name");
+    AMUI.dialog.confirm({ content: '是否删除<strong>“'+name+'”</strong>这个分类？', 
+        onConfirm: function() {
+            delPost(cid,0);
+        }, 
+        onCancel: function() {}
+     }); 
+
+    return false;
+});
+function delPost(cid,yn){
+    $.post(delLink,{'cid':cid,'yn':yn},function(data){      //ajax后台
+        if (data.status==1) {
+            AMUI.dialog.alert({ title: data.title, content: data.info});
+            if (data.url) {
+                top.window.location.href=data.url;
+            };
+        }if (data.status==2) {
+            AMUI.dialog.confirm({title: data.title,content: data.info, 
+                onConfirm: function() {
+                    delPost(cid,1);
+                }, 
+                onCancel: function() {}
+             }); 
+        }else {
+            // 提示框
+            AMUI.dialog.alert({ title: data.title, content: data.info});
+        }
+
+    },'json'); 
+}
+// 删除分类】
+
+
+</script>
+</body>
+</html>

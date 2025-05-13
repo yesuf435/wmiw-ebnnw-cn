@@ -1,0 +1,222 @@
+/* 高端古董拍卖网站登录/注册页面样式 */
+/* 基于酒红+米白色系，适合45-70岁用户群体 */
+
+/* 全局样式 */
+body {
+  font-family: "Microsoft YaHei", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f9f5f0;
+  background-image: url('/Public/images/bg-art.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-blend-mode: overlay;
+}
+
+/* 增大字体大小，适合中老年用户 */
+.am-form input[type="text"],
+.am-form input[type="password"],
+.am-form input[type="email"],
+.am-form input[type="number"],
+.am-form input[type="search"],
+.am-form input[type="tel"],
+.am-form select,
+.am-form textarea {
+  font-size: 18px !important;
+  height: 50px !important;
+  padding: 10px 15px !important;
+  border-radius: 6px !important;
+  border: 1px solid #d4c0c0 !important;
+}
+
+/* 标签文字加大 */
+.am-form label {
+  font-size: 18px !important;
+  font-weight: 500 !important;
+  color: #333 !important;
+  margin-bottom: 8px !important;
+}
+
+/* 按钮样式优化 */
+.am-btn {
+  font-size: 18px !important;
+  padding: 12px 24px !important;
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+}
+
+.am-btn-primary {
+  background-color: #8B0000 !important; /* 酒红色 */
+  border-color: #8B0000 !important;
+}
+
+.am-btn-primary:hover {
+  background-color: #a52a2a !important;
+  border-color: #a52a2a !important;
+}
+
+/* 登录/注册容器样式 */
+.login-wrap {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
+  padding: 30px !important;
+  margin-top: 50px !important;
+  margin-bottom: 50px !important;
+}
+
+/* 标题样式 */
+.login-title {
+  color: #8B0000 !important; /* 酒红色 */
+  font-size: 28px !important;
+  font-weight: bold !important;
+  margin-bottom: 30px !important;
+  text-align: center !important;
+}
+
+/* 标签页样式 */
+.tabMenuLink {
+  border-bottom: 2px solid #e4e4e4 !important;
+  margin-bottom: 25px !important;
+}
+
+.tabMenuLink li {
+  margin-bottom: 0 !important;
+}
+
+.tabMenuLink li a {
+  font-size: 20px !important;
+  color: #666 !important;
+  padding: 12px 20px !important;
+}
+
+.tabMenuLink li.on-mli a {
+  color: #8B0000 !important; /* 酒红色 */
+  border-bottom: 3px solid #8B0000 !important;
+}
+
+/* 验证码样式优化 */
+.verification {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 20px 0 !important;
+}
+
+.verification .input {
+  width: 60% !important;
+  margin-right: 10px !important;
+}
+
+.verifyImg {
+  height: 50px !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  border: 1px solid #d4c0c0 !important;
+}
+
+/* 复选框样式 */
+.am-checkbox {
+  font-size: 16px !important;
+}
+
+/* 链接样式 */
+a {
+  color: #8B0000 !important; /* 酒红色 */
+  text-decoration: none !important;
+}
+
+a:hover {
+  color: #a52a2a !important;
+  text-decoration: underline !important;
+}
+
+/* 响应式设计 */
+@media only screen and (max-width: 768px) {
+  .login-wrap {
+    padding: 20px !important;
+    margin-top: 30px !important;
+    margin-bottom: 30px !important;
+  }
+  
+  .login-title {
+    font-size: 24px !important;
+  }
+  
+  .tabMenuLink li a {
+    font-size: 18px !important;
+    padding: 10px 15px !important;
+  }
+  
+  .am-form input[type="text"],
+  .am-form input[type="password"],
+  .am-form input[type="email"],
+  .am-form input[type="number"],
+  .am-form input[type="search"],
+  .am-form input[type="tel"],
+  .am-form select,
+  .am-form textarea {
+    font-size: 16px !important;
+    height: 45px !important;
+  }
+  
+  .am-btn {
+    font-size: 16px !important;
+    padding: 10px 20px !important;
+  }
+}
+
+/* 小屏幕手机适配 */
+@media only screen and (max-width: 480px) {
+  .login-wrap {
+    padding: 15px !important;
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+  }
+  
+  .login-title {
+    font-size: 22px !important;
+  }
+  
+  .tabMenuLink li a {
+    font-size: 16px !important;
+    padding: 8px 12px !important;
+  }
+  
+  .verification {
+    flex-direction: column !important;
+  }
+  
+  .verification .input {
+    width: 100% !important;
+    margin-right: 0 !important;
+    margin-bottom: 10px !important;
+  }
+  
+  .verifyImg {
+    height: 45px !important;
+  }
+}
+
+/* 超小屏幕适配 */
+@media only screen and (max-width: 375px) {
+  .login-title {
+    font-size: 20px !important;
+  }
+  
+  .tabMenuLink li a {
+    font-size: 15px !important;
+    padding: 6px 10px !important;
+  }
+}
+
+/* 横屏模式优化 */
+@media only screen and (max-height: 500px) and (orientation: landscape) {
+  .login-wrap {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+  }
+}

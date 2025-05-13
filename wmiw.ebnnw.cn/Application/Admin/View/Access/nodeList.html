@@ -1,0 +1,93 @@
+<include file="Common:meta" />
+<title>节点管理-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">节点管理</div>
+                            </div>
+                            <div class="widget-body">
+                                <div class="am-u-sm-12">
+                                    <table width="100%" id="example-r" class="am-table am-table-compact tpl-table-black " >
+                                        <thead>
+                                            <tr>
+                                                <td>序号</td>
+                                                <td>节点结构  <b title="单击分类隐藏/显示该分类下在子类">[i]</b></td>
+                                                <td>节点ID</td>
+                                                <td>名称</td>
+                                                <td>显示名</td>
+                                                <td>排序</td>
+                                                <td>类型</td>
+                                                <td>状态</td>
+                                                <td>操作</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <volist name="list" id="vo" key="k">
+                                                <tr id="{$vo.id}" pid="{$vo.pid}">
+                                                    <td>{$k}</td>
+                                                    <td class="tree" style="cursor: pointer;">{$vo.fullname}</td>
+                                                    <td>{$vo.id}</td>
+                                                    <td>{$vo.name}</td>
+                                                    <td>{$vo.title}</td>
+                                                    <td edit="0" fd="sort">
+                                                        <div class="ajax_order">
+                                                            <a class="rising" href="javascript:void(0)"><i title="加" class="am-icon-plus"></i></a>
+                                                            <div class="input-box">
+                                                                <div class="input" odid="{$vo.id}">{$vo.sort}</div>
+                                                            </div>
+                                                            <a class="drop" href="javascript:void(0)"><i title="减" class="am-icon-minus"></i></a>
+                                                        </div>
+                                                    </td>
+                                                    <td>{$vo.level}</td>
+                                                    <td>{$vo.statusTxt}</td>
+                                                    <td>
+                                                        <div class="tpl-table-black-operation">
+                                                            <a href="javascript:void(0);" class="opStatus" val="{$vo.status}">{$vo.chStatusTxt}</a>
+                                                            <a href="{:U('Access/editNode',array('id'=>$vo['id']))}" class="edit"><i class="am-icon-pencil"></i>编辑</a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </volist>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<script type="text/javascript">
+    // 异步排序地址
+    var odUrl = "{:U('Access/order_node')}";
+    $(function(){
+        //快捷启用禁用操作
+        $(".opStatus").click(function(){
+            var obj=$(this);
+            var id=$(this).parents("tr").attr("id");
+            var status=$(this).attr("val");
+            $.getJSON("__URL__/opNodeStatus", { id:id, status:status }, function(json){
+                if(json.status==1){
+                    $(obj).attr("val",json.data.status).html(status==1?"启用":"禁用").parents("td").prev().html(status==1?"禁用":"启用");
+                }
+                AMUI.dialog.alert({content: json.info}); 
+            });
+        });                
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,273 @@
+<include file="Common:meta" />
+<title><eq name="ACTION_NAME" value="search_special">拍卖订单搜索结果<else/>拍卖订单列表</eq>-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">  
+            <div class="container-fluid">
+                <p class="page-header-description">
+                    
+                    <table width="100%" class="am-table am-table-compact am-table-bordered am-table-radius am-table-striped tpl-table-black " id="example-r">
+                        <thead>
+                            <tr>
+                                 <th colspan="3">
+                                 <strong class="am-text-primary">
+                                    <empty name='where'>全部订单</empty>
+                                    <eq name='where.deftime1st' value='0'>有效订单</eq>
+                                    <eq name='where.deftime1st' value='1'>过期订单</eq>
+                                    <eq name='where.deftime2st' value='1'>卖家违约</eq>
+                                    <eq name='where.deftime3st' value='1'>默认收货</eq>
+                                    <eq name='where.deftime4st' value='1'>默认评价卖家</eq>
+                                    <eq name='where.deftime10st' value='1'>默认评价买家</eq>
+                                </strong>
+                                    <notempty name="keys">
+                                        查询条件为&nbsp;&nbsp;
+                                        <notempty name="keys.order_no"><span class="am-text-primary">订单号：{$keys.order_no}</span>&nbsp;&nbsp;</notempty>
+                                        <notempty name="keys.account"><span class="am-text-primary">买家账号：{$keys.account}</span>&nbsp;&nbsp;</notempty>
+                                        <notempty name="keys.sel_account"><span class="am-text-primary">卖家账号：{$keys.sel_account}</span>&nbsp;&nbsp;</notempty>
+                                        <notempty name="keys.start_time"><span class="am-text-primary">{$keys.start_time}</span>&nbsp;&nbsp;至&nbsp;&nbsp;</notempty>
+                                        <notempty name="keys.end_time"><span class="am-text-primary">{$keys.end_time}</span>&nbsp;&nbsp;</notempty>
+                                        <eq name="keys.type" value="0"><span class="am-text-primary">竞拍订单</span>&nbsp;&nbsp;</eq>
+                                        <eq name="keys.type" value="1"><span class="am-text-primary">竞标订单</span>&nbsp;&nbsp;</eq>
+                                        
+                                        <eq name="keys.status" value="0"><span class="am-text-primary">待支付</span>&nbsp;&nbsp;</eq>
+                                        <eq name="keys.status" value="1"><span class="am-text-primary">待发货</span>&nbsp;&nbsp;</eq>
+                                        <eq name="keys.status" value="2"><span class="am-text-primary">待收货</span>&nbsp;&nbsp;</eq>
+                                        <eq name="keys.status" value="3"><span class="am-text-primary">已收货</span>&nbsp;&nbsp;</eq>
+                                        <eq name="keys.status" value="4"><span class="am-text-primary">已评价</span>&nbsp;&nbsp;</eq>
+                                        <eq name="keys.status" value="10"><span class="am-text-primary">已互评</span>&nbsp;&nbsp;</eq>
+                                    </notempty>
+                                    统计如下：
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>交易总额：<strong class="am-text-danger">{$moneysum.total}</strong></td>
+                            <td>卖家{:C('Auction.broker_name')}总额：<strong class="am-text-success">{$moneysum.broker}</strong></td>
+                            <td>买家{:C('Auction.broker_buy_name')}总额：<strong class="am-text-secondary">{$moneysum.broker_buy}</strong></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </p>
+            </div>
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="am-btn-toolbar">
+                                    <div class="am-btn-group am-btn-group-xs">
+                                        <a href="{:U('Order/index')}" class="am-btn am-btn-default <empty name='where'>am-btn-success</empty>">全部订单</a>
+                                        <a href="{:U('Order/index',array('field'=>'deftime1st','val'=>'0'))}" class="am-btn am-btn-default <eq name='where.deftime1st' value='0'>am-btn-success</eq>">有效订单</a>
+                                        <a href="{:U('Order/index',array('field'=>'deftime1st','val'=>'1'))}" class="am-btn am-btn-default <eq name='where.deftime1st' value='1'>am-btn-success</eq>">过期订单</a>
+                                        <a href="{:U('Order/index',array('field'=>'deftime2st','val'=>'1'))}" class="am-btn am-btn-default <eq name='where.deftime2st' value='1'>am-btn-success</eq>">卖家违约</a>
+                                        <a href="{:U('Order/index',array('field'=>'deftime3st','val'=>'1'))}" class="am-btn am-btn-default <eq name='where.deftime3st' value='1'>am-btn-success</eq>">默认收货</a>
+                                        <a href="{:U('Order/index',array('field'=>'deftime4st','val'=>'1'))}" class="am-btn am-btn-default <eq name='where.deftime4st' value='1'>am-btn-success</eq>">默认评价卖家</a>
+                                        <a href="{:U('Order/index',array('field'=>'deftime10st','val'=>'1'))}" class="am-btn am-btn-default <eq name='where.deftime10st' value='1'>am-btn-success</eq>">默认评价买家</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="widget-body am-cf">
+
+                                <form id="searchForm" action="{:U('search')}" method='get' class="am-form tpl-form-border-form tpl-form-border-br  am-u-sm-12 am-u-md-12 am-u-lg-12 am-fr am-cf">
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                                        <div class="am-form-group am-input-group-sm">
+                                            <input type="text" class="am-form-field " value="{$keys.order_no}" name="order_no" placeholder="搜索订单号"/>
+                                         </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-2">
+                                        <div class="am-form-group am-input-group-sm">
+                                            <input type="text" class="am-form-field " id="start_time"size="17" value="{$keys.start_time}" name="start_time" placeholder="起始时间"/>
+                                         </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-2">
+                                        <div class="am-form-group am-input-group-sm">
+                                            <input type="text" class="am-form-field " id="end_time" size="17" value="{$keys.end_time}" name="end_time" placeholder="结束时间"/>
+                                         </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-1">
+                                        <div class="am-form-group am-input-group-sm">
+                                            <input type="text" class="am-form-field " value="{$keys.account}" name="account" placeholder="买家账号"/>
+                                         </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-1">
+                                        <div class="am-form-group am-input-group-sm">
+                                            <input type="text" class="am-form-field " value="{$keys.sel_account}" name="sel_account" placeholder="卖家账号"/>
+                                         </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-1">
+                                        <div class="am-form-group am-input-group-sm">
+                                            <select name="type">
+                                                <option value="" <eq name="keys.type" value=""> selected="selected"</eq>>全部拍卖</option>
+                                                <option value="0" <eq name="keys.type" value="0"> selected="selected"</eq>>竞拍订单</option>
+                                                <option value="1" <eq name="keys.type" value="1"> selected="selected"</eq>>竞标订单</option>
+                                            </select>
+                                         </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-1">
+                                        <div class="am-form-group am-input-group-sm">
+                                            <select name="status">
+                                                <option value="" <eq name="keys.status" value=""> selected="selected"</eq>>全部订单</option>
+                                                <option value="0" <eq name="keys.status" value="0"> selected="selected"</eq>>待支付</option>
+                                                <option value="1" <eq name="keys.status" value="1"> selected="selected"</eq>>待发货</option>
+                                                <option value="2" <eq name="keys.status" value="2"> selected="selected"</eq>>待收货</option>
+                                                <option value="3" <eq name="keys.status" value="3"> selected="selected"</eq>>已收货</option>
+                                                <option value="4" <eq name="keys.status" value="4"> selected="selected"</eq>>已评价</option>
+                                                <option value="10" <eq name="keys.status" value="10"> selected="selected"</eq>>已互评</option>
+                                            </select>
+                                         </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-1">
+                                        <div class="am-btn-group am-btn-group-xs" style="width: 100%;">
+                                            <input type="hidden" value="{$saytyp.get}" name="typ" class="input"/>
+                                            <input style="line-height: 21px;" type="submit" value="查询" act="0" class="am-btn tpl-table-list-field am-u-sm-12 am-u-md-12 am-u-lg-12 am-btn-success">
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="am-u-sm-12">
+                                    <empty name="list">
+                                    <div class="on-none">未查询到数据</div>
+                                    <else/>
+                                        <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black ">
+                                            
+                                            <thead>
+
+                                                <tr>
+                                                    <td width="20%">订单号/拍品/生成时间</td>
+                                                    <td>买家保证金</td>
+                                                    <td>卖家保证金</td>
+                                                    <td>所属买家</td>
+                                                    <td>所属卖家</td>
+                                                    <td>成交价</td>
+                                                    <td>运费</td>
+                                                    <td>手续费</td>
+                                                    <td>订单总额</td>
+                                                    <td>佣金</td>
+                                                    <td>类型/状态</td>
+                                                    <td>操作</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <volist name="list" id="vo">
+                                                    <tr>
+                                                        <td>
+                                                            <strong class="am-text-primary">{$vo.order_no}</strong>
+                                                            <div class="list-goods-box">
+                                                                <img src="{$upWholeUrl}{$vo.pimg|picRep=###,3}"/>
+                                                                <div class="tbox">
+                                                                    <a href="{:U('Home/Auction/details',array('pid'=>$vo[gid]))}" target="_blank">{$vo.pname}</a>
+                                                                    <span>[<eq name="vo.type" value="0">竞拍</eq><eq name="vo.type" value="1">竞标</eq>]</span>
+                                                                </div>
+                                                            </div>
+                                                            <div style="text-align: right;font-size: 12px;">{$vo.time|date="Y-m-d H:i:s",###}</div>
+                                                        </td>
+                                                        <td>
+                                                            {$vo.pledge_type}<br/>
+                                                            保证金：{$vo.pledge}<br/>
+                                                            <neq name="vo.pledge" value="0">信用额度：{$vo.limsum}</neq>
+                                                        </td>
+                                                        <td>
+                                                            {$vo.sell_type}<br/>
+                                                            保证金：{$vo.sell_pledge}<br/>
+                                                            <neq name="vo.sell_limsum" value="0">信用额度：{$vo.sell_limsum}</neq>
+                                                        </td>
+                                                        <td>
+                                                            <div class="ushow">
+                                                                <img class="uimg" src="{$vo.uid|getUserpic=###,2}" alt="" />
+                                                                <div class="utxt">账号：{$vo.buy_account}<br/>{$vo.nickname}</div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="ushow">
+                                                                <img class="uimg" src="{$vo.sellerid|getUserpic=###,2,'sel'}" alt="" />
+                                                                <div class="utxt">账号：{$vo.sel_account}<br/>{$vo.organization}</div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="am-text-warning">{$vo.price}</td>
+                                                        <td class="am-text-warning">{$vo.freight}</td>
+                                                        <td class="am-text-secondary">{$vo.broker_buy}</td>
+                                                        <td class="am-text-danger">{$vo.prcsum}</td>
+                                                        <td class="am-text-primary">{$vo.broker}</td>
+                                                        
+                                                        
+                                                        <td>
+                                                            <if condition="$vo['status'] eq 0">
+                                                                <eq name="vo.deftime1st" value="0">
+                                                                    待付款
+                                                                <else/>
+                                                                    买家违约
+                                                                </eq>
+                                                            </if>
+                                                            <if condition="$vo['status'] eq 1">
+                                                                <eq name="vo.deftime2st" value="0">
+                                                                    待发货
+                                                                <else/>
+                                                                    卖家违约
+                                                                </eq>
+                                                            </if>
+                                                            <eq name="vo.status" value="2">待收货</eq>
+                                                            <eq name="vo.status" value="3">交易成功</eq>
+                                                            <eq name="vo.status" value="4">买家已评价</eq>
+                                                            <eq name="vo.status" value="5">申请退货</eq>
+                                                            <eq name="vo.status" value="6">卖家拒绝退货</eq>
+                                                            <eq name="vo.status" value="7">卖家同意退货，待发货</eq>
+                                                            <eq name="vo.status" value="8">已发货等待卖家收货</eq>
+                                                            <eq name="vo.status" value="9">已完成退货</eq>
+                                                            <eq name="vo.status" value="10">已互评</eq>
+                                                        </td>
+                                                        <td>
+                                                            <div class="tpl-table-black-operation">
+                                                                <a link="{:U('Order/del',array('order_no'=>$vo['order_no']))}" href="javascript:void(0)" name="{$vo.order_no}" class="tpl-table-black-operation-del del"><i class="am-icon-trash-o"></i>删除</a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </volist>
+                                                <tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="am-u-lg-12 am-cf">
+                                            <div class="am-fr">
+                                                <div class="am-pagination tpl-pagination">
+                                                    {$page}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </empty>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<!-- 日期时间插件【 -->
+<link href="--PUBLIC--/datetimepicker/amazeui.datetimepicker.css" rel="stylesheet" type="text/css">
+<js href="--PUBLIC--/datetimepicker/amazeui.datetimepicker.js"/>
+<js href="--PUBLIC--/datetimepicker/locales/amazeui.datetimepicker.zh-CN.js"/>
+<!-- 日期时间插件 -->
+<script type="text/javascript">
+
+    $(function(){
+        //为input添加时间插件
+        $('#start_time').datetimepicker({language:  'zh-CN',format: 'yyyy-mm-dd hh:ii'});
+        $('#end_time').datetimepicker({language:  'zh-CN',format: 'yyyy-mm-dd hh:ii'});
+        //为input添加插件_end
+        $(".del").click(function(){
+            var delLink=$(this).attr("link");
+            AMUI.dialog.confirm({ title: '温馨提示', content:'你真的打算删除【<b>'+$(this).attr("name")+'</b>】吗?', onConfirm: function() {
+                top.window.location.href=delLink;
+            }, onCancel: function() { console.log('onCancel') } });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

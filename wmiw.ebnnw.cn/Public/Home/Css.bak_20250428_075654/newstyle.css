@@ -1,0 +1,78 @@
+
+/*新鲜事*/
+.user-news .s-msg-item {display: block;width:100%;}
+.s-msg-item {padding: 5px;}
+.s-msg-item-box {border: 1px solid #E4EAEE;position: relative; width:100%; background-color: #fff;}
+.i-msg-downup-wrap {overflow: hidden;position: relative;margin-top:30px}
+.s-msg-temp img {width:100%;}
+.am-nav-tabs > li > a {text-align: center;}
+/*标题*/
+.s-name {font-size: 14px;position: absolute;top:7px;left:7px;}
+.s-name .s-name-nickname{color: #f03726;}
+.i-btn-forkout{position:absolute; top:7px; right:7px;}
+.s-main-content,.s-main-toobj{font-size: 12px;padding:5px 5px;}
+.s-main-toobj{padding-bottom: 0px;}
+.s-main-toobj span.gname{ font-weight: bold;color: #f03726;}
+.s-row.s-main-content{border-top:1px solid #E4EAEE ;}
+.s-row.s-main-content i{float: right;}
+
+.s-main-tate{color: #ccc;
+    padding: 0 5px;
+    text-align: right;}
+.goods-date{margin-bottom:10px ;}
+/*物流*/
+.item{width:100%;overflow: hidden;padding:10px 0px;}
+.item-pic {width: 80px;height: 80px;border: 1px solid #EEE;float: left;overflow: hidden;margin:5px;}	
+.item-info{margin-left:90px;height:90px;overflow: hidden;padding:5px 0px ;font-size: 12px ;line-height:20px ;}
+.item-info .item-info-con{ height: 60px;
+    overflow: hidden;}
+
+.item-info .item-comment{height:60px;overflow: hidden;}
+
+.item-smsc{background-color: #dd514c;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 10px;
+    padding: 0 5px 1px;
+}
+/*发送对象*/
+.sendto-user{ position: relative;}
+.sendto-user img ,.sendto-goods img{height: 45px;}
+.sendto-user-info{left: 0;
+    padding-left: 55px;
+    
+    position: absolute;
+    top: 0;}
+.sendto-goods{}
+
+.comment-list{ margin: 5px;}
+
+a.rebtn-type{display: block;padding: 8px; z-index: 1;    margin-top: 20px; overflow:hidden; border-radius: 2px; background-color: #C00;font-size: 14px; color:#FFF;text-align: center;width:100% ;cursor: pointer;}
+
+	
+@media only screen and (min-width:640px) 
+{
+.user-news .s-msg-item {display: block;width:50%;float: left;}
+}
+	
+	
+	
+@media only screen and (min-width:1025px) 
+{
+.user-news .s-msg-item {display: block;width:33.33%;}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

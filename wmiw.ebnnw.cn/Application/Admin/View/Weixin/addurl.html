@@ -1,0 +1,372 @@
+<include file="Common:meta" />
+<title>添加/编辑图文-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">添加/编辑图文</div>
+                                <div class="am-btn-toolbar am-fr">
+                                    <div class="am-btn-group am-btn-group-xs">
+                                        <a href="{:U('Weixin/addurl',array('msgtype'=>'news'))}" class="am-btn am-btn-default <eq name='info.msgtype' value='news'>am-btn-secondary</eq>"><span class="am-icon-file-word-o"></span> 添加图文回复</a>
+                                        <a href="{:U('Weixin/addurl',array('msgtype'=>'text'))}" class="am-btn am-btn-default <eq name='info.msgtype' value='text'>am-btn-secondary</eq>"><span class="am-icon-file-text"></span> 添加文本回复</a>
+                                        <a href="{:U('Weixin/addurl',array('msgtype'=>'image'))}" class="am-btn am-btn-default <eq name='info.msgtype' value='image'>am-btn-secondary</eq>"><span class="am-icon-file-picture-o"></span> 添加图片回复</a>
+                                        <a href="{:U('Weixin/addurl',array('msgtype'=>'voice'))}" class="am-btn am-btn-default <eq name='info.msgtype' value='voice'>am-btn-secondary</eq>"><span class="am-icon-file-sound-o"></span> 添加语音回复</a>
+                                        <a href="{:U('Weixin/addurl',array('msgtype'=>'video'))}" class="am-btn am-btn-default <eq name='info.msgtype' value='video'>am-btn-secondary</eq>"><span class="am-icon-file-video-o"></span> 添加视频回复</a>
+                                        <a href="{:U('Weixin/addurl',array('msgtype'=>'thumb'))}" class="am-btn am-btn-default <eq name='info.msgtype' value='thumb'>am-btn-secondary</eq>"><span class="am-icon-music"></span> 添加音乐回复</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="widget-body am-fr">
+                                <form id="addurlForm" class="am-form tpl-form-border-form tpl-form-border-br">
+                                    <div class="am-form-group">
+                                        <label for="keywords" class="am-u-sm-3 am-form-label">关键词</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" name="data[keywords]" value="{$info.keywords}"  placeholder="请输入关键词">
+                                            <small>系统会根据用户在公众号发送的关键词自动回复该消息</small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="name" class="am-u-sm-3 am-form-label">消息标题</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" name="data[name]" value="{$info.name}"  placeholder="请输入标题" required>
+                                        </div>
+                                    </div>
+                                    <eq name='info.msgtype' value='news'>
+                                    <!-- 图文编辑【 -->
+                                        <div class="am-form-group">
+                                            <label for="url" class="am-u-sm-3 am-form-label">链接地址</label>
+                                            <div class="am-u-sm-9">
+                                                <input type="text" class="tpl-form-input" name="data[url]" value="{$info.url}"  placeholder="请输入URL" required>
+                                                <small>请从浏览器复制网址，请确保您的网址正确。注意：以http://开头</small>
+                                            </div>
+                                        </div>
+                                        <div class="am-form-group">
+                                            <label for="comment" class="am-u-sm-3 am-form-label">图文说明</label>
+                                            <div class="am-u-sm-9">
+                                                <textarea id="comment" type="text" class="input" name="data[comment]">{$info.comment}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="am-form-group">
+                                            <label for="rec" class="am-u-sm-3 am-form-label">头条图片</label>
+                                            <div class="am-u-sm-9">
+                                                <div class="uploadePic-box am-margin-bottom-0 am-cf">
+                                                    <ul  data-am-widget="gallery" data-am-gallery="{pureview:{target: 'a.showurl'}}">
+                                                        <notempty name="info.toppic">
+                                                            <li class="img-box">
+                                                                <div class="upImg-list-box am-gallery-item">
+                                                                    <a class="showurl" href="{$upWholeUrl}{$info.toppic}" ><img src="{$upWholeUrl}{$info.toppic}"><input type="hidden" name="data[toppic]" value="{$info.toppic}" required/></a>
+                                                                </div>
+                                                            </li>
+                                                        </notempty>
+                                                        <li class="upImg-lighthouse">
+                                                            <div class="upImg-list-box">
+                                                                <div class="filePic">
+                                                                    <i class="am-icon-cloud-upload"></i><div class="txt">上传图片</div>
+                                                                    <input type="file" pname="data[toppic]" link="{:U('Upload/upWeiTopPic')}" class="upInput" value="选择凭证图片" name="file" max="5" maxsize="5120" allowexts="gif,jpeg,jpg,png,bmp" accept="image/*" multiple>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <small>图片尺寸：宽{:C('WEI_TOP_WIDTH')}px；高{:C('WEI_TOP_HEIGHT')}px</small>
+                                            </div>
+                                        </div>
+                                        <div class="am-form-group">
+                                            <label for="rec" class="am-u-sm-3 am-form-label">列表图片</label>
+                                            <div class="am-u-sm-9">
+                                                <div class="uploadePic-box am-margin-bottom-0 am-cf">
+                                                    <ul  data-am-widget="gallery" data-am-gallery="{pureview:{target: 'a.showurl'}}">
+                                                        <notempty name="info.picture">
+                                                            <li class="img-box">
+                                                                <div class="upImg-list-box am-gallery-item">
+                                                                    <a class="showurl" href="{$upWholeUrl}{$info.picture}" ><img src="{$upWholeUrl}{$info.picture}"><input type="hidden" name="data[picture]" value="{$info.picture}" /></a>
+                                                                </div>
+                                                            </li>
+                                                        </notempty>
+                                                        <li class="upImg-lighthouse">
+                                                            <div class="upImg-list-box">
+                                                                <div class="filePic">
+                                                                    <i class="am-icon-cloud-upload"></i><div class="txt">上传图片</div>
+                                                                    <input type="file" pname="data[picture]" link="{:U('Upload/upWeiListPic')}" class="upInput" value="选择凭证图片" name="file" max="5" maxsize="5120" allowexts="gif,jpeg,jpg,png,bmp" accept="image/*" multiple>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <small>图片尺寸：宽{:C('WEI_LIST_WIDTH')}px；高{:C('WEI_LIST_HEIGHT')}px</small>
+                                            </div>
+                                        </div>
+                                    <!-- 图文编辑】 -->
+                                    </eq>
+                                    <eq name='info.msgtype' value='text'>
+                                    <!-- 文本编辑【 -->
+                                        <div class="am-form-group">
+                                            <label for="comment" class="am-u-sm-3 am-form-label">回复内容</label>
+                                            <div class="am-u-sm-9">
+                                                <textarea id="comment" type="text" class="input" name="data[comment]">{$info.comment}</textarea>
+                                            </div>
+                                        </div>
+                                    <!-- 文本编辑【 -->
+                                    </eq>
+                                    <eq name='info.msgtype' value='image'>
+                                        <!-- 图片消息编辑【 -->
+                                        <div class="am-form-group">
+                                            <label for="rec" class="am-u-sm-3 am-form-label">图片</label>
+                                            <div class="am-u-sm-9">
+                                                <div class="uploadePic-box am-margin-bottom-0 am-cf">
+                                                    <ul  data-am-widget="gallery" data-am-gallery="{pureview:{target: 'a.showurl'}}">
+                                                        <notempty name="info.toppic">
+                                                            <li class="img-box">
+                                                                <div class="upImg-list-box am-gallery-item">
+                                                                    <a class="showurl" href="{$upWholeUrl}{$info.toppic}" ><img src="{$upWholeUrl}{$info.toppic}"><input type="hidden" name="data[toppic]" value="{$info.toppic}" required/></a>
+                                                                </div>
+                                                            </li>
+                                                        </notempty>
+                                                        <li class="upImg-lighthouse">
+                                                            <div class="upImg-list-box">
+                                                                <div class="filePic">
+                                                                    <i class="am-icon-cloud-upload"></i><div class="txt">上传图片</div>
+                                                                    <input type="file" pname="data[toppic]" link="{:U('Upload/upWeiTopPic')}" class="upInput" value="选择凭证图片" name="file" max="5" maxsize="5120" allowexts="gif,jpeg,jpg,png,bmp" accept="image/*" multiple>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <small>图片尺寸：宽{:C('WEI_TOP_WIDTH')}px；高{:C('WEI_TOP_HEIGHT')}px</small>
+                                            </div>
+                                        </div>
+                                        <!-- 图片消息编辑】 -->
+                                    </eq>
+                                    <eq name='info.msgtype' value='voice'>
+                                        <!-- 语音消息编辑【 -->
+                                        <div class="am-form-group">
+                                            <label for="comment" class="am-u-sm-3 am-form-label">语音</label>
+                                            <div class="am-u-sm-9">
+                                                <div id="Js-filelist">
+                                                    <notempty name="info.enclosure">
+                                                        <div class="filecon">
+                                                            <div class="am-text-truncate">{$upWholeUrl}{$info.enclosure}</div>
+                                                            <a class="am-icon-close am-fr Js-file-del" href="javascript:void(0);"></a><input type="hidden" name="data[enclosure]" value="{$info.enclosure}" />
+                                                        </div>
+                                                    </notempty>
+                                                </div>
+                                                <button id="upfilebtn" type="button" class="am-btn am-btn-default am-btn-sm on-btn-uploader"><i class="am-icon-cloud-upload"></i> 上传语音</button>
+                                                <small>文件类型：{$accept.extensions} 播放长度不超过60s</small>
+                                            </div>
+                                        </div>
+                                        <!-- 语音消息编辑】 -->
+                                    </eq>
+                                    <eq name='info.msgtype' value='video'>
+                                        <!-- 视频消息编辑【 -->
+                                        <div class="am-form-group">
+                                            <label for="comment" class="am-u-sm-3 am-form-label">视频描述</label>
+                                            <div class="am-u-sm-9">
+                                                <textarea id="comment" type="text" class="input" name="data[comment]">{$info.comment}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="am-form-group">
+                                            <label for="comment" class="am-u-sm-3 am-form-label">视频</label>
+                                            <div class="am-u-sm-9">
+                                                <div id="Js-filelist">
+                                                    <notempty name="info.enclosure">
+                                                        <div class="filecon">
+                                                            <div class="am-text-truncate">{$upWholeUrl}{$info.enclosure}</div>
+                                                            <a class="am-icon-close am-fr Js-file-del" href="javascript:void(0);"></a><input type="hidden" name="data[enclosure]" value="{$info.enclosure}" />
+                                                        </div>
+                                                    </notempty>
+                                                </div>
+                                                <button id="upfilebtn" type="button" class="am-btn am-btn-default am-btn-sm on-btn-uploader"><i class="am-icon-cloud-upload"></i> 上传视频</button>
+                                                <small>文件类型：{$accept.extensions}，不超过10MB</small>
+                                            </div>
+                                        </div>
+                                        <!-- 视频消息编辑】 -->
+                                    </eq>
+                                    <eq name='info.msgtype' value='thumb'>
+                                        <div class="am-form-group">
+                                            <label for="comment" class="am-u-sm-3 am-form-label">音乐描述</label>
+                                            <div class="am-u-sm-9">
+                                                <textarea id="comment" type="text" class="input" name="data[comment]">{$info.comment}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="am-form-group">
+                                            <label for="url" class="am-u-sm-3 am-form-label">音乐链接</label>
+                                            <div class="am-u-sm-9">
+                                                <input type="text" class="tpl-form-input" name="data[url]" value="{$info.url}"  placeholder="请输入音乐链接" required>
+                                                <small>高质量音乐链接，WIFI环境优先使用该链接播放音乐</small>
+                                            </div>
+                                        </div>
+                                        <div class="am-form-group">
+                                            <label for="url" class="am-u-sm-3 am-form-label">音乐链接</label>
+                                            <div class="am-u-sm-9">
+                                                <input type="text" class="tpl-form-input" name="data[urlh]" value="{$info.url}"  placeholder="请输入音乐链接" required>
+                                                <small>高质量音乐链接，WIFI环境优先使用该链接播放音乐</small>
+                                            </div>
+                                        </div>
+                                        <div class="am-form-group">
+                                            <label for="rec" class="am-u-sm-3 am-form-label">音乐封面</label>
+                                            <div class="am-u-sm-9">
+                                                <div class="uploadePic-box am-margin-bottom-0 am-cf">
+                                                    <ul  data-am-widget="gallery" data-am-gallery="{pureview:{target: 'a.showurl'}}">
+                                                        <notempty name="info.toppic">
+                                                            <li class="img-box">
+                                                                <div class="upImg-list-box am-gallery-item">
+                                                                    <a class="showurl" href="{$upWholeUrl}{$info.toppic}" ><img src="{$upWholeUrl}{$info.toppic}"><input type="hidden" name="data[toppic]" value="{$info.toppic}" required/></a>
+                                                                </div>
+                                                            </li>
+                                                        </notempty>
+                                                        <li class="upImg-lighthouse">
+                                                            <div class="upImg-list-box">
+                                                                <div class="filePic">
+                                                                    <i class="am-icon-cloud-upload"></i><div class="txt">上传图片</div>
+                                                                    <input type="file" pname="data[toppic]" link="{:U('Upload/upWeiTopPic')}" class="upInput" value="选择凭证图片" name="file" max="5" maxsize="5120" allowexts="gif,jpeg,jpg,png,bmp" accept="image/*" multiple>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <small>图片尺寸：宽{:C('WEI_TOP_WIDTH')}px；高{:C('WEI_TOP_HEIGHT')}px</small>
+                                            </div>
+                                        </div>
+                                    </eq>
+                                    <div class="am-form-group">
+                                        <label for="send" class="am-u-sm-3 am-form-label">是否推送</label>
+                                        <div class="am-u-sm-9">
+                                            <div class="am-cf">
+                                                <label class="am-checkbox am-secondary am-margin-right-sm am-fl">
+                                                    <input type="radio" name="data[send]" value="0" data-am-ucheck /> 以后推送
+                                                </label>
+                                                <label class="am-checkbox am-secondary am-fl">
+                                                    <input type="radio" name="data[send]" value="1" data-am-ucheck /> 立即推送
+                                                </label>
+                                            </div>
+                                            <small>直接推送可不上传列表图片；也可在列表页选择多个进行推送，注意：仅推送从微信公众账号进入本站时间不超48小时的用户！)</small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <input type="hidden" name="data[type]" value="{$info.type}" />
+                                            <input type="hidden" name="data[msgtype]" value="{$info.msgtype}" />
+                                            <input type="hidden" name="data[id]" value="{$info.id}" />
+                                            <input type="submit" name="" value="提交" class="am-btn am-btn-primary tpl-btn-bg-color-success submitBtn">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<in name="info.msgtype" value="voice,video,thumb">
+<!-- 文件上传 -->
+<js href="--PUBLIC--/WebUploader/webuploader.min.js"/>
+<script type="text/javascript">
+    initWebuploader();
+    function initWebuploader() {
+        var uploader = WebUploader.create({   
+            swf: '--PUBLIC--/WebUploader/uploader.swf', // swf文件路径
+            server: '{:U("Upload/upFile")}', // 文件接收服务端。
+            pick: '#upfilebtn', // 选择文件的按钮。可选
+            // chunked: true, //是否要分片处理大文件上传
+            // chunkSize:2*1024*1024, //分片上传，每片2M，默认是5M
+            duplicate :true,
+            // sendAsBinary:true,
+            // auto: true //选择文件后是否自动上传
+            chunkRetry : 2, //如果某个分片由于网络问题出错，允许自动重传次数
+            runtimeOrder: 'html5,flash',
+            accept: {
+                title: "{$accept.title}",
+                extensions: "{$accept.extensions}",
+                mimeTypes: '{$accept.title}/*'
+            }
+        });
+        // 当有文件被添加进队列的时候
+        uploader.on( 'fileQueued', function( file ) {
+            $('#Js-filelist').html('<div id="file-progress-box"><div id="file-progress" class="am-progress am-progress-striped am-progress-sm am-active "><div id="file-progress-bar" class="am-progress-bar am-progress-bar-secondary"></div></div></div>');
+            uploader.upload();
+            
+        });
+        // 文件上传过程中创建进度条实时显示。
+        uploader.on( 'uploadProgress', function( file, percentage ) {
+            $('#file-progress-bar').html(percentage * 100 + '%'+'（上传中）');
+            $('#file-progress-bar').css( 'width', percentage * 100 + '%' );
+        });
+        // 文件上传成功
+        uploader.on( 'uploadSuccess', function( file,resp) {
+            if (resp.status==1) {
+                $('#file-progress').remove();
+                $('#file-progress-bar').text(file['name']+'（已上传）');
+                $('#file-progress-box').html('<div class="filecon"><div class="am-text-truncate">'+file['name']+'</div><a class="am-icon-close am-fr Js-file-del" href="javascript:void(0);"></a><input type="hidden" name="data[enclosure]" value="'+resp.path+'" /></div>');
+            }else{
+                AMUI.dialog.alert({ title: '', content: resp.msg});
+            }
+        });
+        // 文件上传失败，显示上传出错
+        uploader.on( 'uploadError', function( file ) {
+            $('#file-progress-bar').text('上传出错');
+        });
+        uploader.on('uploadFinished', function( file ) {
+            //销毁后再次启动
+            uploader.destroy();
+            initWebuploader();
+        });
+    }
+
+    $(document).on('click','.Js-file-del',function(){
+        $(this).parents('.filecon').remove();
+     });
+</script>
+</in>
+<include file="Common:footer_link" />
+<js href="--PUBLIC--/ueditor/ueditor.config.js,--PUBLIC--/ueditor/ueditor.all.js,--PUBLIC--/ueditor/lang/zh-cn/zh-cn.js"/>
+<js href="--PUBLIC--/assets/js/jquery.form.js"/>
+<js href="--PUBLIC--/PhotoClipJs/lrz.all.bundle.js"/>
+<script type="text/javascript">
+    // 表单提交
+        var $form = $('#addurlForm');
+        var $subbtn = $(".submitBtn");
+        $form.validator({
+            submit: function() {
+                var formValidity = this.isFormValid();
+                if (formValidity) {
+                    // 验证成功的逻辑
+                    $subbtn.button('loading');
+                    // 验证成功的逻辑
+                    $form.ajaxSubmit({url:document.URL,data:'',type:"POST",
+                        success:function(data, st) {
+                            // 提示框
+                            AMUI.dialog.alert({ title: data.title, content: data.info});
+                            if(data.status==1){
+                                setTimeout(function(){
+                                    top.window.location.href = data.url;
+                                },1000);
+                            }else{
+                                $subbtn.button('reset');
+                            }
+                            return false;
+                        }
+                    });
+                } else {
+                    $subbtn.button('reset');
+                // 验证失败的逻辑
+                }
+            //阻止原生form提交
+            return false;
+            }
+        });
+</script>
+</body>
+</html>

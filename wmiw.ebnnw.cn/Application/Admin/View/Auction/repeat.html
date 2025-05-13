@@ -1,0 +1,130 @@
+<include file="Common:meta" />
+<title><eq name="ACTION_NAME" value="search_repeat">重复拍搜索<else/>重复拍设置列表</eq>-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">  
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl"><eq name="ACTION_NAME" value="search_repeat">重复拍搜索<else/>重复拍设置列表</eq></div>
+                            </div>
+                            <div class="widget-body am-cf">
+                                <form id="searchForm" action="{:U('Auction/search_repeat')}" method='get' class="am-form tpl-form-border-form tpl-form-border-br  am-u-sm-12 am-u-md-12 am-u-lg-8 am-fr am-cf">
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                                        <div class="am-form-group am-input-group-sm">
+                                            <select id="Js-channel" class="catesel" name="data[type]"> 
+                                                <option value="0" <eq name="keys.type" value="0">selected</eq>>商品重复拍</option>
+                                                <option value="1" <eq name="keys.type" value="1">selected</eq>>专场重复拍</option>
+                                                <option value="2" <eq name="keys.type" value="2">selected</eq>>拍卖会重复拍</option>
+                                            </select>
+                                         </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                                        <div class="am-form-group am-input-group-sm">
+                                            <select id="Js-channel" class="catesel" name="data[stop]">
+                                                <option value="" <eq name="keys.stop" value="">selected</eq>>请选择停止条件</option>
+                                                <option value="0" <eq name="keys.stop" value="0">selected</eq>>达到次数停止</option>
+                                                <option value="1" <eq name="keys.stop" value="1">selected</eq>>商品成交停止</option>
+                                            </select>
+                                         </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-4">
+                                        <div class="am-form-group am-input-group-sm">
+                                            <input type="text" class="am-form-field " value="{$keys.keyword}" name="data[keyword]" placeholder="关键字"/>
+                                         </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-2">
+                                        <div class="am-btn-group am-btn-group-xs" style="width: 100%;">
+                                            <input style="line-height: 21px;" type="submit" value="筛选" act="0" class="am-btn tpl-table-list-field am-u-sm-12 am-u-md-12 am-u-lg-12 am-btn-success">
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="am-u-sm-12">
+                                    <empty name="list">
+                                    <div class="on-none">未查询到数据</div>
+                                    <else/>
+                                        <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black ">
+                                            <thead>
+                                                <tr>
+                                                    <td>ID</td>
+                                                    <td>所属</td>
+                                                    <td>启动条件</td>
+                                                    <td>重复次数</td>
+                                                    <td>已拍次数</td>
+                                                    <td>停止条件</td>
+                                                    <td>设置时间</td>
+                                                    <td>状态</td>
+                                                    <td>操作</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <volist name="list" id="vo">
+                                                    <tr id="{$vo.id}">
+                                                        <td>{$vo.id}</td>
+                                                        <td>
+                                                            <div class="list-tongyong-box">
+                                                                <div class="imgbox">
+                                                                    <img src="{$upWholeUrl}{$vo.pictures}"/>
+                                                                </div>
+                                                                <div class="tbox">
+                                                                    {$vo.title}(id:{$vo.rid})<br/>
+                                                                    <eq name="vo.type" value="0">类型：商品重复拍</eq>
+                                                                    <eq name="vo.type" value="1">类型：专场重复拍</eq>
+                                                                    <eq name="vo.type" value="2">类型：拍卖会重复拍</eq>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>拍卖结束{$vo.etafter}秒后</td>
+                                                        <td>{$vo.prg}</td>
+                                                        <td>{$vo.now}</td>
+                                                        <td><eq name="vo.stop" value="0">达到次数停止<else/>商品成交停止</eq></td>
+                                                        <td>{$vo.time|date="y-m-d H:i",###}</td>
+                                                        <td><eq name="vo.status" value="0"><span class="am-text-success">启动中</span><else/><span class="am-text-warning">已停止</span></eq></td>
+                                                        <td>
+                                                            <div class="tpl-table-black-operation">
+                                                                <a href="{:U('Auction/repeat_edit',array('id'=>$vo['id']))}"><i class="am-icon-wrench"></i> 编辑</a>
+                                                                <a link="{:U('Auction/repeat_del/',array('id'=>$vo['id']))}" href="javascript:void(0)" name="{$vo.title}" class="tpl-table-black-operation-del del"><i class="am-icon-trash-o"></i>删除</a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </volist>
+                                            </tbody>
+                                        </table>
+                                        <div class="am-u-lg-12 am-cf">
+                                            <div class="am-fr">
+                                                <div class="am-pagination tpl-pagination">
+                                                    {$page}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </empty>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<script type="text/javascript">
+    $(function(){
+        $(".del").click(function(){
+            var delLink=$(this).attr("link");
+            AMUI.dialog.confirm({ title: '温馨提示', content: '你真的打算将【<b>'+$(this).attr("name")+'</b>】的重复拍设置删除吗?', onConfirm: function() { 
+                top.window.location.href=delLink;
+            }, onCancel: function() { console.log('onCancel') } }); 
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

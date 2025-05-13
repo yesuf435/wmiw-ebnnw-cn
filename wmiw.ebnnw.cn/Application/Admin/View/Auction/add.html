@@ -1,0 +1,542 @@
+<include file="Common:meta" />
+<title>添加/编辑拍卖-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">添加/编辑拍卖</div>
+                            </div>
+
+                            <div class="widget-body am-fr">
+                                <form id="auction_addForm" class="am-form tpl-form-border-form tpl-form-border-br">
+                            
+                                    <if condition="$info['to'] eq 'zc' and (!empty($futureList) or !empty($bidingList))">
+                                    <!-- 发布到专场显示【 -->
+                                        <div id="Js-special-radiobox" class="am-form-group">
+                                            <label for="pname" class="am-u-sm-3 am-form-label">专场状态</label>
+                                            <div class="am-u-sm-9">
+                                                <notempty name="futureList">
+                                                    <label class="am-radio-inline">
+                                                        <input type="radio" name="special_radio" value="0" data-am-ucheck <if condition="!empty($futureList) or $data['sse'] eq 0">checked</if>> 未开拍专场
+                                                    </label>
+                                                </notempty>
+                                                <notempty name="bidingList">
+                                                    <label class="am-radio-inline">
+                                                        <input type="radio" name="special_radio" value="1" data-am-ucheck <if condition="!empty($bidingList) or $data['sse'] eq 1">checked</if>> 已开拍专场
+                                                    </label>
+                                                </notempty>
+                                            </div>
+                                        </div>
+                                        <div id="Js-group-selectbox"></div>
+                                    <!-- 发布到专场显示【 -->
+                                    </if>
+                                    <if condition="$info['to'] eq 'pmh' and (!empty($futureList) or !empty($bidingList))">
+                                    <!-- 发布到拍卖会显示【 -->
+                                        <div id="Js-meeting-radiobox" class="am-form-group">
+                                            <label for="pname" class="am-u-sm-3 am-form-label">拍卖会状态</label>
+                                            <div class="am-u-sm-9">
+                                                <notempty name="futureList">
+                                                    <label class="am-radio-inline">
+                                                        <input type="radio" name="meeting_radio" value="0" data-am-ucheck <if condition="!empty($futureList) or $data['mse'] eq 0">checked</if>> 未开始拍卖会
+                                                    </label>
+                                                </notempty>
+                                                <notempty name="bidingList">
+                                                    <label class="am-radio-inline">
+                                                        <input type="radio" name="meeting_radio" value="1" data-am-ucheck <if condition="!empty($bidingList) or $data['mse'] eq 1">checked</if>> 已开始拍卖会
+                                                    </label>
+                                                </notempty>
+                                            </div>
+                                        </div>
+                                        <div id="Js-group-selectbox"></div>
+                                    <!-- 发布到拍卖会显示【 -->
+                                    </if>
+                                        
+                                    <div class="am-form-group">
+                                        <label for="pname" class="am-u-sm-3 am-form-label">拍卖标题</label>
+                                        <div class="am-u-sm-9">
+                                            <input id="pname" type="text" placeholder="拍卖标题" name="data[pname]" value="{$info.pname}" minlength="3" maxlength="20" required/>
+                                        </div>
+                                    </div>
+                                    <eq name="info.to" value="pmh">
+                                        <div class="am-form-group">
+                                        <div class="am-u-sm-9">竞拍：规定时间，多次出价，价高者得。</div>
+                                        </div>
+                                    <else/>
+                                        <div id="Js-type-radiobox" class="am-form-group">
+                                            <label for="pname" class="am-u-sm-3 am-form-label">拍卖模式</label>
+                                            <div class="am-u-sm-9">
+                                                <div>
+                                                    <label class="am-radio-inline">
+                                                        <input id="type1" type="radio" name="data[type]" value="0" data-am-ucheck <if condition="($data['type'] eq 0) or ($data['type'] eq '')">checked</if>> 竞拍
+                                                    </label>
+                                                    <label class="am-radio-inline">
+                                                        <input id="type" type="radio" name="data[type]" value="1" data-am-ucheck <eq name="info.type" value="1">checked</eq>> 竞标
+                                                    </label>
+                                                </div>
+                                                <small>竞拍：规定时间，多次出价，价高者得。<neq name="info.to" value="pmh">竞标：规定时间，一次出价，价高者得。</neq> </small>
+                                            </div>
+                                        </div>
+                                        <div id="Js-succtype-radiobox" class="am-form-group">
+                                            <label for="succtype" class="am-u-sm-3 am-form-label">成交模式</label>
+                                            <div class="am-u-sm-9">
+                                                <label class="am-radio-inline">
+                                                    <input id="Js-succtype1" type="radio" name="data[succtype]" value="0" data-am-ucheck <if condition="($data['succtype'] eq 0) or ($data['type'] eq '')">checked</if>> 普通模式
+                                                </label>
+                                                <label class="am-radio-inline">
+                                                    <input id="succtype" type="radio" name="data[succtype]" value="1" data-am-ucheck <eq name="info.succtype" value="1">checked</eq>> 即时成交
+                                                </label>
+                                            </div>
+                                        </div> 
+                                    </eq>
+
+                                    
+                                    <!-- 单品拍下才可以设置开始结束时间 -->
+                                    <eq name="info.to" value="js">
+                                        <div class="am-form-group">
+                                            <label for="start_time" class="am-u-sm-3 am-form-label">开始时间</label>
+                                            <div class="am-u-sm-9">
+                                                <div class="am-input-group date">
+                                                  <input id="start_time" placeholder="开始时间" type="text" class="am-form-field" size="20" name="data[starttime]" value="<neq name='info.starttime' value=''>{$info.starttime|date='Y-m-d H:i',###}<else/>{$start_date}</neq>" readonly required/>
+                                                  <span class="am-input-group-label add-on"><i class="icon-th am-icon-calendar"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="am-form-group">
+                                            <label for="end_time" class="am-u-sm-3 am-form-label">结束时间</label>
+                                            <div class="am-u-sm-9">
+                                                <div class="am-input-group">
+                                                  <input id="end_time" placeholder="结束时间" type="text" class="am-form-field" size="20" name="data[endtime]" value="<neq name='info.endtime' value=''>{$info.endtime|date='Y-m-d H:i',###}</neq>" readonly required/>
+                                                  <span class="am-input-group-label add-on"><i class="icon-th am-icon-calendar"></i></span>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </eq>
+                                    <!-- 单品拍下才可以设置开始结束时间——end -->
+                                    <eq name="ACTION_NAME" value="auction_edit">
+                                        <div class="am-form-group">
+                                            <label for="end_time" class="am-u-sm-3 am-form-label">当前价</label>
+                                            <div class="am-u-sm-9">
+                                                <input class="nowprice" placeholder="当前价" type="number" step="0.1" class="input" size="10" name="data[nowprice]" value="{$info.nowprice}" required/>
+                                            </div>
+                                        </div>
+                                    </eq>
+                                    <div class="am-form-group">
+                                        <label for="pname" class="am-u-sm-3 am-form-label">起拍价</label>
+                                        <div class="am-u-sm-9">
+                                            <input id="onset" placeholder="拍卖起拍价" type="number" step="0.1" class="input" size="10" name="data[onset]" value="{$info.onset}" required/>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="pname" class="am-u-sm-3 am-form-label">保留价</label>
+                                        <div class="am-u-sm-9">
+                                            <input id="price" placeholder="保留价" type="number" step="0.1" class="input" size="10" name="data[price]" value="{$info.price}" required/>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="pname" class="am-u-sm-3 am-form-label">运费</label>
+                                        <div class="am-u-sm-9">
+                                            <input id="freight" placeholder="运费" type="number" step="0.1" class="input" size="10" name="data[freight]" value="{$info.freight|default=0}" required/>
+                                        </div>
+                                    </div>
+
+                                    <div id="Js-stepsize-radiobox" class="am-form-group">
+                                        <label for="succtype" class="am-u-sm-3 am-form-label">价格浮动</label>
+                                        <div class="am-u-sm-9">
+                                            <div>
+                                                <label class="am-radio-inline">
+                                                    <input id="Js-stepsize_type1" type="radio" name="data[stepsize_type]" value="1" data-am-ucheck <if condition="($data['stepsize_type'] eq '') or ($data['stepsize_type'] eq 1)">checked</if>> 定额浮动
+                                                </label>
+                                                <label class="am-radio-inline">
+                                                    <input id="Js-stepsize_type0" type="radio" name="data[stepsize_type]" value="0" data-am-ucheck <eq name="info.stepsize_type" value="0">checked</eq>> 阶梯浮动
+                                                </label>
+                                            </div>
+                                            <small>浮动为用户每次最低加价</small>
+                                        </div>
+
+                                    </div> 
+                                    <div class="am-form-group">
+                                        <label for="pname" class="am-u-sm-3 am-form-label">时间延时</label>
+                                        <div class="am-u-sm-9 on-selshow-con">
+                                            最后
+                                            <input id="steptime" type="number" step="0.1" class="input" size="5" name="data[steptime]" value="{$info.steptime}" required/>
+                                            秒内出价，时间延时
+                                            <input id="deferred" type="number" step="0.1" class="input" size="5" name="data[deferred]" value="{$info.deferred}" required/>
+                                            秒（60秒=1分钟）
+                                        </div>
+                                    </div>
+									
+									
+									<div class="am-form-group">
+									    <label for="pname" class="am-u-sm-3 am-form-label">初始参与人数</label>
+									    <div class="am-u-sm-9">
+									        <input id="caiyu" placeholder="参与人数" type="number" step="0.1" class="input" size="10" name="data[caiyu]" value="{$info.caiyu|default=0}" required/>
+									    </div>
+									</div>
+									<div class="am-form-group">
+									    <label for="pname" class="am-u-sm-3 am-form-label">初始围观次数</label>
+									    <div class="am-u-sm-9">
+									        <input id="clcount" placeholder="围观次数" type="number" step="0.1" class="input" size="10" name="data[clcount]" value="{$info.clcount|default=0}" required/>
+									    </div>
+									</div>
+									<div class="am-form-group">
+									    <label for="pname" class="am-u-sm-3 am-form-label">初始关注数</label>
+									    <div class="am-u-sm-9">
+									        <input id="guanzhu" placeholder="关注数" type="number" step="0.1" class="input" size="10" name="data[guanzhu]" value="{$info.guanzhu|default=0}" required/>
+									    </div>
+									</div>
+									
+									
+                                    <div id="Js-pledgetype-box"></div>
+                                    <div class="am-form-group">
+                                        <input type="hidden" name="data[to]" value="{$info.to}" />
+                                        <input type="hidden" name="data[gid]" value="{$info.gid}" />
+                                        <input type="hidden" name="data[pid]" value="{$info.pid}" />
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <ul class="user-frame am-avg-sm-1">
+                                                 <li>
+                                                    <input type="submit" name="" value="发布拍卖" class="am-btn am-btn-primary tpl-btn-bg-color-success submitBtn">
+                                                 </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<div id="Js-pledgetype-cach" style="display: none;">
+    <div class="am-form-group">
+        <label for="succtype" class="am-u-sm-3 am-form-label">保证金</label>
+        <div class="am-u-sm-9">
+            <label class="am-radio-inline">
+                <input type="radio" name="data[pledge_type]" value="fixation" data-am-ucheck <if condition="($data['pledge_type'] eq '') or ($data['pledge_type'] eq 'fixation')">checked</if>> 定额收取
+            </label>
+            <label class="am-radio-inline">
+                <input type="radio" name="data[pledge_type]" value="ratio" data-am-ucheck <eq name="info.pledge_type" value="ratio">checked</eq>> 起拍价比例收取
+            </label>
+        </div>
+    </div> 
+    <div class="am-form-group">
+        <label id="Js-pledge-label" for="pledge" class="am-u-sm-3 am-form-label">定额收取</label>
+        <div class="am-u-sm-9 on-selshow-box">
+            <div class="on-selshow-con">
+                <span id="Js-pledge-txt"></span>
+                <input id="pledge" type="number" step="0.1" class="input Js-pledge" size="5" name="data[pledge]" value="{$info.pledge}" required/>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="Js-succprice-cach" style="display: none;">
+    <div class="am-form-group Js-succprice-input">
+        <label for="succprice" class="am-u-sm-3 am-form-label">即时成交</label>
+        <div class="am-u-sm-9">
+            <div class="on-selshow-con">
+                成交价<input id="succprice" style="width: 100px;" type="number" step="0.1" class="input" size="6" name="data[succprice]" value="<eq name='info.succprice' value=''>{$info.onset}<else/>{$info.succprice}</eq>" required/>
+            </div>
+            <small>当用户出价等于或大于成交价时，拍卖结束，用户以成交价拍得拍品。</small>
+        </div>
+    </div>
+</div>
+
+<div id="Js-stepratio-cach" style="display: none;">
+    <div class="am-form-group Js-stepratio-input">
+        <label for="pname" class="am-u-sm-3 am-form-label">阶梯浮动</label>
+        <div class="am-u-sm-9">
+             <div class="on-selshow-con">
+                初始浮动额度为
+                <input type="number" step="0.1" class="input" name="data[stepsize_ratio_r]" value="{$info.stepsize_ratio_r}" placeholder="浮动额度" required/>
+                ；当前价大于等于
+                <input type="number" step="0.1" class="input" name="data[stepsize_ratio_s]" value="{$info.stepsize_ratio_s}" placeholder="当前价" required/>
+                后，开始按照单位的百分之
+                <input type="number" step="0.1" class="input" name="data[stepsize_ratio]" value="{$info.stepsize_ratio}" placeholder="比例" required/>
+                规则实行浮动，浮动最高不超过
+                <input type="number" step="0.1" class="input" name="data[stepsize_ratio_t]" value="{$info.stepsize_ratio_t}" placeholder="浮动价" required/>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="Js-stepfixation-cach" style="display: none;">
+    <div class="am-form-group Js-stepfixation-input">
+        <label for="pname" class="am-u-sm-3 am-form-label">定额浮动</label>
+        <div class="am-u-sm-9">
+            <div class="on-selshow-box" id="step_fixation_box">
+                <div class="on-selshow-con">
+                    每次出价固定加价
+                    <input id="stepfixation" type="number" step="0.1" class="input" name="data[step_fixation]" value="{$info.step_fixation}" required/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<eq name="info.to" value="zc">
+<div id="specialfuture-cach" style="display: none;">
+    <notempty name="futureList">
+    <div class="am-form-group Js-special-futureList">
+        <label for="specialfuture" class="am-u-sm-3 am-form-label">选择专场</label>
+        <div class="am-u-sm-9">
+            <select id="specialfuture" calss="Js-group-select" name="data[sid]" required>
+                <volist name="futureList" id="fvo">
+                    <option value="{$fvo.sid}" gpledge="{$fvo.special_pledge_type}" sttime="{$fvo.starttime|date='Y-m-d H:i',###}" edtime="{$fvo.endtime|date='Y-m-d H:i',###}" <eq name="data[sid]" value="fvo.sid">selected="selected"</eq> >{$fvo.sname}</option>
+                </volist>
+            </select>
+        </div>
+    </div>
+    </notempty>
+</div>
+<div id="specialbiding-cach" style="display: none;">
+    <notempty name="bidingList">
+        <div class="am-form-group Js-special-bidingList">
+            <label for="specialbiding" class="am-u-sm-3 am-form-label">选择专场</label>
+            <div class="am-u-sm-9">
+                <select id="specialbiding" calss="Js-group-select" name="data[sid]" required>
+                    <volist name="bidingList" id="fvo">
+                        <option value="{$fvo.sid}" gpledge="{$fvo.special_pledge_type}" sttime="{$fvo.starttime|date='Y-m-d H:i',###}" edtime="{$fvo.endtime|date='Y-m-d H:i',###}" <eq name="data[sid]" value="fvo.sid">selected="selected"</eq> >{$fvo.sname}</option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+    </notempty>
+</div>
+</eq>
+<eq name="info.to" value="pmh">
+<div id="meetingfuture-cach" style="display: none;">
+    <notempty name="futureList">
+    <div class="am-form-group Js-meeting-futureList">
+        <label for="meetingfuture" class="am-u-sm-3 am-form-label">选择拍卖会</label>
+        <div class="am-u-sm-9">
+            <select id="meetingfuture" calss="Js-group-select" name="data[mid]" required>
+                <volist name="futureList" id="fvo">
+                    <option value="{$fvo.mid}" gpledge="{$fvo.meeting_pledge_type}" sttime="{$fvo.starttime|date='Y-m-d H:i',###}" edtime="{$fvo.endtime|date='Y-m-d H:i',###}" <eq name="info.mid" value="fvo.mid">selected="selected"</eq> >{$fvo.mname}</option>
+                </volist>
+            </select>
+        </div>
+    </div>
+    </notempty>
+</div>
+
+
+<div id="meetingbiding-cach" style="display: none;">
+    <notempty name="bidingList">
+        <div class="am-form-group Js-meeting-bidingList">
+            <label for="bidingmeeting" class="am-u-sm-3 am-form-label">选择拍卖会</label>
+            <div class="am-u-sm-9">
+                <select id="bidingmeeting" calss="Js-group-select" name="data[mid]" required>
+                    <volist name="bidingList" id="fvo">
+                        <option value="{$fvo.mid}" gpledge="{$fvo.meeting_pledge_type}" sttime="{$fvo.starttime|date='Y-m-d H:i',###}" edtime="{$fvo.endtime|date='Y-m-d H:i',###}" <eq name="info.mid" value="fvo.mid">selected="selected"</eq> >{$fvo.mname}</option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+    </notempty>
+</div>
+</eq>
+
+<include file="Common:footer_link" />
+<js href="--PUBLIC--/assets/js/jquery.form.js"/>
+<!-- 日期时间插件【 -->
+<link href="--PUBLIC--/datetimepicker/amazeui.datetimepicker.css" rel="stylesheet" type="text/css">
+<js href="--PUBLIC--/datetimepicker/amazeui.datetimepicker.js"/>
+<js href="--PUBLIC--/datetimepicker/locales/amazeui.datetimepicker.zh-CN.js"/>
+<!-- 日期时间插件 -->
+        <script type="text/javascript">
+    var addto = "{$info.to}";
+    var gSelect = '';
+    var start_date = "{$start_date}";
+    $(function(){
+        //为input添加时间插件
+        $('#start_time').datetimepicker({language:  'zh-CN',startDate:start_date,autoclose:true,todayBtn:true,format: 'yyyy-mm-dd hh:ii'});
+        $('#end_time').datetimepicker({language:  'zh-CN',startDate:start_date,autoclose:true,format: 'yyyy-mm-dd hh:ii'});
+        //为input添加插件_end
+    });
+    // 表单提交【
+    var $form = $('#auction_addForm');
+    var $subbtn = $(".submitBtn");
+    $form.validator({
+        submit: function() {
+            var formValidity = this.isFormValid();
+            if (formValidity) {
+                // 验证成功的逻辑
+                $subbtn.button('loading');
+                // 验证成功的逻辑
+                $form.ajaxSubmit({url:document.URL,data:'',type:"POST",
+                    success:function(data, st) {
+                        // 提示框
+                        AMUI.dialog.alert({ title: data.title, content: data.info});
+                        if(data.status==1){
+                            setTimeout(function(){
+                                top.window.location.href = data.url;
+                            },1000);
+                        }else{
+                            $subbtn.button('reset');
+                        }
+                        return false;
+                    }
+                });
+            } else {
+                $subbtn.button('reset');
+            // 验证失败的逻辑
+            }
+        //阻止原生form提交
+        return false;
+        }
+    });
+    // 表单提交】
+    // 专场选择【
+    $(":radio[name='special_radio']").click(function(){
+        spcialcheck($(this));
+     });
+    function spcialcheck(thsiobj){
+        var sRadiobox = $('#Js-special-radiobox');
+        sRadiobox.next('.Js-special-futureList').remove();
+        sRadiobox.next('.Js-special-bidingList').remove();
+        if ($("input[name='special_radio']:checked").val()==1) {
+            $('#Js-group-selectbox').html($('#specialbiding-cach').html());
+        }else{
+            $('#Js-group-selectbox').html($('#specialfuture-cach').html());
+        }
+        var pltype = $('#Js-group-selectbox select').children('option:selected').attr('gpledge');
+        showpledg(pltype);
+
+    }
+    // 专场选择】
+    // 拍卖会选择【
+    $(":radio[name='meeting_radio']").click(function(){
+        meetingcheck();
+     });
+    function meetingcheck(){
+        var mRadiobox = $('#Js-meeting-radiobox');
+        mRadiobox.next('.Js-meeting-futureList').remove();
+        mRadiobox.next('.Js-meeting-bidingList').remove();
+        if ($("input[name='meeting_radio']:checked").val()==1) {
+            $('#Js-group-selectbox').html($('#meetingbiding-cach').html());
+        }else{
+            $('#Js-group-selectbox').html($('#meetingfuture-cach').html());
+        }
+        var pltype = $('#Js-group-selectbox select').children('option:selected').attr('gpledge');
+        showpledg(pltype);
+    }
+    // 拍卖会选择】
+    // 根据发布到的集合不同运行初始化【
+
+    if (addto == 'zc') {
+        spcialcheck();
+    }else if (addto == 'pmh') {
+        meetingcheck();
+    }else if ('js') {
+        showpledg(1);
+        repledge();
+    };
+    // 根据发布到的集合不同运行初始化】
+    // 更新保证金【
+    $('#Js-group-selectbox').on("change",'select',function(){
+        var pltype = $(this).children('option:selected').attr('gpledge');
+        showpledg(pltype);
+    });
+    // 更新保证金
+    // 保证金显示【
+    function showpledg(rhsv){
+        if(rhsv==0){
+            $('#Js-pledgetype-box').html('');
+        }else{
+            $('#Js-pledgetype-box').html($('#Js-pledgetype-cach').html());
+        }
+        repledge();
+    }
+    // 保证金显示】
+    //初始化价格浮动字段【
+    restepsize(); 
+    $(":radio[name='data[stepsize_type]']").click(function(){
+        restepsize();
+     });
+    function restepsize(){
+        $('#Js-stepsize-radiobox').next('.Js-stepfixation-input').remove();
+        $('#Js-stepsize-radiobox').next('.Js-stepratio-input').remove();
+        if ($("input[name='data[stepsize_type]']:checked").val()!=1) {
+            $('#Js-stepsize-radiobox').after($('#Js-stepratio-cach').html());
+        }else{
+            $('#Js-stepsize-radiobox').after($('#Js-stepfixation-cach').html());
+        }
+    }
+    //初始化价格浮动字段】
+    //初始化保证金字段【
+    var  pledge = "{$info.pledge}";
+    var  pledge_ratio = "{$info.pledge_ratio}";
+    var  pledge_fixation = "{$info.pledge_fixation}";
+    repledge();
+    $(document).on('click',':radio[name="data[pledge_type]"]',function(){
+        repledge();
+     });
+    function repledge(){
+        if($("input[name='data[pledge_type]']:checked").val()=='ratio'){
+            $('#Js-pledge-label').html('比例收取');
+            $('#Js-pledge-txt').html('按照起拍比例百分之');
+
+                $('.Js-pledge').val(pledge_ratio);
+
+            
+        }else{
+            $('#Js-pledge-label').html('定额收取');
+            $('#Js-pledge-txt').html('固定收取保证金');
+
+                $('.Js-pledge').val(pledge_fixation);
+
+        }
+    }
+    //初始化保证金字段】
+    // 拍卖模式【
+        typecheck();
+        $(":radio[name='data[type]']").click(function(){
+            typecheck();
+         });
+        function typecheck(){
+            if ($("input[name='data[type]']:checked").val()!=1) {
+                $('#Js-succtype-radiobox').show();
+                $('#Js-stepsize_type0').removeAttr("disabled");
+            }else{
+                $('#Js-succtype-radiobox').hide();
+                if (!$('#Js-succtype1').prop("checked")) {
+                   $('#Js-succtype1').prop("checked",true);                                
+                }
+                succcheck();
+                // 浮动设置
+                if ($('#Js-stepsize_type0').prop("checked")) {
+                   $('#Js-stepsize_type0').prop("checked",false);                                
+                }
+                if (!$('#Js-stepsize_type1').prop("checked")) {
+                   $('#Js-stepsize_type1').prop("checked",true);                                
+                }
+                $('#Js-stepsize_type0').attr("disabled","disabled");
+                restepsize();
+            } 
+        }
+    // 拍卖模式】
+    // 成交模式【
+    succcheck();
+    $(":radio[name='data[succtype]']").click(function(){
+        succcheck();
+     });
+    function succcheck(){
+        $('#Js-succtype-radiobox').next('.Js-succprice-input').remove();
+        if ($("input[name='data[succtype]']:checked").val()==1) {
+            $('#Js-succtype-radiobox').after($('#Js-succprice-cach').html());
+        } 
+    }
+    // 成交模式】
+</script>
+</body>
+</html>

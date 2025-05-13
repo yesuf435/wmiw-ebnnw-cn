@@ -1,0 +1,21 @@
+<!--悬浮搜索框-->
+<script type="text/javascript">
+$(function(){
+$(".Js-public-search").headroom({classes: {initial: "animated",pinned: "searchDown",unpinned: "searchUp"}});
+});
+</script>
+
+<div class="nav white am-cf Js-search-animated Js-public-search">
+    <div class="logo">{:showAdvPosition('logoB','span')}</div>
+    <div class="logoBig">
+        <li class="logoImg">{:showAdvPosition('logoA','span')}</li>
+    </div>
+    <div class="search-bar pr">
+        <a name="index_none_header_sysc" href="#"></a>
+        <form action="{:U('Index/search')}" method='get'>
+            <input id="searchInput" name="keywords" type="text" placeholder="搜索" autocomplete="off">
+            <input id="ai-topsearch" class="submit am-btn" value="搜索" index="1" type="submit">
+        </form>
+    </div>
+</div>
+<div class="clear"></div>

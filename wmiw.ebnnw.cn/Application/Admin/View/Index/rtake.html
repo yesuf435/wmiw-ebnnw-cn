@@ -1,0 +1,108 @@
+<include file="Common:meta" />
+<title>回复提现-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">回复提现</div>
+                            </div>
+
+                            <div class="widget-body am-fr">
+                                <form id="takeForm" class="am-form tpl-form-border-form tpl-form-border-br">
+                                    <div class="am-form-group">
+                                        <label for="summary" class="am-u-sm-3 am-form-label">处理关于</label>
+                                        <div class="am-u-sm-9 am-cf">
+                                            <div class="ushow am-fl">
+                                                <img class="uimg" src="{$info.user.uid|getUserpic=###,2}" alt="" />
+                                                <div class="utxt">账号：{$info.user.account}<br/>昵称：{$info.user.nickname}</div>
+                                            </div>
+                                            <div class="am-fl" style="line-height: 30px;" >提现<strong class="am-text-danger">{$info.money}</strong>的申请</div>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="status" class="am-u-sm-3 am-form-label">回复状态</label>
+                                        <div class="am-u-sm-9">
+                                            <label class="am-radio-inline">
+                                                <input type="radio" name="data[status]" value="1" data-am-ucheck <if condition="$info.status eq 1"> checked</if> /> 已转账
+                                            </label>
+                                            <label class="am-radio-inline">
+                                                <input type="radio" name="data[status]" value="2" data-am-ucheck <if condition="$info.status eq 2"> checked</if> /> 驳回申请
+                                            </label><br/>
+                                            <small>设置已转账会扣除此次冻结用户的保证金。驳回申将解冻用户此次申请金额保证金，并通给用户发送驳回提醒。<br/>
+                                            <strong class="am-text-danger">注意：需要根据用户提交的收款账号手动给用户转账，转账后在进行设置！</strong>
+                                            
+                                            </small>
+                                        </div>
+                                        
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label for="cause" class="am-u-sm-3 am-form-label">备注、原因</label>
+                                        <div class="am-u-sm-9">
+                                            <textarea class="" rows="3" id="cause" name="data[cause]" placeholder="请输入文章内容">{$info.cause}</textarea>
+                                            <small>您回复时候可以填写转账情况和驳回原因</small>
+                                        </div>
+                                        
+                                    </div>
+                                    <input type="hidden" name="data[tid]" value="{$info.tid}" />
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <input type="submit" name="" value="提交" class="am-btn am-btn-primary tpl-btn-bg-color-success submitBtn">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<script type="text/javascript">
+    // 表单提交
+        var $form = $('#takeForm');
+        var $subbtn = $(".submitBtn");
+        $form.validator({
+            submit: function() {
+                var formValidity = this.isFormValid();
+                if (formValidity) {
+                    // 验证成功的逻辑
+                    $subbtn.button('loading');
+                    // 验证成功的逻辑
+                    $form.ajaxSubmit({url:document.URL,data:'',type:"POST",
+                        success:function(data, st) {
+                            // 提示框
+                            AMUI.dialog.alert({ title: data.title, content: data.info});
+                            if(data.status==1){
+                                setTimeout(function(){
+                                    top.window.location.href = data.url;
+                                },1000);
+                            }else{
+                                $subbtn.button('reset');
+                            }
+                            return false;
+                        }
+                    });
+                } else {
+                    $subbtn.button('reset');
+                // 验证失败的逻辑
+                }
+            //阻止原生form提交
+            return false;
+            }
+        });
+</script>
+</body>
+</html>

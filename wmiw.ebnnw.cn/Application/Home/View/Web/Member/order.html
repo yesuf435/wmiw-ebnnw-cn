@@ -1,0 +1,151 @@
+<include file="Common:meta" />
+<title><eq name="rstatus" value="0">订单管理<else/>退货管理</eq>-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/orstyle.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+        <div class="center">
+            <div class="col-main">
+                <div class="main-wrap">
+                    <div class="main-wrap-box">
+                        <div class="user-order">
+                            <!--标题 -->
+                            <div class="am-cf on-user-title">
+                                <div class="am-fl am-cf">
+                                    <eq name="rstatus" value="0">
+                                        <strong class="am-text-danger am-text-lg">订单管理</strong> / <small>Order</small>
+                                    <else/>
+                                        <strong class="am-text-danger am-text-lg">退货管理</strong> / <small>Return goods</small>
+                                    </eq>
+                                </div>
+                            </div>
+                            <div class="am-tabs am-tabs-d2">
+                                <eq name="rstatus" value="0">
+                                    <ul class="am-avg-sm-5 am-tabs-nav am-nav am-nav-tabs">
+                                        <li <eq name="st" value="">class="am-active"</eq>><a  href="{:U($whopage['action'])}">全部</a></li>
+                                        <li <eq name="st" value="0">class="am-active"</eq>><a href="{:U($whopage['action'],array('st'=>0))}">待付款</a></li>
+                                        <li <eq name="st" value="1">class="am-active"</eq>><a href="{:U($whopage['action'],array('st'=>1))}">待发货</a></li>
+                                        <li <eq name="st" value="2">class="am-active"</eq>><a href="{:U($whopage['action'],array('st'=>2))}">待收货</a></li>
+                                        <eq name="whopage.type" value="sel">
+                                            <li <eq name="st" value="4">class="am-active"</eq>><a href="{:U($whopage['action'],array('st'=>4))}">待评价</a></li>
+                                        <else/>
+                                            <li <eq name="st" value="3">class="am-active"</eq>><a href="{:U($whopage['action'],array('st'=>3))}">待评价</a></li>
+                                        </eq>
+                                    </ul>
+                                <!-- 退货订单 -->
+                                <else/>
+                                    <ul class="am-avg-sm-5 am-tabs-nav am-nav am-nav-tabs">
+                                        <li <eq name="st" value="">class="am-active"</eq>><a href="{:U($whopage['action'],array('rstatus'=>1))}">全部退货</a></li>
+                                        <li <eq name="st" value="5">class="am-active"</eq>><a href="{:U($whopage['action'],array('rstatus'=>1,'st'=>5))}">待回复</a></li>
+                                        <!-- <li <eq name="st" value="6">class="am-active"</eq>><a href="{:U($whopage['action'],array('rstatus'=>1,'st'=>7))}">已回复</a></li> -->
+                                        <li <eq name="st" value="7">class="am-active"</eq>><a href="{:U($whopage['action'],array('rstatus'=>1,'st'=>7))}">待发货</a></li>
+                                        <li <eq name="st" value="8">class="am-active"</eq>><a href="{:U($whopage['action'],array('rstatus'=>1,'st'=>8))}">待收货</a></li>
+                                        <li <eq name="st" value="9">class="am-active"</eq>><a href="{:U($whopage['action'],array('rstatus'=>1,'st'=>9))}">已退货</a></li>
+                                        <!-- <li <eq name="st" value="4">class="am-active"</eq>><a href="{:U($whopage['action'],array('rstatus'=>1,'st'=>4))}">待评价</a></li> -->
+                                        <!-- <li <eq name="st" value="10">class="am-active"</eq>><a href="{:U($whopage['action'],array('rstatus'=>1,'st'=>10))}">已互评</a></li> -->
+                                    </ul>
+                                </eq>
+                                <div class="am-tabs-bd">
+                                    <div class="am-tab-panel am-fade am-in am-active">
+                                        <eq name="rstatus" value="0">
+                                            <include file="Member:order_box" />
+                                            <else/>
+                                            <include file="Member:order_return_box" />
+                                        </eq>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--底部-->
+                <include file="Common:footer"/>
+            </div>
+            <eq name="CONTROLLER_NAME" value="Member"><include file="Member:menu"/></eq>
+            <eq name="CONTROLLER_NAME" value="Seller"><include file="Seller:menu"/></eq>
+            
+        </div>
+<div class="am-modal am-modal-prompt" tabindex="-1" id="receipt-prompt">
+    <div class="am-modal-dialog">
+        <div class="am-modal-hd">请输入支付密码</div>
+        <div class="am-modal-bd">
+            <div class="prompt-tips"></div>
+            <input type="text" class="am-modal-prompt-input">
+        </div>
+    <div class="am-modal-footer">
+      <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+      <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+    </div>
+    </div>
+</div>
+<script type="text/javascript">
+var replyLink = "{:U('Member/mysms_reply')}";
+$(function(){
+    // 回复消息【
+    $('#send-prompt-toggle').on('click', function() {
+        sendprompt($(this).attr("sid"));
+    });
+    function sendprompt(sid){
+        $('#send-prompt').modal({
+            relatedTarget: this,
+            onConfirm: function(e) {
+                if (e.data!='') {
+                    $.post(replyLink,{'sid':sid,'content':e.data},function(data){      //ajax后台
+                        if (data.status) {
+                            if (data.url) {
+                                top.window.location.href=data.url;
+                            };
+                        } else {
+                            // 提示框
+                            AMUI.dialog.alert({ title: data.title, content: data.info});
+                        }
+                    },'json'); 
+                }else{
+                    AMUI.dialog.alert({ title: '错误提示', content: '发送内容不能为空！', onConfirm: function() { sendprompt(sid); } }); 
+                }
+            },
+            onCancel: function(e) {}
+        });
+    }
+    // 回复消息】
+});
+
+var receiptUrl = "{:U('Member/receipt')}";
+$(".Js-receipt").click(function(){
+    var order = $(this).attr("order");
+    var role = $(this).attr("role");
+    $('#receipt-prompt .prompt-tips').html('<p>你确定已经收到拍品【<b>'+$(this).attr("pname")+'</b>】吗?</p><p></p>');
+    $('#receipt-prompt').modal({
+      relatedTarget: this,
+      onConfirm: function(e) {
+        alert('你输入的是：' + e.data || '')
+      },
+      onCancel: function(e) {
+        alert('不想说!');
+      }
+    });
+    // popup.confirm('你确认已经收到拍品【<b>'+$(this).attr("pname")+'</b>】吗?','温馨提示',function(action){
+    //     if(action == 'ok'){
+    //         $.post(receiptUrl,{'order':order,'role':role},function(data){      //ajax后台
+    //         if (data.status) {
+    //                 popup.success(data.msg);
+    //                 setTimeout(function(){
+    //                     popup.close("asyncbox_success");
+    //                     top.window.location.href=data.url;
+    //                 },2000);
+    //             } else {
+    //                 alert(data.msg);
+    //             }
+    //         },'json'); 
+    //     }
+    // });
+    return false;
+});
+</script>
+    </body>
+</html>

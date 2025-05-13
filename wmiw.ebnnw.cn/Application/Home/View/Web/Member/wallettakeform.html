@@ -1,0 +1,127 @@
+<include file="Common:meta" />
+<title>提现申请-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/wallet.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+        <div class="center">
+            <div class="col-main">
+                <div class="main-wrap">
+                    <div class="main-wrap-box">
+                        <div class="am-cf on-user-title">
+                            <div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">提现申请</strong> / <small>Withdrawals&nbsp;form</small></div>
+                        </div>
+                        <div class="am-alert am-alert-danger" data-am-alert>
+                            <button type="button" class="am-close">&times;</button>
+                            <p>为了您的提现顺利完成，请仔细填写并检查后在提交！</p>
+                        </div>
+                        <div class="am-u-md-12 am-u-lg-8" style="margin-top: 20px;">
+                            <form id="takeForm" class="am-form am-form-horizontal">
+                                <div class="am-form-group">
+                                    <label for="money" class="am-form-label">取款金额</label>
+                                    <div class="am-form-content">
+                                        <input type="number" min="0" id="money" placeholder="取款金额" name="data[money]" value="{$info.usable}" required>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="bank" class="am-form-label">银行名称</label>
+                                    <div class="am-form-content">
+                                        <input id="bank" placeholder="如：建设银行或支付宝" type="text" name="data[bank]" value="{$info.bank}" required>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="bankhome" class="am-form-label">开户行</label>
+                                    <div class="am-form-content">
+                                        <input id="bankhome" placeholder="如果为支付平台可不填写" type="text" name="data[bankhome]" value="{$info.bankhome}" >
+                                    </div>
+                                </div>
+                                
+                                <div class="am-form-group">
+                                    <label for="name" class="am-form-label">姓名</label>
+                                    <div class="am-form-content">
+                                        <input id="name" placeholder="要求真实不能为空" type="text" name="data[name]" value="{$info.name}" required>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="account" class="am-form-label">账号</label>
+                                    <div class="am-form-content">
+                                        <input id="account" placeholder="账号" type="text" name="data[account]" value="{$info.account}" required>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="remark" class="am-form-label">留言</label>
+                                    <div class="am-form-content">
+                                        <textarea class="" rows="3" id="remark" placeholder="留言" name="data[remark]" maxlength="100">{$info.remark}</textarea>
+                                        <small>100字以内写出要给我们说的话...</small>
+                                    </div>
+                                </div>
+                                <div class="am-form-group formVerifyImg">
+                                    <label for="pwd" class="am-form-label">验证码</label>
+                                    <div class="am-form-content">
+                                        <input class="input vcode" class="input" id="verify_code" name="verify_code" type="number" placeholder="验证码" required />
+                                    <img class="verifyImg" src="{:U('Login/verify_code')}"  title="看不清？单击此处刷新" onclick="this.src+='?rand='+Math.random();" />
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <div class="info-btn">
+                                        <input type="submit" name="" value="提交申请" class="am-btn am-btn-primary am-btn-sm submitBtn">
+                                    </div>
+                                </div>
+                                {__TOKEN__}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!--底部-->
+                <include file="Common:footer"/>
+            </div>
+            <include file="Member:menu"/>
+        </div>
+<js href="--PUBLIC--/assets/js/jquery.form.js"/>
+<script type="text/javascript">
+    $(function(){
+        var $form = $('#takeForm');
+        var $subbtn = $(".submitBtn");
+        $form.validator({
+            submit: function() {
+                var formValidity = this.isFormValid();
+                if (formValidity) {
+                    // 验证成功的逻辑
+                    $subbtn.button('loading');
+                    // 验证成功的逻辑
+                    $form.ajaxSubmit({url:document.URL,data:'',type:"POST",
+                        success:function(data, st) {
+                            // 提示框
+                            AMUI.dialog.alert({ title: data.title, content: data.info});
+                            if(data.status!=1){
+                                $subbtn.button('reset');
+                                // 重置验证码
+                                restVerifyImg();
+                            }
+                            if (data.url) {
+                                setTimeout(function(){
+                                    top.window.location.href = data.url;
+                                },1000);
+                            }
+                            
+                            return false;
+                        }
+                    });
+                } else {
+                    $subbtn.button('reset');
+                    // 重置验证码
+                    restVerifyImg();
+                // 验证失败的逻辑
+                }
+            //阻止原生form提交
+            return false;
+            }
+        });
+    });
+</script>
+    </body>
+</html>

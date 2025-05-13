@@ -1,0 +1,104 @@
+<include file="Common:meta" />
+<title><eq name="type" value="result">快递查询结果<else/>快递接口配置</eq>-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <empty name="type">
+                <div class="container-fluid">
+                    <p class="page-header-description">快递接口及数据来自快递鸟。商户ID、API Key请到<a  style="margin-left: 5px;" href="http://www.kdniao.com/ServiceApply.aspx" target="_blank">快递鸟申请接口</a>；已包括常用快递。</p>
+                </div>
+            </empty>
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl"><eq name="type" value="result">快递查询结果<else/>快递接口配置</eq></div>
+                            </div>
+                            <div class="widget-body am-fr">
+                                <eq name="type" value="result">
+                                    <eq name="ereturn.error_code" value="0">
+                                        <div style="padding: 0px 10px;">
+                                            承运公司：<span class="am-text-warning">{$ereturn.result.company}</span><br/>
+                                            快递单号：<span class="am-text-warning">{$ereturn.result.no}</span>
+                                        </div>
+                                        <div class="am-u-sm-12">
+                                            <table width="100%" id="example-r" class="am-table am-table-compact tpl-table-black " >
+                                                <thead>
+                                                    <tr>
+                                                        <td>时间</td>
+                                                        <td>进度</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <empty name="ereturn.result.list">
+                                                        <tr>
+                                                            <td colspan="20"><strong class="am-text-danger">没有查询到进度</strong></td>
+                                                        </tr>
+                                                    <else/>
+                                                        <volist name="ereturn.result.list" id="tv">
+                                                            <tr id="{$vo.id}">
+                                                                <td>{$tv.datetime}</td>
+                                                                <td>{$tv.remark}</td>
+                                                            </tr>
+                                                        </volist>
+                                                    </empty>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    <else/>
+                                        <div style="padding: 0px 10px;">
+                                            错误描述：<span class="am-text-warning">{$ereturn.reason}</span>
+                                        </div>
+                                    </eq>
+                                <else/>
+                                    <form id="expressConfig" class="am-form tpl-form-border-form tpl-form-border-br" method="post">
+                                        <div class="am-form-group">
+                                            <label for="id" class="am-u-sm-3 am-form-label">选择快递</label>
+                                            <div class="am-u-sm-9">
+                                                <select  name="com" >
+                                                    <option value="">请选择快递</option>
+                                                    <volist name="list" id="vo">
+                                                        <option value="{$vo.no}">{$vo.com}</option>
+                                                    </volist>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="am-form-group">
+                                            <label for="exno" class="am-u-sm-3 am-form-label">快递单号</label>
+                                            <div class="am-u-sm-9">
+                                                <input type="text" class="tpl-form-input" id="exno" name="exno" value="" placeholder="快递单号" required>
+                                            </div>
+                                        </div>
+                                        <div class="am-form-group">
+                                            <div class="am-u-sm-9 am-u-sm-push-3">
+                                                <input type="submit" name="" value="提交" class="am-btn am-btn-primary tpl-btn-bg-color-success submitBtn">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </eq>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+</body>
+</html>
+
+
+
+
+
+
+

@@ -1,0 +1,87 @@
+<include file="Common:meta" />
+<title>广告位列表-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="container-fluid">
+                <p class="page-header-description">注意：此处仅限开发人员添加、编辑，其他人员请勿操作！</p>
+            </div>
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">广告位列表</div>
+                            </div>
+                            <div class="widget-body">
+                                <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                                    <div class="am-form-group">
+                                        <div class="am-btn-toolbar">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <a href="{:U('Advertising/add_position')}" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 添加广告位</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="am-u-sm-12">
+                                    <table width="100%" id="example-r" class="am-table am-table-compact tpl-table-black " >
+                                        <thead>
+                                            <tr>
+                                                <td>广告位(ID)</td>
+                                                <td>名称</td>
+                                                <td>标示</td>
+                                                <td>宽度</td>
+                                                <td>高度</td>
+                                                <td>操作</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <volist name="list" id="vo">
+                                                <tr pid="{$vo.pid}" id="{$vo.cid}">
+                                                    <td>{$vo.id}</td>
+                                                    <td>{$vo.name}</td>
+                                                    <td>{$vo.tagname}</td>
+                                                    <td>{$vo.width}</td>
+                                                    <td>{$vo.height}</td>
+                                                    <td>
+                                                    <td>
+                                                        <div class="tpl-table-black-operation">
+                                                            <a href="{:U('Advertising/edit_position',array('id'=>$vo['id']))}"><i class="am-icon-pencil"></i>编辑</a>
+                                                            <a  href="javascript:void(0)" link="{:U('Advertising/del_position',array('id'=>$vo['id']))}" name="{$vo.name}" class="tpl-table-black-operation-del Js-del"><i class="am-icon-trash-o"></i>删除</a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </volist>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<script type="text/javascript">
+    $(function(){
+        $(function(){
+        $(".Js-del").click(function(){
+            var delLink=$(this).attr("link");
+            AMUI.dialog.confirm({ title: '温馨提示', content:'你真的打算删除【<b>'+$(this).attr("name")+'</b>】吗?', onConfirm: function() {
+                top.window.location.href=delLink;
+            }, onCancel: function() { console.log('onCancel') } });
+            return false;
+        });
+    });
+    });
+</script>
+</body>
+</html>

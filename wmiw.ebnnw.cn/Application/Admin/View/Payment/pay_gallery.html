@@ -1,0 +1,492 @@
+<include file="Common:meta" />
+<title>BeeCloud支付配置-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="container-fluid">
+                <p class="page-header-description">
+                    支付简介：本系统集成了<a target="_blank" href="https://beecloud.cn">BeeCloud</a>支付云服务工具，该工具目前整合了以下支付平台。请注册<a target="_blank" href="https://beecloud.cn">BeeCloud</a>认证后设置相应支付接口。<br/>
+                    支付渠道代申请：标准的申请流程，专业高效。并提供参数设置等一站式服务；严格的用户数据保护制度与管控确保用户资料安全；节省渠道开户费用（银联等渠道）节省时间和精力<br/>
+                    注：beecloud仅为对接支付接口的工具，资金不从该平台经过。无需考虑资金安全问题。<br/>
+                </p>
+            </div>
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">BeeCloud支付配置</div>
+                            </div>
+
+                            <div class="widget-body am-fr">
+                                <form id="rechargeableForm" class="am-form tpl-form-border-form tpl-form-border-br">
+                                    <div class="am-form-group">
+                                        <label for="app_id" class="am-u-sm-3 am-form-label">APP ID</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="app_id" name="payment[app_id]" value="{$payment.app_id}" placeholder="请输入APP ID">
+                                            <small>beecloud平台的APP ID</small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="appSecret" class="am-u-sm-3 am-form-label">APP Secret</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="appSecret" name="payment[appSecret]" value="{$payment.appSecret}" placeholder="请输入生成数量">
+                                            <small>beecloud平台的APP SECRET</small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="masterSecret" class="am-u-sm-3 am-form-label">MASTER SECRET</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="masterSecret" name="payment[masterSecret]" value="{$payment.masterSecret}" placeholder="请输入MASTER SECRET">
+                                            <small>beecloud平台的MASTER SECRET</small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="testSecret" class="am-u-sm-3 am-form-label">TEST SECRET</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="testSecret" name="payment[testSecret]" value="{$payment.testSecret}" placeholder="请输入TEST SECRET">
+                                            <small>beecloud平台的TEST SECRET, for sandbox</small>
+                                        </div>
+                                    </div> 
+                                    <div class="am-form-group">
+                                        <label for="testSecret" class="am-u-sm-3 am-form-label">Webhook URL</label>
+                                        <div class="am-u-sm-9">
+                                            <small><span class="am-text-danger">{$webhookurl}</span>  (复制该地址到<a target="_blank" href="https://beecloud.cn">BeeCloud</a>所添加项目的Webhook URL中，需要在公网内测试。)</small>
+                                        </div>
+                                    </div> 
+                                    <div class="am-form-group">
+                                        <label for="testSecret" class="am-u-sm-3 am-form-label">支付平台</label>
+                                        <div class="am-u-sm-9">
+                                            <ul class="payicobox am-cf">
+                                                <li>
+                                                    <div class="radiobox">
+                                                        <img src="./Public/Img/Payico/ALI_WEB.png">
+                                                        <div class="radio">
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][ALI_WEB][status]" value="0" data-am-ucheck <if condition="$payment['list']['ALI_WEB']['status'] eq 0"> checked</if> /> 禁用</label>
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][ALI_WEB][status]" value="1" data-am-ucheck <if condition="$payment['list']['ALI_WEB']['status'] eq 1"> checked</if> /> 开启</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="txt">
+                                                    <input type="hidden" name="payment[list][ALI_WEB][arena]" value="pc" />
+                                                    <input type="hidden" name="payment[list][ALI_WEB][img]" value="./Public/Img/Payico/ALI_WEB.png" />
+                                                    <input type="hidden" name="payment[list][ALI_WEB][chname]" value="支付宝(PC即时到账支付)" />
+                                                        支付宝(PC即时到账支付)
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="radiobox">
+                                                        <img src="./Public/Img/Payico/ALI_WAP.png">
+                                                        <div class="radio">
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][ALI_WAP][status]" value="0" data-am-ucheck <if condition="$payment['list']['ALI_WAP']['status'] eq 0"> checked</if> /> 禁用</label>
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][ALI_WAP][status]" value="1" data-am-ucheck <if condition="$payment['list']['ALI_WAP']['status'] eq 1"> checked</if> /> 开启</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="txt">
+                                                    <input type="hidden" name="payment[list][ALI_WAP][arena]" value="wap" />
+                                                    <input type="hidden" name="payment[list][ALI_WAP][img]" value="./Public/Img/Payico/ALI_WEB.png" />
+                                                    <input type="hidden" name="payment[list][ALI_WAP][chname]" value="支付宝(移动网页支付)" />
+                                                        支付宝(移动网页支付)
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="radiobox">
+                                                        <img src="./Public/Img/Payico/ALI_QRCODE.png">
+                                                        <div class="radio">
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][ALI_QRCODE][status]" value="0" data-am-ucheck <if condition="$payment['list']['ALI_QRCODE']['status'] eq 0"> checked</if> /> 禁用</label>
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][ALI_QRCODE][status]" value="1" data-am-ucheck <if condition="$payment['list']['ALI_QRCODE']['status'] eq 1"> checked</if> /> 开启</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="txt">
+                                                    <input type="hidden" name="payment[list][ALI_QRCODE][arena]" value="all" />
+                                                    <input type="hidden" name="payment[list][ALI_QRCODE][img]" value="./Public/Img/Payico/ALI_QRCODE.png" />
+                                                    <input type="hidden" name="payment[list][ALI_QRCODE][chname]" value="支付宝(扫码支付)" />
+                                                        支付宝(扫码支付)
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="radiobox">
+                                                        <img src="./Public/Img/Payico/WX_NATIVE.png">
+                                                        <div class="radio">
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][WX_NATIVE][status]" value="0" data-am-ucheck <if condition="$payment['list']['WX_NATIVE']['status'] eq 0"> checked</if> /> 禁用</label>
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][WX_NATIVE][status]" value="1" data-am-ucheck <if condition="$payment['list']['WX_NATIVE']['status'] eq 1"> checked</if> /> 开启</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="txt">
+                                                    <input type="hidden" name="payment[list][WX_NATIVE][arena]" value="all" />
+                                                    <input type="hidden" name="payment[list][WX_NATIVE][img]" value="./Public/Img/Payico/WX_NATIVE.png" />
+                                                    <input type="hidden" name="payment[list][WX_NATIVE][chname]" value="微信(扫码支付)" />
+                                                        微信(扫码支付)
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="radiobox">
+                                                        <img src="./Public/Img/Payico/WX_JSAPI.png">
+                                                        <div class="radio">
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][WX_JSAPI][status]" value="0" data-am-ucheck <if condition="$payment['list']['WX_JSAPI']['status'] eq 0"> checked</if> /> 禁用</label>
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][WX_JSAPI][status]" value="1" data-am-ucheck <if condition="$payment['list']['WX_JSAPI']['status'] eq 1"> checked</if> /> 开启</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="txt">
+                                                    <input type="hidden" name="payment[list][WX_JSAPI][arena]" value="jsapi" />
+                                                    <input type="hidden" name="payment[list][WX_JSAPI][img]" value="./Public/Img/Payico/WX_JSAPI.png" />
+                                                    <input type="hidden" name="payment[list][WX_JSAPI][chname]" value="微信(公众号支付)" />
+                                                        微信(公众号支付)注：微信浏览器打开
+                                                    </div>
+                                                </li>
+                                                
+                                                
+                                                <li>
+                                                    <div class="radiobox">
+                                                        <img src="./Public/Img/Payico/JD_WEB.png">
+                                                        <div class="radio">
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][JD_WEB][status]" value="0" data-am-ucheck <if condition="$payment['list']['JD_WEB']['status'] eq 0"> checked</if> /> 禁用</label>
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][JD_WEB][status]" value="1" data-am-ucheck <if condition="$payment['list']['JD_WEB']['status'] eq 1"> checked</if> /> 开启</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="txt">
+                                                    <input type="hidden" name="payment[list][JD_WEB][arena]" value="pc" />
+                                                    <input type="hidden" name="payment[list][JD_WEB][img]" value="./Public/Img/Payico/JD_WEB.png" />
+                                                    <input type="hidden" name="payment[list][JD_WEB][chname]" value="京东(PC网页支付)" />
+                                                        京东(PC网页支付)
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="radiobox">
+                                                        <img src="./Public/Img/Payico/JD_WAP.png">
+                                                        <div class="radio">
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][JD_WAP][status]" value="0" data-am-ucheck <if condition="$payment['list']['JD_WAP']['status'] eq 0"> checked</if> /> 禁用</label>
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][JD_WAP][status]" value="1" data-am-ucheck <if condition="$payment['list']['JD_WAP']['status'] eq 1"> checked</if> /> 开启</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="txt">
+                                                    <input type="hidden" name="payment[list][JD_WAP][arena]" value="wap" />
+                                                    <input type="hidden" name="payment[list][JD_WAP][img]" value="./Public/Img/Payico/JD_WAP.png" />
+                                                    <input type="hidden" name="payment[list][JD_WAP][chname]" value="京东(移动网页支付)" />
+                                                        京东(移动网页支付)
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="radiobox">
+                                                        <img src="./Public/Img/Payico/BD_WEB.png">
+                                                        <div class="radio">
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][BD_WEB][status]" value="0" data-am-ucheck <if condition="$payment['list']['BD_WEB']['status'] eq 0"> checked</if> /> 禁用</label>
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][BD_WEB][status]" value="1" data-am-ucheck <if condition="$payment['list']['BD_WEB']['status'] eq 1"> checked</if> /> 开启</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="txt">
+                                                    <input type="hidden" name="payment[list][BD_WEB][arena]" value="pc" />
+                                                    <input type="hidden" name="payment[list][BD_WEB][img]" value="./Public/Img/Payico/BD_WEB.png" />
+                                                    <input type="hidden" name="payment[list][BD_WEB][chname]" value="百度(PC网页支付)" />
+                                                        百度(PC网页支付)
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="radiobox">
+                                                        <img src="./Public/Img/Payico/BD_WAP.png">
+                                                        <div class="radio">
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][BD_WAP][status]" value="0" data-am-ucheck <if condition="$payment['list']['BD_WAP']['status'] eq 0"> checked</if> /> 禁用</label>
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][BD_WAP][status]" value="1" data-am-ucheck <if condition="$payment['list']['BD_WAP']['status'] eq 1"> checked</if> /> 开启</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="txt">
+                                                    <input type="hidden" name="payment[list][BD_WAP][arena]" value="wap" />
+                                                    <input type="hidden" name="payment[list][BD_WAP][img]" value="./Public/Img/Payico/BD_WAP.png" />
+                                                    <input type="hidden" name="payment[list][BD_WAP][chname]" value="百度(移动网页支付)" />
+                                                        百度(移动网页支付)
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="radiobox">
+                                                        <img src="./Public/Img/Payico/PAYPAL_PAYPAL.png">
+                                                        <div class="radio">
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][PAYPAL_PAYPAL][status]" value="0" data-am-ucheck <if condition="$payment['list']['PAYPAL_PAYPAL']['status'] eq 0"> checked</if> /> 禁用</label>
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][PAYPAL_PAYPAL][status]" value="1" data-am-ucheck <if condition="$payment['list']['PAYPAL_PAYPAL']['status'] eq 1"> checked</if> /> 开启</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="txt">
+                                                    <input type="hidden" name="payment[list][PAYPAL_PAYPAL][arena]" value="pc" />
+                                                    <input type="hidden" name="payment[list][PAYPAL_PAYPAL][img]" value="./Public/Img/Payico/PAYPAL_PAYPAL.png" />
+                                                    <input type="hidden" name="payment[list][PAYPAL_PAYPAL][chname]" value="PayPal支付" />
+                                                        PayPal支付
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="radiobox">
+                                                        <img src="./Public/Img/Payico/YEE_WEB.png">
+                                                        <div class="radio">
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][YEE_WEB][status]" value="0" data-am-ucheck <if condition="$payment['list']['YEE_WEB']['status'] eq 0"> checked</if> /> 禁用</label>
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][YEE_WEB][status]" value="1" data-am-ucheck <if condition="$payment['list']['YEE_WEB']['status'] eq 1"> checked</if> /> 开启</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="txt">
+                                                    <input type="hidden" name="payment[list][YEE_WEB][arena]" value="pc" />
+                                                    <input type="hidden" name="payment[list][YEE_WEB][img]" value="./Public/Img/Payico/YEE_WEB.png" />
+                                                    <input type="hidden" name="payment[list][YEE_WEB][chname]" value="易宝(PC网页支付)" />
+                                                        易宝(PC网页支付)
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="radiobox">
+                                                        <img src="./Public/Img/Payico/YEE_WAP.png">
+                                                        <div class="radio">
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][YEE_WAP][status]" value="0" data-am-ucheck <if condition="$payment['list']['YEE_WAP']['status'] eq 0"> checked</if> /> 禁用</label>
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][YEE_WAP][status]" value="1" data-am-ucheck <if condition="$payment['list']['YEE_WAP']['status'] eq 1"> checked</if> /> 开启</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="txt">
+                                                    <input type="hidden" name="payment[list][YEE_WAP][arena]" value="wap" />
+                                                    <input type="hidden" name="payment[list][YEE_WAP][img]" value="./Public/Img/Payico/YEE_WAP.png" />
+                                                    <input type="hidden" name="payment[list][YEE_WAP][chname]" value="易宝(移动网页支付)" />
+                                                        易宝(移动网页支付)
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="radiobox">
+                                                        <img src="./Public/Img/Payico/YEE_NOBANKCARD.png">
+                                                        <div class="radio">
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][YEE_NOBANKCARD][status]" value="0" data-am-ucheck <if condition="$payment['list']['YEE_NOBANKCARD']['status'] eq 0"> checked</if> /> 禁用</label>
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][YEE_NOBANKCARD][status]" value="1" data-am-ucheck <if condition="$payment['list']['YEE_NOBANKCARD']['status'] eq 1"> checked</if> /> 开启</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="txt">
+                                                    <input type="hidden" name="payment[list][YEE_NOBANKCARD][arena]" value="wap" />
+                                                    <input type="hidden" name="payment[list][YEE_NOBANKCARD][img]" value="./Public/Img/Payico/YEE_NOBANKCARD.png" />
+                                                    <input type="hidden" name="payment[list][YEE_NOBANKCARD][chname]" value="易宝(点卡支付)" />
+                                                        易宝(点卡支付)
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="radiobox">
+                                                        <img src="./Public/Img/Payico/UN_WEB.png">
+                                                        <div class="radio">
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][UN_WEB][status]" value="0" data-am-ucheck <if condition="$payment['list']['UN_WEB']['status'] eq 0"> checked</if> /> 禁用</label>
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][UN_WEB][status]" value="1" data-am-ucheck <if condition="$payment['list']['UN_WEB']['status'] eq 1"> checked</if> /> 开启</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="txt">
+                                                    <input type="hidden" name="payment[list][UN_WEB][arena]" value="pc" />
+                                                    <input type="hidden" name="payment[list][UN_WEB][img]" value="./Public/Img/Payico/UN_WEB.png" />
+                                                    <input type="hidden" name="payment[list][UN_WEB][chname]" value="银联(PC网页收银台)" />
+                                                        银联(PC网页收银台)
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="radiobox">
+                                                        <img src="./Public/Img/Payico/UN_WAP.png">
+                                                        <div class="radio">
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][UN_WAP][status]" value="0" data-am-ucheck <if condition="$payment['list']['UN_WAP']['status'] eq 0"> checked</if> /> 禁用</label>
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][UN_WAP][status]" value="1" data-am-ucheck <if condition="$payment['list']['UN_WAP']['status'] eq 1"> checked</if> /> 开启</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="txt">
+                                                    <input type="hidden" name="payment[list][UN_WAP][arena]" value="wap" />
+                                                    <input type="hidden" name="payment[list][UN_WAP][img]" value="./Public/Img/Payico/UN_WAP.png" />
+                                                    <input type="hidden" name="payment[list][UN_WAP][chname]" value="联通(移动网页支付)" />
+                                                        联通(移动网页支付)
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="radiobox">
+                                                        <img src="./Public/Img/Payico/BC_GATEWAY.png">
+                                                        <div class="radio">
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][BC_GATEWAY][status]" value="0" data-am-ucheck <if condition="$payment['list']['BC_GATEWAY']['status'] eq 0"> checked</if> /> 禁用</label>
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][BC_GATEWAY][status]" value="1" data-am-ucheck <if condition="$payment['list']['BC_GATEWAY']['status'] eq 1"> checked</if> /> 开启</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="txt">
+                                                    <input type="hidden" name="payment[list][BC_GATEWAY][arena]" value="pc" />
+                                                    <input type="hidden" name="payment[list][BC_GATEWAY][img]" value="./Public/Img/Payico/BC_GATEWAY.png" />
+                                                    <input type="hidden" name="payment[list][BC_GATEWAY][chname]" value="BeeCloud网关支付" />
+                                                        BeeCloud网关支付
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="radiobox">
+                                                        <img src="./Public/Img/Payico/BC_EXPRESS.png">
+                                                        <div class="radio">
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][BC_EXPRESS][status]" value="0" data-am-ucheck <if condition="$payment['list']['BC_EXPRESS']['status'] eq 0"> checked</if> /> 禁用</label>
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][BC_EXPRESS][status]" value="1" data-am-ucheck <if condition="$payment['list']['BC_EXPRESS']['status'] eq 1"> checked</if> /> 开启</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="txt">
+                                                    <input type="hidden" name="payment[list][BC_EXPRESS][arena]" value="pc" />
+                                                    <input type="hidden" name="payment[list][BC_EXPRESS][img]" value="./Public/Img/Payico/BC_EXPRESS.png" />
+                                                    <input type="hidden" name="payment[list][BC_EXPRESS][chname]" value="BeeCloud快捷支付" />
+                                                        BeeCloud快捷支付
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="radiobox">
+                                                        <img src="./Public/Img/Payico/BC_WX_JSAPI.png">
+                                                        <div class="radio">
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][BC_WX_JSAPI][status]" value="0" data-am-ucheck <if condition="$payment['list']['BC_WX_JSAPI']['status'] eq 0"> checked</if> /> 禁用</label>
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][BC_WX_JSAPI][status]" value="1" data-am-ucheck <if condition="$payment['list']['BC_WX_JSAPI']['status'] eq 1"> checked</if> /> 开启</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="txt">
+                                                    <input type="hidden" name="payment[list][BC_WX_JSAPI][arena]" value="jsapi" />
+                                                    <input type="hidden" name="payment[list][BC_WX_JSAPI][img]" value="./Public/Img/Payico/BC_WX_JSAPI.png" />
+                                                    <input type="hidden" name="payment[list][BC_WX_JSAPI][chname]" value="BeeCloud微信支付" />
+                                                        BeeCloud微信支付
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="radiobox">
+                                                        <img src="./Public/Img/Payico/BC_WX_WAP.png">
+                                                        <div class="radio">
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][BC_WX_WAP][status]" value="0" data-am-ucheck <if condition="$payment['list']['BC_WX_WAP']['status'] eq 0"> checked</if> /> 禁用</label>
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][BC_WX_WAP][status]" value="1" data-am-ucheck <if condition="$payment['list']['BC_WX_WAP']['status'] eq 1"> checked</if> /> 开启</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="txt">
+                                                    <input type="hidden" name="payment[list][BC_WX_WAP][arena]" value="wap" />
+                                                    <input type="hidden" name="payment[list][BC_WX_WAP][img]" value="./Public/Img/Payico/BC_WX_WAP.png" />
+                                                    <input type="hidden" name="payment[list][BC_WX_WAP][chname]" value="BeeCloud微信移动网页支付" />
+                                                        BeeCloud微信移动网页支付
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="radiobox">
+                                                        <img src="./Public/Img/Payico/BC_NATIVE.png">
+                                                        <div class="radio">
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][BC_NATIVE][status]" value="0" data-am-ucheck <if condition="$payment['list']['BC_NATIVE']['status'] eq 0"> checked</if> /> 禁用</label>
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][BC_NATIVE][status]" value="1" data-am-ucheck <if condition="$payment['list']['BC_NATIVE']['status'] eq 1"> checked</if> /> 开启</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="txt">
+                                                    <input type="hidden" name="payment[list][BC_NATIVE][arena]" value="pc" />
+                                                    <input type="hidden" name="payment[list][BC_NATIVE][img]" value="./Public/Img/Payico/BC_NATIVE.png" />
+                                                    <input type="hidden" name="payment[list][BC_NATIVE][chname]" value="BeeCloud微信扫码支付" />
+                                                        BeeCloud微信扫码支付
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="radiobox">
+                                                        <img src="./Public/Img/Payico/BC_WX_SCAN.png">
+                                                        <div class="radio">
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][BC_WX_SCAN][status]" value="0" data-am-ucheck <if condition="$payment['list']['BC_WX_SCAN']['status'] eq 0"> checked</if> /> 禁用</label>
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][BC_WX_SCAN][status]" value="1" data-am-ucheck <if condition="$payment['list']['BC_WX_SCAN']['status'] eq 1"> checked</if> /> 开启</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="txt">
+                                                    <input type="hidden" name="payment[list][BC_WX_SCAN][arena]" value="pc" />
+                                                    <input type="hidden" name="payment[list][BC_WX_SCAN][img]" value="./Public/Img/Payico/BC_WX_SCAN.png" />
+                                                    <input type="hidden" name="payment[list][BC_WX_SCAN][chname]" value="BeeCloud微信刷卡支付" />
+                                                        BeeCloud微信刷卡支付
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="radiobox">
+                                                        <img src="./Public/Img/Payico/BC_ALI_QRCODE.png">
+                                                        <div class="radio">
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][BC_ALI_QRCODE][status]" value="0" data-am-ucheck <if condition="$payment['list']['BC_ALI_QRCODE']['status'] eq 0"> checked</if> /> 禁用</label>
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][BC_ALI_QRCODE][status]" value="1" data-am-ucheck <if condition="$payment['list']['BC_ALI_QRCODE']['status'] eq 1"> checked</if> /> 开启</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="txt">
+                                                    <input type="hidden" name="payment[list][BC_ALI_QRCODE][arena]" value="pc" />
+                                                    <input type="hidden" name="payment[list][BC_ALI_QRCODE][img]" value="./Public/Img/Payico/BC_ALI_QRCODE.png" />
+                                                    <input type="hidden" name="payment[list][BC_ALI_QRCODE][chname]" value="BeeCloud支付宝扫码支付" />
+                                                        BeeCloud支付宝扫码支付
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="radiobox">
+                                                        <img src="./Public/Img/Payico/BC_ALI_SCAN.png">
+                                                        <div class="radio">
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][BC_ALI_SCAN][status]" value="0" data-am-ucheck <if condition="$payment['list']['BC_ALI_SCAN']['status'] eq 0"> checked</if> /> 禁用</label>
+                                                            <label class="am-checkbox am-secondary"><input type="radio" name="payment[list][BC_ALI_SCAN][status]" value="1" data-am-ucheck <if condition="$payment['list']['BC_ALI_SCAN']['status'] eq 1"> checked</if> /> 开启</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="txt">
+                                                    <input type="hidden" name="payment[list][BC_ALI_SCAN][arena]" value="pc" />
+                                                    <input type="hidden" name="payment[list][BC_ALI_SCAN][img]" value="./Public/Img/Payico/BC_ALI_SCAN.png" />
+                                                    <input type="hidden" name="payment[list][BC_ALI_SCAN][chname]" value="BeeCloud支付宝刷卡支付" />
+                                                        BeeCloud支付宝刷卡支付
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            <small>启用相应接口请确定您已在<a target="_blank" href="https://beecloud.cn">BeeCloud</a>中设置相应接口，如未在<a target="_blank" href="https://beecloud.cn">BeeCloud</a>设置相应接口请设置为禁用！</small>
+                                        </div>
+                                    </div> 
+                                    <div class="am-form-group">
+                                        <label for="identity_id" class="am-u-sm-3 am-form-label">易宝支付</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="identity_id" name="payment[identity_id]" value="{$payment.identity_id}" placeholder="请输入TEST SECRET">
+                                            <small>50位以内数字和/或字母组合，易宝移动网页（一键）支付用户唯一标识符，用于绑定用户一键支付的银行卡信息</small>
+                                        </div>
+                                    </div> 
+                                    <div class="am-form-group">
+                                        <label for="identity_id" class="am-u-sm-3 am-form-label">疑问和解决</label>
+                                        <div class="am-u-sm-9">
+                                            <small>【微信支付】请到【微信公众平台】->【微信支付】->【开发配置】->【支付授权目录】设置为：{$weixinurl}</small><br/>
+                                            <small>【微信公众号支付】请修改网站文件【\ThinkPHP\Library\Vendor\beecloud\WxPay\WxPay.pub.config.php】下的APPID、MCHID、KEY、APPSECRET为您的微信平台对应值</small><br/>
+                                            <small>【易宝支付】请到易宝控制台设置通知地址为：https://apidynamic.beecloud.cn/1/pay/callback/yeeWeb</small><br/>如有疑问请联系客服协助您解决！
+                                        </div>
+                                    </div> 
+
+
+
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <input type="submit" name="" value="提交" class="am-btn am-btn-primary tpl-btn-bg-color-success submitBtn">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<!-- 日期时间插件【 -->
+<link href="--PUBLIC--/datetimepicker/amazeui.datetimepicker.css" rel="stylesheet" type="text/css">
+<js href="--PUBLIC--/datetimepicker/amazeui.datetimepicker.js"/>
+<js href="--PUBLIC--/datetimepicker/locales/amazeui.datetimepicker.zh-CN.js"/>
+<!-- 日期时间插件 -->
+<script type="text/javascript">
+    $('#pasttime').datetimepicker({language:  'zh-CN',format: 'yyyy-mm-dd hh:ii'});
+    // 表单提交
+        var $form = $('#rechargeableForm');
+        var $subbtn = $(".submitBtn");
+        $form.validator({
+            submit: function() {
+                var formValidity = this.isFormValid();
+                if (formValidity) {
+                    // 验证成功的逻辑
+                    $subbtn.button('loading');
+                    // 验证成功的逻辑
+                    $form.ajaxSubmit({url:document.URL,data:'',type:"POST",
+                        success:function(data, st) {
+                            // 提示框
+                            AMUI.dialog.alert({ title: data.title, content: data.info});
+                            if(data.status==1){
+                                setTimeout(function(){
+                                    top.window.location.href = data.url;
+                                },1000);
+                            }else{
+                                $subbtn.button('reset');
+                            }
+                            return false;
+                        }
+                    });
+                } else {
+                    $subbtn.button('reset');
+                // 验证失败的逻辑
+                }
+            //阻止原生form提交
+            return false;
+            }
+        });
+</script>
+</body>
+</html>

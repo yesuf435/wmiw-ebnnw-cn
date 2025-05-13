@@ -1,0 +1,28 @@
+.on-user-list{}
+.on-user-list .on-user-box{ border: 1px solid #f1f1f1; background-color: #fff;
+    margin: 3px;
+    overflow: hidden;
+    }
+
+.user-info{    position: relative;
+    padding: 5px 5px 0;
+    display: block;
+    color: #333;}
+.user-info img{ width: 60px; }
+.user-info .on-user-con{margin-bottom: 5px;
+    padding: 5px 5px 0 70px;
+    position: absolute;
+    top: 0;}
+.user-info .on-user-con .user-nickname{ font-weight: bold;}
+.user-info .on-user-con .user-intr{ height: 36px; font-size: 12px;
+    overflow: hidden;}
+.user-action { 
+    border-top: 1px solid #f1f1f1;
+    margin-top: 5px;
+    text-align: center;}
+.user-action li:first-child
+{border-right: solid 1px #f1f1f1;}
+.user-action a{padding-bottom: 3px; color: #666;background-color: #f9f9f9; display: block;}
+.user-action a:hover{padding-bottom: 3px; color: #333;background-color: #f1f1f1;}
+.user-action  i{ font-size: 14px;
+    margin-right: 3px;}

@@ -1,0 +1,240 @@
+<include file="Common:meta" />
+<title><eq name="ACTION_NAME" value="meeting_add">添加拍卖会</eq><eq name="ACTION_NAME" value="meeting_edit">编辑拍卖会</eq>-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/filtstyle.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+<div class="center">
+    <div class="col-main">
+        <div class="main-wrap">
+            <div class="main-wrap-box" >
+                    <!--标题 -->
+                    <div class="am-cf on-user-title">
+                        <div class="am-fl am-cf">
+                            <empty name="pid">
+                                <eq name="ACTION_NAME" value="meeting_edit"><strong class="am-text-danger am-text-lg">编辑拍卖会</strong> / <small>Edit&nbsp;Meeting</small></eq>
+                                <eq name="ACTION_NAME" value="meeting_add"><strong class="am-text-danger am-text-lg">添加拍卖会</strong> / <small>Add&nbsp;Meeting</small></eq>
+                            <else/>
+                                <eq name="ACTION_NAME" value="auction_edit"><strong class="am-text-danger am-text-lg">编辑拍卖</strong> / <small>Edit&nbsp;Auction</small></eq>
+                                <eq name="ACTION_NAME" value="meeting_edit"><strong class="am-text-danger am-text-lg">编辑拍卖会</strong> / <small>Edit&nbsp;Meeting</small></eq>
+                            </empty>
+                        </div>
+                    </div>
+                    <div class="am-alert am-alert-danger" data-am-alert>
+                        <button type="button" class="am-close">&times;</button>
+                        <p>没有拍品的拍卖会不会展现给用户！发布过拍卖会后请尽快填充拍品！</p>
+                    </div>
+                    <div class="meeting_add">
+                        <form id="meeting_addForm" class="am-form am-form-horizontal">
+                            <div class="am-form-group">
+                                <label for="mname" class="am-form-label">名称</label>
+                                <div class="am-form-content">
+                                    <input id="mname" type="text" placeholder="拍卖会名称" name="data[mname]" value="{$info.mname}" minlength="3" maxlength="20" required/>
+                                </div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="description" class="am-form-label">描述</label>
+                                <div class="am-form-content">
+                                    <textarea id="description" placeholder="拍卖会描述" name="data[description]" required>{$info.description}</textarea>
+                                </div>
+                            </div>
+
+                            
+                            <if condition="!$edit">
+                                <div class="am-form-group">
+                                    <label for="start_time" class="am-form-label">开始时间</label>
+                                    <div class="am-form-content">
+                                        <div class="am-input-group date">
+                                          <input id="start_time" placeholder="开始时间" type="text" class="am-form-field" name="data[starttime]" value="<neq name='info.starttime' value=''>{$info.starttime|date='Y-m-d H:i',###}<else/>{$start_date}</neq>" readonly required/>
+                                          <span class="am-input-group-label add-on"><i class="icon-th am-icon-calendar"></i></span>
+                                        </div>
+                                        <div class="on-form-tips">开始时间必须大于当前时间</div>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="losetime" class="am-form-label">流拍时间</label>
+                                    <div class="am-form-content">
+                                        <input id="losetime" placeholder="单品流拍时间" type="number" class="am-form-field" name="data[losetime]" value="{$info.losetime}" required/>
+                                        <div class="on-form-tips">指拍品开始到无人出价结束的展示时间，如有人出价拍品进入拍卖时间！以秒为单位，60秒=1分钟</div>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="intervaltime" class="am-form-label">间隔时间</label>
+                                    <div class="am-form-content">
+                                        <input id="intervaltime" placeholder="拍品间隔时间" type="number" class="am-form-field" name="data[intervaltime]" value="{$info.intervaltime}" required/>
+                                        
+                                        <div class="on-form-tips">指一件拍品结束后间隔多长时间进入下一个拍品。以秒为单位，60秒=1分钟</div>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="bidtime" class="am-form-label">拍卖时间</label>
+                                    <div class="am-form-content">
+                                        <input id="bidtime" placeholder="单品拍卖时间" type="number" class="am-form-field" name="data[bidtime]" value="{$info.bidtime}" required/>
+                                        <div class="on-form-tips">指单个拍品从开始到结束的时间，会根据拍品延时触发动态结束改变时间！以秒为单位，60秒=1分钟</div>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="meeting_pledge_type" class="am-form-label">保证金</label>
+                                    <div class="am-form-content">
+                                            <label class="am-radio-inline">
+                                                <input id="type1" type="radio" name="data[meeting_pledge_type]" value="0" data-am-ucheck <neq name="info.meeting_pledge_type" value="1">checked</neq>> 拍卖会收取
+                                            </label>
+                                            <label class="am-radio-inline">
+                                                <input id="type" type="radio" name="data[meeting_pledge_type]" value="1" data-am-ucheck <eq name="info.meeting_pledge_type" value="1">checked</eq>> 分别收取
+                                            </label>
+                                        <div id="Js-pledge-box"></div>
+                                    </div>
+                                </div>
+                            <else/>
+                                <div class="am-form-group">
+                                    <label class="am-form-label"></label>
+                                    <div class="am-form-content">
+                                        已开拍和已结束的拍卖会禁止编辑开始时间、结束时间、保证金
+                                    </div>
+                                </div>
+                            </if>
+                            <div class="am-form-group">
+                                <label for="rec" class="am-form-label">列表图</label>
+                                <div class="am-form-content">
+                                    <div class="uploadePic-box am-margin-bottom-0 am-cf">
+                                        <ul  data-am-widget="gallery" data-am-gallery="{pureview:{target: 'a.showurl'}}">
+                                            <notempty name="info.mpicture">
+                                                <li class="img-box">
+                                                    <div class="upImg-list-box am-gallery-item">
+                                                        <a class="showurl" href="{$info.mpicture}" ><img src="{$upWholeUrl}{$info.mpicture}"><input type="hidden" name="data[mpicture]" value="{$info.mpicture}" /></a>
+                                                    </div>
+                                                </li>
+                                            </notempty>
+                                            <li class="upImg-lighthouse">
+                                                <div class="upImg-list-box">
+                                                    <div class="filePic">
+                                                        <i class="am-icon-cloud-upload"></i><div class="txt">上传图片</div>
+                                                        <input type="file" pname="data[mpicture]" link="{:U('Upload/upMeetingIco')}" class="upInput" value="选择凭证图片" name="file" max="5" maxsize="5120" allowexts="gif,jpeg,jpg,png,bmp" accept="image/*" multiple>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="on-form-tips">图片尺寸：宽{:C('MEETING_ICO_WIDTH')}px；高{:C('MEETING_ICO_HEIGHT')}px</div>
+                                </div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="rec" class="am-form-label">BANNER图</label>
+                                <div class="am-form-content">
+                                    <div class="uploadePic-box am-margin-bottom-0 am-cf">
+                                        <ul  data-am-widget="gallery" data-am-gallery="{pureview:{target: 'a.showurl'}}">
+                                            <notempty name="info.mbanner">
+                                                <li class="img-box">
+                                                    <div class="upImg-list-box am-gallery-item">
+                                                        <a class="showurl" href="{$info.mbanner}" ><img src="{$upWholeUrl}{$info.mbanner}"><input type="hidden" name="data[mbanner]" value="{$info.mbanner}" /></a>
+                                                    </div>
+                                                </li>
+                                            </notempty>
+                                            <li class="upImg-lighthouse">
+                                                <div class="upImg-list-box">
+                                                    <div class="filePic">
+                                                        <i class="am-icon-cloud-upload"></i><div class="txt">上传图片</div>
+                                                        <input type="file" pname="data[mbanner]" link="{:U('Upload/upMeetingBnner')}" class="upInput" value="选择凭证图片" name="file" max="5" maxsize="5120" allowexts="gif,jpeg,jpg,png,bmp" accept="image/*" multiple>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="on-form-tips">图片尺寸：宽{:C('MEETING_BANNER_WIDTH')}px；高{:C('MEETING_BANNER_HEIGHT')}px</div>
+                                </div>
+                            </div>
+                            <div>
+                                <input type="hidden" name="data[mid]" value="{$info.mid}" />
+                                <ul class="user-frame am-avg-sm-1">
+                                     <li>
+                                        <button style="width: 100%;" class="am-btn am-btn-danger on-btn-danger submitBtn">保存</button>
+                                     </li>
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+            </div>
+        </div>
+        <!--底部-->
+    <include file="Common:footer"/>
+    </div>
+    <include file="Seller:menu" />
+<div id="Js-ratio-cach" style="display: none;">
+    <div class="on-selshow-con">
+        保证金：<input id="succprice" class="input" type="number" step="0.1" name="data[mpledge]" value="{$info.mpledge|default=0}" placeholder="保证金" required/>
+    </div>
+    <div class="on-form-tips">仅需缴纳拍卖会保证金，即可享有拍卖会内所有拍品的出价。未拍到：拍卖会结束解冻保证金;拍到：支付所有拍卖会订单解冻保证金。</div>
+</div>
+<div id="Js-fixation-cach" style="display: none;">
+    <div class="on-form-tips">参拍拍卖会内每件拍品都需要缴纳相应保证金。未拍到：拍品结束解冻保证金；拍到：可保证金抵货款或支付订单后解冻保证金。</div>
+</div>
+</div>
+<js href="--PUBLIC--/assets/js/jquery.form.js"/>
+<js href="--PUBLIC--/PhotoClipJs/lrz.all.bundle.js"/>
+<!-- 日期时间插件【 -->
+<link href="--PUBLIC--/datetimepicker/amazeui.datetimepicker.css" rel="stylesheet" type="text/css">
+<js href="--PUBLIC--/datetimepicker/amazeui.datetimepicker.js"/>
+<js href="--PUBLIC--/datetimepicker/locales/amazeui.datetimepicker.zh-CN.js"/>
+<!-- 日期时间插件 -->
+<js href="__JS__/single_picture_upload.js"/>
+<script type="text/javascript">
+    var start_date = "{$start_date}";
+    $(function(){
+        //为input添加时间插件
+        $('#start_time').datetimepicker({language:  'zh-CN',startDate:start_date,autoclose:true,todayBtn:true,format: 'yyyy-mm-dd hh:ii'});
+        $('#end_time').datetimepicker({language:  'zh-CN',startDate:start_date,autoclose:true,format: 'yyyy-mm-dd hh:ii'});
+        //为input添加插件_end
+    });
+    // 保证金收取模式【
+        typecheck();
+        $(":radio[name='data[meeting_pledge_type]']").click(function(){
+            typecheck();
+         });
+        function typecheck(){
+            if ($("input[name='data[meeting_pledge_type]']:checked").val()!=1) {
+                $('#Js-pledge-box').html($('#Js-ratio-cach').html());
+            }else{
+                $('#Js-pledge-box').html($('#Js-fixation-cach').html());
+            } 
+        }
+    // 保证金收取模式】
+// 表单提交【
+        var $form = $('#meeting_addForm');
+        var $subbtn = $(".submitBtn");
+        $form.validator({
+            submit: function() {
+                var formValidity = this.isFormValid();
+                if (formValidity) {
+                    // 验证成功的逻辑
+                    $subbtn.button('loading');
+                    // 验证成功的逻辑
+                    $form.ajaxSubmit({url:document.URL,data:'',type:"POST",
+                        success:function(data, st) {
+                            // 提示框
+                            AMUI.dialog.alert({ title: data.title, content: data.info});
+                            if(data.status==1){
+                                setTimeout(function(){
+                                    top.window.location.href = data.url;
+                                },1000);
+                            }else{
+                                $subbtn.button('reset');
+                            }
+                            return false;
+                        }
+                    });
+                } else {
+                    $subbtn.button('reset');
+                // 验证失败的逻辑
+                }
+            //阻止原生form提交
+            return false;
+            }
+        });
+// 表单提交】 
+</script>
+    </body>
+</html>

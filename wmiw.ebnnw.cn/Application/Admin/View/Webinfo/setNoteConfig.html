@@ -1,0 +1,122 @@
+<include file="Common:meta" />
+<title>短信配置-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="container-fluid">
+                <p class="page-header-description">如未购买、配置短信接口，请联系客服购买、配置。注意：短信提示发送成功，但是长期未收到，请检查短信内容有可能被系统误认为广告短信！</p>
+            </div>
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">短信配置</div>
+                            </div>
+
+                            <div class="widget-body am-fr">
+                                <form id="noteConfig" class="am-form tpl-form-border-form tpl-form-border-br">
+                                    <div class="am-form-group">
+                                        <label for="account" class="am-u-sm-3 am-form-label">接口账号</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="account" name="account" value="{$site.SYSTEM_NOTE.account}" placeholder="请输入接口账号" required>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="password" class="am-u-sm-3 am-form-label">接口密码</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="password" name="password" value="{$site.SYSTEM_NOTE.password}" placeholder="请输入接口密码" required>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="test" class="am-u-sm-3 am-form-label">测试接收手机号</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="test" name="test" value="{$site.SYSTEM_NOTE.test}" placeholder="请输入测试接收手机号" required>
+                                            <small>用来测试邮件配置是否成功的接收邮箱</small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="stepsize" class="am-u-sm-3 am-form-label">短信安全配置</label>
+                                        <div class="am-u-sm-9">
+                                             <div class="on-selshow-con">
+                                                每个手机号每分钟最多发送短信
+                                                <input type="number" step="1" class="input" name="mobilelm" value="{$site.SYSTEM_NOTE.phonelm|default=1}" required/>
+                                                条；<br/>每个IP每分钟请求发送短信最多
+                                                <input type="number" step="1" class="input" name="ipminlm" value="{$site.SYSTEM_NOTE.ipminlm|default=1}"required/>
+                                                次；<br/>每个IP每分钟请求发送短信最多
+                                                <input type="number" step="1" class="input" name="hourlm" value="{$site.SYSTEM_NOTE.hourlm|default=5}" required/>
+                                                次；
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <input type="submit" name="" value="提交" class="am-btn am-btn-primary tpl-btn-bg-color-success submitBtn">
+                                            <input type="submit" name="" value="测试是否配置成功" class="am-btn am-btn-secondary tpl-btn-bg-color-success testSubmitBtn">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<script type="text/javascript">
+    // 表单提交
+        var form = $('#noteConfig');
+        var subbtn = $(".submitBtn");
+        var testSubbtn = $(".testSubmitBtn");
+        var testAjaxUrl = '{:U("Webinfo/testNoteConfig")}';
+        $(".submitBtn").click(function(){
+            ajaxForm(subbtn,form,document.URL);
+        });
+
+        $(".testSubmitBtn").click(function(){
+            if($.trim($("input[name='test']").val())==''){
+                AMUI.dialog.alert({content: '没有填写接收测试短信的手机号，无法发送测试短信'});
+                return;
+            }
+            ajaxForm(testSubbtn,form,testAjaxUrl);
+        });
+
+        function ajaxForm(ajaxBtn,form,ajaxUrl){
+            form.validator({
+                submit: function() {
+                    var formValidity = this.isFormValid();
+                    if (formValidity) {
+                        // 验证成功的逻辑
+                        ajaxBtn.button('loading');
+                        // 验证成功的逻辑
+                        form.ajaxSubmit({url:ajaxUrl,data:'',type:"POST",
+                            success:function(data, st) {
+                                // 提示框
+                                AMUI.dialog.alert({ title: data.title, content: data.info});
+                                if(data.status==1){
+                                }else{
+                                    ajaxBtn.button('reset');
+                                }
+                                return false;
+                            }
+                        });
+                    } else {
+                        ajaxBtn.button('reset');
+                    // 验证失败的逻辑
+                    }
+                //阻止原生form提交
+                return false;
+                }
+            });
+        }
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<include file="Common:meta" />
+<title>{$saytyp.ch|default=今日拍卖会}-拍卖会拍卖-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<link href="__CSS__/demo.css" rel="stylesheet" type="text/css" />
+<link href="__CSS__/auctionlist.css" rel="stylesheet" type="text/css">
+<link href="__CSS__/style.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header_topnav" />
+<include file="Common:header_search" />
+<include file="Common:navigation" />
+    <div class="on-mt on-mb">
+        <div class="auction-list">
+            <!-- 拍卖时间段】 -->
+            <ul class="sort am-avg-sm-4">
+                <li <empty name="saytyp.get">class="first"</empty>><a href="{:U('Meeting/index')}" title="今日拍卖会">今日拍卖会</a></li>
+                <li <eq name="saytyp.get" value="biding">class="first"</eq>><a href="{:U('Meeting/index',array('typ'=>'biding'))}" title="今日拍卖会">全部在拍</a></li>
+                <li <eq name="saytyp.get" value="future">class="first"</eq>><a href="{:U('Meeting/index',array('typ'=>'future'))}" title="拍卖会预展">拍卖会预展</a></li>
+                <li class="big <eq name='saytyp.get' value='bidend'>first</eq>" ><a href="{:U('Meeting/index',array('typ'=>'bidend'))}" title="历史拍卖会">历史拍卖会</a></li>
+            </ul>
+            <!-- 拍卖时间段】 -->
+            <include file="Meeting:meeting"/>
+        </div>
+    </div>
+    <include file="Common:footer"/>
+    <include file="Common:query_links"/>
+    </body>
+
+</html>

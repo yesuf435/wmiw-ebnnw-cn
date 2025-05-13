@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="keywords" content="{$site.SITE_INFO.keyword}" />
+		<meta name="description" content="{$site.SITE_INFO.description}" />
+        <title>个人信息-{$site.SITE_INFO.title}</title>
+        <include file="Common:intoHead" />
+		<css href="__CSS__/user.css"/>
+		<js href="__JS__/user.js"/>
+    </head>
+    <body>
+    <include file="Common:head_narrow" />
+<div id="container_white">
+    <div class="main_b9">
+        <div class="h8 clearfix"></div>
+        <div class="main_b3_top"><a href="">首　页</a>&nbsp;&gt;&gt;&nbsp;账号中心&nbsp;&gt;&gt;&nbsp;个人信息</div>
+
+        
+        <div class="main_b9_1 clearfix">
+            <!--左侧导航开始-->
+            <include file="Member:menu" />
+            <!--左侧导航结束-->
+            <!---右侧开始-->
+            <form id="myInfo" name="myPortrait" class="validateClass">
+           	  <div class="sider">
+                    <ul class="inquiry">
+                        <li><a href="{:U('Member/my_info')}">基本信息</a></li>
+                        <li><a href="{:U('Member/imseller')}">卖家信息</a></li>
+                        <li class="hover"><a href="{:U('Member/my_portrait')}">头像</a></li>
+                    </ul>
+                    <div class="inquiry-con">
+                        <div class="my_portrait clearfix">
+                            <div class="edit_head_con clearfix">
+                                <div class="edit_bimg fl">
+                                <img src="<empty name='my_info.avatar'>__IMG__/default_1.gif<else/>{$upWholeUrl}{$my_info.avatar|picRep=###,0,'user'}</empty>">
+                                </div>
+                                <div class="edit_timg fl">
+                                    <img src="<empty name='my_info.avatar'>__IMG__/default_2.gif<else/>{$upWholeUrl}{$my_info.avatar|picRep=###,0,'user'}</empty>">
+                                </div>
+                                <div class="edit_mimg fl"><img src="<empty name='my_info.avatar'>__IMG__/default_3.gif<else/>{$upWholeUrl}{$my_info.avatar|picRep=###,0,'user'}</empty>"></div>
+                                <div class="up_benbox clearfix">
+                                    <div id="user_header_pic" class="up_imgbtnBox"><div class="up_imgbtn"></div><div class="up_txtbtn">上传头像</div></div>
+                                </div>
+                                <div class="up_btnbox">
+                                    <input type="hidden" name="avatar" value="{$my_info.avatar}" />
+                                    <button class="btn_blue submit">保存</button>
+                                </div>
+                             </div>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!---右侧结束-->
+        </div>
+        <!--auction.html结束-->
+    </div>
+</div>
+<!---底部开始-->
+<include file="Common:help_narrow" />
+<include file="Common:footer"/>
+        <!-- 上传插件【 -->
+        <script type="text/javascript" src="__STATIC__/plupload/plupload.full.min.js"></script>
+        <script type="text/javascript" src="__STATIC__/plupload/jquery.plupload.queue/jquery.plupload.queue.min.js"></script>
+        <script type="text/javascript" src="__STATIC__/plupload/i18n/zh_CN.js"></script>
+        <!-- 上传插件】 -->
+<script type="text/javascript">
+    // 上传变量配置【
+    var moxieswf = "__STATIC__/plupload/Moxie.swf";
+    var moxiesxap = "__STATIC__/plupload/Moxie.xap";
+    // 上传变量配置】
+    $(function(){
+        // 头像上传
+        var uplode_url = '{:U("Upload/upUserPic")}';//PHP处理脚本地址
+        var uplode_path = '__PUBLIC__';
+        var sid = '{:session_id()}';//sessionID
+        var userPicPath = '{$upWholeUrl}';
+        // 友情链接图片上传【
+        <literal>
+            var uploader = new plupload.Uploader({//创建实例的构造方法
+                runtimes: 'html5,flash,silverlight,html4', //上传插件初始化选用那种方式的优先级顺序
+                browse_button: 'user_header_pic', // 上传按钮
+                url: uplode_url, //远程上传地址
+                flash_swf_url: moxieswf, //flash文件地址
+                silverlight_xap_url: moxiesxap, //silverlight文件地址
+                filters: {
+                    max_file_size: '4mb', //最大上传文件大小（格式100b, 10kb, 10mb, 1gb）
+                    mime_types: [//允许文件上传类型
+                        {title: "files", extensions: "jpg,gif"}
+                    ]
+                },
+                multi_selection: false, //true:ctrl多文件上传, false 单文件上传
+                init: {
+                    FilesAdded: function(up, files) { //文件上传前
+                        $("#user_header_pic").after("<div style='width: 110px; position: absolute; top: 88px; left: 90px;' class='progress'><span class='bar'></span><span class='percent'>0%</span></div>");
+                            uploader.start();
+                    },
+                    UploadProgress: function(up, file) { //上传中，显示进度条
+                 var percent = file.percent;
+                        $(".up_benbox").find('.bar').css({"width": percent + "%"});
+                        $(".up_benbox").find(".percent").text(percent + "%");
+                    },
+                    FileUploaded: function(up, file, info) { //文件上传成功的时候触发
+                        var data = JSON.parse(info.response);
+                        $('.edit_bimg img').attr('src',data.path[0]);
+                        $('.edit_timg img').attr('src',data.path[1]);
+                        $('.edit_mimg img').attr('src',data.path[2]);
+                        $('input[name="avatar"]').attr('value',data.savepath);
+                        $('.progress').remove();
+                    },
+                    Error: function(up, err) { //上传出错的时候触发
+                        alert(err.message);
+                    }
+                }
+            });
+            uploader.init();
+        </literal>
+        // 友情链接图片上传】
+        // 表单提交
+        $(".submit").click(function(){
+            commonAjaxSubmit();
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

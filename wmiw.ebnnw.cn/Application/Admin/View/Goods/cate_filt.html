@@ -1,0 +1,126 @@
+<include file="Common:meta" />
+<title>频道分类与条件关联-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">频道分类与条件关联</div>
+                            </div>
+                            <div class="widget-body">
+                                <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                                    <div class="am-form-group">
+                                        <div class="am-btn-toolbar">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <a href="{:U('Goods/cate_filt_add')}" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 添加关联</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="am-u-sm-12">
+                                    <table width="100%" id="example-r" class="am-table am-table-compact tpl-table-black " >
+                                        <thead>
+                                            <tr>
+                                                <td>频道分类</td>
+                                                <td>筛选条件</td>
+                                                <td>操作</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <foreach name="map" item="vo">
+                                                <tr>
+                                                    <td>{$vo.cid|cateName=###}</td>
+                                                    <td>
+                                                        <div class="sellfiltbox">
+                                                            <foreach name="vo['fid']" item="v" key="k">
+                                                                <ul class="am-cf plus">
+                                                                    <li class="fli"><span>{$v|filtName=###}:</span></li>
+                                                                    <foreach name="vo['sid'][$k]" item="v1" key="k1">
+                                                                        <li class="fli"><a class="filtParent" fid="{$v1}" href="javascript:void(0);">{$v1|filtName=###}
+                                                                        <if condition="countChild($v1) neq 0">
+                                                                            ({$v1|countChild=###})
+                                                                        </if>
+                                                                        </a></li>
+                                                                    </foreach>
+                                                                    <div class="btnBox">
+                                                                        <div class="tpl-table-black-operation">
+                                                                            <a class="delLinkBtn" href="javascript:void(0);" cid="{$vo.cid}" fid="{$v}"><i class="am-icon-pencil"></i>解除关联</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </ul>
+                                                            </foreach>
+                                                        </div>
+                                                    <td align="center">
+                                                        <div class="tpl-table-black-operation">
+                                                            <a class="delLinkBtn" href="javascript:void(0);" cid="{$vo.cid}" fid="0"><i class="am-icon-pencil"></i>解除关联</a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </foreach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<script type="text/javascript">
+    $(function(){
+        // 点击获取子级条件
+        var getChildUrl = "{:U('Goods/getChild')}";
+        $('.sellfiltbox').on('click','.filtParent',function(){
+            var filtFid = $(this).attr('fid');
+            var newFilt = $(this).parents('ul');
+            if(newFilt.next('.filtLi').attr('fid') != filtFid){ //判断是否已经加载过子条件，加载过不在请求
+               newFilt.find('.filtParent').removeClass('current');
+                $(this).addClass('current');
+                newFilt.next('.filtLi').remove();
+                $.post(getChildUrl,{'fid':filtFid},function(data){      //ajax后台
+                    if (data.status) {
+                        newFilt.after(data.msg);
+                    } else {
+                        alert(data.msg);
+                    }
+                },'json'); 
+            }
+        });
+        // 删除关联
+        var delLinkUrl = "{:U('Goods/delLink')}";
+        $('tr').on('click','.delLinkBtn',function(){
+            var delFid = $(this).attr('fid');
+            var delCid = $(this).attr('cid');
+            var thisObj = $(this);
+            $.post(delLinkUrl,{'fid':delFid,'cid':delCid},function(data){
+                if(data.status){
+                    if(delFid == 0){
+                        thisObj.parents('tr').remove();
+                    }else{
+                        if(thisObj.parents('.sellfiltbox').children('ul').length == 1){
+                            thisObj.parents('tr').remove();
+                        } else {
+                            thisObj.parents('ul').remove();
+                        }
+                    }
+                    
+                }
+                AMUI.dialog.alert({content: data.msg});
+            });
+        });
+    });
+</script>
+</body>
+</html>

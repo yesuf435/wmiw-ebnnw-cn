@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>注册 - 拍卖平台</title>
+  <link rel="stylesheet" href="/Public/css/login.css">
+  <link rel="stylesheet" href="/Public/css/enhanced_forms.css">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+  <div class="login-wrap am-g">
+    <div class="am-u-lg-6 am-u-md-8 am-u-sm-centered">
+      <h1 class="login-title">用户注册</h1>
+      
+      <!-- 标签页结构 -->
+      <ul class="tabMenuLink am-nav am-nav-tabs am-nav-justify">
+        <li><a href="{:U('Login/index')}">登录</a></li>
+        <li class="on-mli"><a href="javascript:void(0);">注册</a></li>
+      </ul>
+
+      <form id="registerForm" method="post" action="{:U('Login/register')}" class="am-form">
+        <div class="am-form-group">
+          <label for="register-username">用户名:</label>
+          <input type="text" id="register-username" name="account" placeholder="请输入用户名" required>
+        </div>
+
+        <div class="am-form-group">
+          <label for="register-password">密码:</label>
+          <input type="password" id="register-password" name="pwd" placeholder="请输入密码" required>
+        </div>
+        
+        <div class="am-form-group">
+          <label for="register-password-confirm">确认密码:</label>
+          <input type="password" id="register-password-confirm" name="pwded" placeholder="请再次输入密码" required>
+        </div>
+
+        <div class="am-form-group verification">
+          <label for="register-code" class="am-u-sm-3 am-form-label">验证码:</label>
+          <div class="am-u-sm-9">
+            <input type="text" id="register-code" name="verify_code" placeholder="请输入验证码" class="input" required>
+            <img class="verifyImg" src="{:U('Login/verify_code')}" onclick="this.src=this.src+'?rand='+Math.random();" alt="验证码" title="点击刷新验证码">
+          </div>
+        </div>
+
+        <div class="am-form-group am-checkbox">
+          <label>
+            <input type="checkbox" id="isAgree" name="isAgree" value="1" checked required>
+            我已阅读并接受《服务协议》
+          </label>
+        </div>
+
+        <input type="hidden" name="auto_login" value="1">
+        <div id="register-error-msg" class="form-error-msg" style="display: none;"></div>
+
+        <div class="am-form-group">
+          <button type="submit" class="am-btn am-btn-primary am-btn-block">注 册</button>
+        </div>
+        
+        <div class="am-text-center">
+          <p>已有账号？ <a href="{:U('Login/index')}">立即登录</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <script>
+    $(document).ready(function() {
+      // 注册表单提交
+      $('#registerForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        var formData = $(this).serialize();
+        
+        // 检查密码是否一致
+        var pwd = $('#register-password').val();
+        var pwded = $('#register-password-confirm').val();
+        if (pwd !== pwded) {
+          $('#register-error-msg').text('两次输入的密码不一致').show();
+          return; // 阻止提交
+        }
+        
+        // 显示加载状态
+        $('.am-btn-primary').prop('disabled', true).text('注册中...');
+        
+        // 发送AJAX请求
+        $.ajax({
+          url: '{:U("Login/register")}',
+          type: 'POST',
+          data: formData,
+          dataType: 'json',
+          success: function(response) {
+            if (response.status === 1) {
+              // 注册成功
+              $('#register-error-msg').hide();
+              alert('注册成功！即将跳转到登录页面。'); // 提示用户
+              // 如果有跳转URL，则跳转，否则跳转到登录页
+              if (response.url) {
+                window.location.href = response.url;
+              } else {
+                window.location.href = '{:U("Login/index")}';
+              }
+            } else {
+              // 注册失败，显示错误信息
+              $('#register-error-msg').text(response.info || '注册失败，请检查输入信息').show();
+              $('.am-btn-primary').prop('disabled', false).text('注 册');
+              
+              // 刷新验证码
+              $('.verifyImg').attr('src', '{:U("Login/verify_code")}?rand=' + Math.random());
+            }
+          },
+          error: function() {
+            $('#register-error-msg').text('网络错误，请稍后重试').show();
+            $('.am-btn-primary').prop('disabled', false).text('注 册');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

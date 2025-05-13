@@ -1,0 +1,125 @@
+<include file="Common:meta" />
+<title>频道分类与扩展字段关联-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">频道分类与扩展字段关联</div>
+                            </div>
+                            <div class="widget-body">
+                                <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                                    <div class="am-form-group">
+                                        <div class="am-btn-toolbar">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <a href="{:U('Goods/cate_extend_add')}" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 添加关联</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="am-u-sm-12">
+                                    <table width="100%" id="example-r" class="am-table am-table-compact tpl-table-black " >
+                                        <thead>
+                                            <tr>
+                                                <td>商品频道分类</td>
+                                                <td>扩展字段</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <foreach name="map" item="vo">
+                                                <tr>
+                                                    <td>{$vo.cid|cateName=###}<eq name="vo[pid]" value="0">--&lt;频道&gt;</eq></td>
+                                                    <td>
+                                                        <div class="extend">
+                                                            <ul class="plus">
+                                                            <foreach name="vo['extend']" item="v" key="k">
+                                                                <li class="am-cf">
+                                                                    <div class="am-fl">{$v}</div>
+                                                                    <div class="tpl-table-black-operation am-fr">
+                                                                        <a class="delLinkBtn" href="javascript:void(0);" cid="{$vo.cid}" eid="{$k}"><i class="am-icon-pencil"></i>解除关联</a>
+                                                                    </div>
+                                                                </li>
+                                                            </foreach>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </foreach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<script type="text/javascript">
+    $(function(){
+        // 删除关联
+        var delLinkUrl = "{:U('Goods/delExtend')}";
+        $('tr').on('click','.delLinkBtn',function(){
+            var delFid = $(this).attr('eid');
+            var delCid = $(this).attr('cid');
+            var thisObj = $(this);
+            $.post(delLinkUrl,{'eid':delFid,'cid':delCid},function(data){
+                if(data.status){
+                   if(thisObj.parents('.plus').children('li').length == 1){
+                        thisObj.parents('tr').remove();
+                    } else {
+                        thisObj.parents('li').remove();
+                    } 
+                }
+                    
+                shortBox(data.msg,data.status);
+            });
+        });
+        // 短暂提示框
+        function shortBox(msg,yn){
+            if(yn == 1){
+                popup.success(msg);
+            } else {
+                popup.error(msg);
+            }
+            setTimeout(function(){
+                popup.close("asyncbox_success");
+            },1000);
+        }
+        // 提交添加关联
+
+        $(".quickSubmit").click(function(){
+            commonAjaxSubmit("","#quickForm");
+            return false;
+        });
+    });
+</script>
+</body>
+</html>
+
+
+
+<!-- <select name="data[cid]">
+                            <option value="0">所有频道</option>
+                            <volist name="cate" id="vo">
+                                <option value="{$vo.cid}">{$vo.fullname}<eq name="vo[pid]" value="0">--&lt;频道&gt;</eq></option>
+                            </volist>
+                        </select><---&nbsp;关联&nbsp;--->
+                        <select name="data[eid]">
+                            <option value="">所有字段</option>
+                            <option value="0">地区</option>
+                            <volist name="fdlist" id="vo">
+                                <option value="{$vo.eid}">{$vo.name}</option>
+                            </volist>
+                        </select>  &nbsp; -->

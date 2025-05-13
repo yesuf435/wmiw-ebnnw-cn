@@ -1,0 +1,40 @@
+<base href="{$site.WEB_ROOT}"/>
+<link rel="stylesheet" href="--PUBLIC--/assets/css/amazeui.css" />
+<link rel="stylesheet" href="__CSS__/common.css" />
+<!-- 分类页面不使用该样式 -->
+<empty name='catepage'>
+<link rel="stylesheet" href="__CSS__/navigation_allcate.css" />
+</empty>
+<link rel="stylesheet" href="__CSS__/common.css" />
+<js href="--PUBLIC--/assets/js/jquery.min.js"/>
+<js href="--PUBLIC--/assets/js/amazeui.min.js"/>
+<js href="--PUBLIC--/assets/js/amazeui.dialog.js"/>
+<js href="__JS__/common.js"/>
+<js href="__JS__/headroom.js"/>
+<js href="__JS__/jQuery.headroom.js"/>
+<script type="text/javascript">
+	var attUrl = "{:U('Member/attention')}";
+	// 关注商家地址
+	var getusercard = "{:U('Public/getusercard')}";
+	// 黑名单提交地址
+	var blacklistUrl = "{:U('Public/blacklist')}";
+	// 关注商家地址
+	var setAttentionSellerUrl ="{:U('Shop/attention')}";
+	var iswei="{$iswei}";
+	var isbc = "{$isbc}";
+	var login = "{$login}";
+	// ie浏览器升级提示地址
+	if ((myBrowser() == "IE55")||(myBrowser() == "IE6")||(myBrowser() == "IE7")||(myBrowser() == "IE8")) {
+		window.location.href ="{:U('Index/iealert')}";
+    }
+</script>
+<eq name="iswei" value="1">
+	<js href="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"/>
+	<script type="text/javascript">
+		var imgUrl = "{$shareimg}";
+		var sharelink = "{$sharelink}";
+		var descContent = "{:C('SITE_INFO.description')}";
+		var shareTitle = "{:C('SITE_INFO.title')}";
+	</script>
+</eq>
+</head>

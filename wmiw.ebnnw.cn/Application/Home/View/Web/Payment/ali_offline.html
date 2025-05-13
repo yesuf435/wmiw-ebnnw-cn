@@ -1,0 +1,126 @@
+<include file="Common:meta" />
+<title>微信支付-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+        <div class="center">
+            <div class="col-main">
+                <div class="main-wrap">
+                    <div class="main-wrap-box">
+                        <div class="user-news">
+                            <!--标题 -->
+                            <div class="am-cf on-user-title">
+                                <div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">微信支付</strong> / <small>Payment</small></div>
+                            </div>
+                            <div class="payIng">
+                                <ul id="payCard">
+                                    <li class="title">{$adata.title}</li>
+                                    <li class="payitem">
+                                        <eq name="adata.purpose" value="pledge"><div class="bill_no">单号：{$adata.order_no}</div></eq>
+                                        <eq name="adata.purpose" value="auction">
+                                            <div class="bill_no">单号：{$adata.order_no}</div>
+                                            <div class="pinfo">
+                                                <img src="{$pinfo.pictures}">
+                                                <div class="con">
+                                                    <div class="pname cuit_over"><a href="">{$pinfo.pname}</a></div>
+                                                    <div class="total">总价：<span title="（成交价{$oinfo.price}+运费{$oinfo.freight}）">{$oinfo.total}</span>元</div>
+                                                </div>
+                                            </div>
+                                            <div class="othpay clearfix"><span class="fl oth">余额支付：<span>{$adata.yuemn}</span></span><span class="fr oth">保证金抵货款：<span>{$adata.pledge}</span></span></div>
+                                        </eq>
+                                    </li>
+                                    <li class="moneybox"><span class="money">{$adata.money}</span><span class="danwei">元</span></li>
+                                    <li class="qrcode"></li>
+                                    <li id="msg"></li>
+                                    <neq name="data.channel" value="BC_ALI_QRCODE">
+                                        <button class="am-btn am-btn-danger" type="button" id="cancel">取消支付</button>
+                                    </neq>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <!--底部-->
+                <include file="Common:footer"/>
+            </div>
+            <include file="Member:menu"/>
+        </div>
+<script>
+var code = "{$code}";
+var bill_no = "{$data.bill_no}";
+    if(code) {
+        var options = {text: code};
+        var canvas = BCUtil.createQrCode(options);
+        var wording=document.createElement('p');
+        wording.innerHTML = "线下扫码支付";
+        var element=document.getElementById("qrcode");
+        element.appendChild(wording);
+        element.appendChild(canvas);
+    }
+
+    $(function(){
+        var billNo = bill_no;
+        var queryTimer = setInterval(function() {
+            $("#msg").text("开始查询支付状态...");
+            $.getJSON("bill.status.php", {"billNo":billNo, 'channel' : '<?php echo $data['channel']; ?>'}, function(res) {
+                if(res.result_code == 0){
+                    if(res.pay_result){
+                        clearInterval(queryTimer);
+                        queryTimer = null;
+                        $("#cancel").hide();
+                    }
+                    $("#msg").text(res.pay_result ? '已经支付' : '未支付');
+                }
+            });
+        }, 3000);
+
+        if("<?php echo $data['channel'] != 'BC_ALI_QRCODE'; ?>"){
+            $("#cancel").click(function() {
+                if (queryTimer) {
+                    clearInterval(queryTimer);
+                    queryTimer = null;
+                }
+                $("#qrcode").empty();
+                $("#msg").text("支付取消。。。");
+                $.getJSON("ali.offline.qrcode/ali.bill.cancel.php", {"billNo":billNo}, function(res) {
+                    if(res.resultCode == 0 && res.revert_status){
+                        $("#msg").text("支付已经取消");
+                        $("#cancel").hide();
+                    }
+                });
+            });
+        }
+    });
+
+</script>
+    </body>
+</html>
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>示例</title>
+</head>
+<body>
+<div style="width:100%; height:100%;overflow: auto; text-align:center;">
+    <div id="qrcode"></div>
+    <div id="msg"></div>
+    
+</div>
+<script type="text/javascript" src="statics/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="statics/qrcode.js"></script>
+
+</body>
+</html>

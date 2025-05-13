@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="keywords" content="{$site.SITE_INFO.keyword}" />
+        <meta name="description" content="{$site.SITE_INFO.description}" />
+        <title>我推广的用户-账号中心-{$site.SITE_INFO.title}</title>
+        <include file="Common:intoHead" />
+        <css href="__CSS__/user.css"/>
+        <js href="__JS__/user.js"/>
+    </head>
+    <body>
+    <include file="Common:head_narrow" />
+<div id="container_white">
+    <div class="main_b9">
+        <div class="main_b3_top"><a href="">首　页</a>&nbsp;&gt;&gt;&nbsp;账号中心&nbsp;&gt;&gt;&nbsp;我推广的用户</div>
+        <div class="main_b9_1 clearfix">
+            <!--左侧导航开始-->
+            <include file="Member:menu" />
+            <!--左侧导航结束-->
+            <!---右侧开始-->
+            <div class="sider">
+                <ul class="inquiry">
+                    <li><a href="{:U('Member/generalize')}">我推广链接</a></li>
+                    <li class="hover"><a href="{:U('Member/my_generalize')}">我推广的用户</a></li>
+                </ul>
+                <div class="inquiry-con">
+                    <table width="100%" cellspacing="0" cellpadding="0" class="systemTable" id="tabList">
+                        <tbody>
+                            <tr class="xiaoxzt">
+                                <th width="60%">用户</th>
+                                <th width="20%">注册时间</th>
+                            </tr>
+                            <empty name="list">
+                                <tr><td colspan="4">没有屏蔽任何人！</td></tr>
+                            </empty>
+                            <notempty name="list">
+                                <volist name="list" id="svo">
+                                    <tr>
+                                        <td class="suse">
+                                            <img style="width: 34px; padding: 2px;" src="{$svo.uid|getUserpic=###,2}">
+                                            <div class="susnm fl"  style="text-align: left;">
+                                                <span class="ac-show-userbox" cardtips="0" uid="{$svo.uid}" seller="1" selbuy="buy">
+                                                    <span class="userrole">账号：</span>
+                                                    <a target="_blank" class="ac-show-usercard" href="javascript:void(0);">{$svo.account}</a>
+                                                </span><br/>
+                                                <span class="clearfix"><span class="th">昵称：</span><span class="td">{$svo.nickname}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {$svo.reg_date||date='Y-m-d H:i',###}
+                                        </td>
+                                    </tr>
+                                </volist>
+                                <tr class="duibi">
+                                    <td valign="middle" align="center" class="boderb">
+                                    <input type="checkbox" id="allcbox" value="0"></td>
+                                    <td valign="middle" colspan="4" align="right">
+                                        <input type="button" value="设为已读" class="back_but2 fl read">
+                                        <input type="button" value="删除" class="back_but2 fl del">
+                                        <div class="page" style="padding: 0px; margin-right: 10px;">{$page}</div>
+                                    </td>
+                                </tr>
+                            </notempty>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!---右侧结束-->
+        </div>
+    </div>
+</div>
+<!---底部开始-->
+<include file="Common:help_narrow" />
+<include file="Common:footer"/>
+</body>
+</html>

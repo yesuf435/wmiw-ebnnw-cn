@@ -1,0 +1,144 @@
+<include file="Common:meta" />
+<title>意见反馈-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/newstyle.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+        <div class="center">
+            <div class="col-main">
+                <div class="main-wrap">
+                    <div class="main-wrap-box">
+                        <div class="user-news">
+                            <!--标题 -->
+                            <div class="am-cf on-user-title">
+                                <div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">意见反馈</strong> / <small>Opinion feedback</small></div>
+                            </div>
+                            <div class="am-tabs am-tabs-d2">
+                                <ul class="am-avg-sm-3 am-tabs-nav am-nav am-nav-tabs">
+                                    <li <neq name="pag" value="list"> class="am-active"</neq>><a href="{:U('Member/consultation')}">意见反馈</a></li>
+                                    <li <eq name="pag" value="list"> class="am-active"</eq>><a href="{:U('Member/consultation',array('pag'=>'list'))}">我的反馈</a></li>
+                                </ul>
+                                <div class="am-tabs-bd">
+                                    <neq name="pag" value="list">
+                                        <div class="am-tab-panel am-fade am-in am-active" style="padding: 10px 0px; z-index: 1;">
+                                            <form id="feedbackForm" name="sendMsg" class="am-form am-form-horizontal">
+                                                    <div class="am-alert am-alert-danger" data-am-alert>
+                                                        <button type="button" class="am-close">&times;</button>
+                                                        <p>感谢您对{$site.SITE_INFO.name}的支持，请留下您的宝贵的意见，我们会及时作出反馈！</p>
+                                                    </div>
+                                                <div class="am-form-group">
+                                                    <label for="price" class="am-form-label">留言</label>
+                                                    <div class="am-form-content">
+                                                        <textarea rows="5" id="content" name="data[content]" placeholder="填写你的意见或留言，小于200个字符" minlength="3" maxlength="200" required></textarea>
+                                                    </div>
+                                                </div>
+                                                <ul class="user-frame am-avg-sm-1 am-text-center">
+                                                     <li>
+                                                        <button class="am-btn am-btn-danger on-btn-danger submitBtn">提交</button>
+                                                     </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+                                    <else/>
+                                        <div class="am-tab-panel am-fade am-in am-active" style="padding: 10px 0px; z-index: 1;">
+                                            <div class="news-day">
+                                                <volist name="list" id="vo">
+                                                    <!--消息 -->
+                                                    <div class="s-msg-item s-msg-temp i-msg-downup Js-li" style="width: 100%;">
+                                                        <div class="s-msg-item-box">
+                                                            <h6 class="s-msg-bar"><span class="s-name">反馈详情</span></h6>
+                                                            <div class="s-msg-content i-msg-downup-wrap">
+                                                                <div class="i-msg-downup-con">
+                                                                    <p class="s-main-content"><span class="am-text-secondary">我</span>：“{$vo.content}”<span class="s-main-tate">{$vo.time||date='Y-m-d H:i',###}</span></p>
+                                                                    <notempty name="vo.reply">
+                                                                        <p class="s-main-content"><span class="am-text-success">{$site.SITE_INFO.name}</span>：“{$vo.reply}”<span class="s-main-tate">{$vo.rtime||date='Y-m-d H:i',###}</span></p>
+                                                                    </notempty>
+                                                                </div>
+                                                            </div>
+                                                            <a id="{$vo.id}" class="i-btn-forkout link Js-del" href="javascript: void(0);"><i class="am-icon-close am-icon-fw"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </volist>
+                                            </div>
+                                        </div>
+                                    </neq>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--底部-->
+                
+                <include file="Common:footer"/>
+            </div>
+            <eq name="how" value="sel"><include file="Seller:menu"/><else/><include file="Member:menu"/></eq>
+        </div>
+<js href="--PUBLIC--/assets/js/jquery.form.js"/>
+<script type="text/javascript">
+$(function(){
+    var delLink = "{:U('Member/consultation_del')}";
+    // 删除反馈【
+    $(".Js-del").click(function(){
+        var id = $(this).attr("id");
+        var delobj = $(this).parents('.Js-li');
+        AMUI.dialog.confirm({ title: '提示', content: '是否删除这条反馈？', 
+            onConfirm: function() {
+                $.post(delLink,{'id':id},function(data){      //ajax后台
+                    if (data.status) {
+                        delobj.remove();
+                        if (data.url) {
+                            top.window.location.href=data.url;
+                        };
+                    } else {
+                        // 提示框
+                        AMUI.dialog.alert({ title: data.title, content: data.info});
+                    }
+                },'json'); 
+            }, 
+            onCancel: function() {}
+         }); 
+
+        return false;
+    });
+    // 删除反馈】
+    // 表单提交
+    var $form = $('#feedbackForm');
+    var $subbtn = $(".submitBtn");
+    $form.validator({
+        submit: function() {
+            var formValidity = this.isFormValid();
+            if (formValidity) {
+                // 验证成功的逻辑
+                $subbtn.button('loading');
+                // 验证成功的逻辑
+                $form.ajaxSubmit({url:document.URL,data:'',type:"POST",
+                    success:function(data, st) {
+                        // 提示框
+                        AMUI.dialog.alert({ title: data.title, content: data.info});
+                        if(data.status==1){
+                            setTimeout(function(){
+                                top.window.location.href = data.url;
+                            },1000);
+                        }else{
+                            $subbtn.button('reset');
+                        }
+                        return false;
+                    }
+                });
+            } else {
+                $subbtn.button('reset');
+            // 验证失败的逻辑
+            }
+        //阻止原生form提交
+        return false;
+        }
+    });
+});
+</script>
+    </body>
+</html>

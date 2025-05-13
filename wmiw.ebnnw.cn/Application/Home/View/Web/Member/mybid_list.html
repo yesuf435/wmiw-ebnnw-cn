@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="keywords" content="{$site.SITE_INFO.keyword}" />
+		<meta name="description" content="{$site.SITE_INFO.description}" />
+        <title>我的出价-交易管理-{$site.SITE_INFO.title}</title>
+        <include file="Common:intoHead" />
+		<css href="__CSS__/user.css"/>
+		<js href="__JS__/user.js"/>
+    </head>
+    <body>
+    <div class="saybox">
+        <table class="saytable">
+            <tr>
+                <th class="30%">出价方式</th>
+                <th width="15%">加价</th>
+                <th width="15%">价格</th>
+                <th width="40%">时间</th>
+            </tr>
+            <volist name="list" id="vo">
+            <tr>
+                <td align="center">{$vo.type}</td>
+                <td align="right"><span class="red1 fb">{$vo.money}</span></td>
+                <td align="right"><span class="red1 fb">{$vo.bided}</span></td>
+                <td align="center">{$vo.time|date='Y-m-d H:i',###}</td>
+            </tr>
+            </volist>
+            <tr><td colspan="4" class="page">{$page}</td></tr>
+        </table>
+    </div>
+    </body>
+</html>

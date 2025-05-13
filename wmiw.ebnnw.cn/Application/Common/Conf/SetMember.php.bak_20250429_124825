@@ -1,0 +1,1 @@
+<?php	return array ( 'Member' => array ( 'register' => array ( 'account' => 'on', ), 'reward' => array ( 'generalize' => '100', ), 'question' => array ( 1 => '您最喜欢的颜色是什么？;您的故乡在哪里？;你叫什么名字？', 2 => '你初中班主任叫什么名字？;你最喜欢的宠物是什么？', ), 'info' => array ( 'id' => '', ), ), );?>

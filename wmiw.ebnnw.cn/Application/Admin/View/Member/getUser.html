@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<include file="Common:intoHead" />
+<script type="text/javascript">
+	var dialog = frameElement.api;
+	$(document).ready(function(){
+        retval();
+        $(":radio").click(function(){
+            retval();
+        });
+
+		//简单的事件处理程序，响应自onChange,onSelect事件，按照上面的Jcrop调用
+		
+	});
+    function retval(){
+        var obj=$('input:radio:checked');
+        dialog.returnValue = '<div style="margin-top: 10px; line-height: 22px;"><img class="usimg" src="'+obj.attr('imgsrc')+'" alt="" />账号：'+obj.attr('account')+'<br/>昵称：'+obj.attr('nickname')+'<input type="hidden" name="info[sellerid]" value="'+obj.val()+'" /></div>';
+    }
+</script>
+	<head></head>
+	<body style="width: 650px; height: 500px; overflow-y: scroll; padding:10px;">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab" >
+            <thead>
+            <tr>
+                <td width="10%">选择</td>
+                <td width="10%">UID</td>
+                <td width="15%">账号</td>
+                <td width="10%">昵称</td>
+                <td width="15%">邮箱</td>
+                <td width="15%">手机号</td>
+            </tr>
+            </thead>
+            <volist name="list" id="vo">
+                <tr align="center" id="{$vo.id}">
+                    <td><label><input type="radio" nickname="{$vo.nickname}" account="{$vo.account}" imgsrc="{$vo.uid|getUserpic=###,2}" checked="checked" name="uid" value="{$vo.uid}" /></label></td>
+                    <td align="left">{$vo.uid}</td>
+                    <td align="left">{$vo.account}</td>
+                    <td>{$vo.nickname}</td>
+                    <td align="left">{$vo.email}</td>
+                    <td>{$vo.mobile}</td>
+                </tr>
+            </volist>
+            <tr>
+                <td colspan="11"><div class="page"  style="width: 60%; text-align: right; float: right;">{$page}</div></td>
+            </tr>
+        </table>
+	</body>
+</html>

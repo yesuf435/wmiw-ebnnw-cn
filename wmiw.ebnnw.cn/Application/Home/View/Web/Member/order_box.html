@@ -1,0 +1,138 @@
+<empty name="alist">
+        哎哟！这里空空如也！
+    <else/>
+<div class="order-top">
+    <div class="th th-item">
+        <td class="td-inner">拍品</td>
+    </div>
+    <div class="th th-price">
+        <td class="td-inner">单价</td>
+    </div>
+    <div class="th th-number">
+        <td class="td-inner">{:C('Auction.broker_buy_name')}</td>
+    </div>
+    <div class="th th-operation">
+        <td class="td-inner">拍品操作</td>
+    </div>
+    <div class="th th-amount">
+        <td class="td-inner">合计</td>
+    </div>
+    <div class="th th-status">
+        <td class="td-inner">交易状态</td>
+    </div>
+    <div class="th th-change">
+        <td class="td-inner">交易操作</td>
+    </div>
+</div>
+<div class="order-main">
+    <div class="order-list">
+        <volist name="alist" id="oinfo">
+            <div class="order-status5">
+                <div class="order-title">
+                    <div class="dd-num">单号：<a class="link" href="javascript:;">{$oinfo.order_no}</a></div>
+                    <span>成交时间：{$oinfo.time|date='Y-m-d H:i',###}</span>
+                    <!--    <em>店铺：小桔灯</em>-->
+                </div>
+                <div class="order-content">
+                    <div class="order-left">
+                        <ul class="item-list">
+                            <li class="td td-item">
+                                <div class="item-pic">
+                                    <a class="link" href="{:U('Auction/details',array('pid'=>$oinfo['pid']))}" class="J_MakePoint">
+                                        <img src="{$upWholeUrl}{$oinfo.pictures||getPicUrl=###,3,0}" class="itempic J_ItemImg">
+                                    </a>
+                                </div>
+                                <div class="item-info">
+                                    <div class="item-basic-info">
+                                        <a class="link" href="{:U('Auction/details',array('pid'=>$oinfo['pid']))}">
+                                            <p>{$oinfo.pname}【<eq name="oinfo.type" value="0">竞拍</eq><eq name="oinfo.type" value="1">竞标</eq>】</p>
+                                            <p class="info-little">
+                                            <!-- 拍品编号：{$oinfo.bidnb}<br/> -->
+                                            保证金：{:pledgeShow($oinfo['pattern'],$oinfo['pledge_type'],$oinfo['onset'],$oinfo['pledge'],$oinfo['spledge'],$oinfo['mpledge'])}<br/>
+                                            成交价：{$oinfo.nowprice|wipezero=###}
+                                            </p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="td td-price">
+                                <div class="item-price">
+                                    {$oinfo.price|wipezero=###}
+                                </div>
+                            </li>
+                            <li class="td td-number">
+                                <div class="item-number">
+                                    {$oinfo.broker_buy|wipezero=###}
+                                </div>
+                            </li>
+                            <li class="td td-operation">
+                                <div class="item-operation">
+                                    <if condition="$whopage['seller'] == 0 and $oinfo['status']==2">
+                                        <a class="link" href="{:U('Member/order_return',array('order_no'=>$oinfo[order_no]))}">申请退货</a>
+                                    </if>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="order-right">
+                        <li class="td td-amount">
+                            <div class="item-amount">
+                                合计：{$oinfo.total}元
+                                <p>含运费：<span>{$oinfo.freight|wipezero=###}元</span></p>
+                            </div>
+                        </li>
+                        <div class="move-right">
+                            <li class="td td-status">
+                                <div class="item-status">
+                                    <p class="Mystatus">
+                                        <if condition="$oinfo['status'] eq 0">
+                                            <eq name="oinfo.deftime1st" value="0">待付款<else/>买家违约 </eq>
+                                        </if>
+                                        <if condition="$oinfo['status'] eq 1">
+                                            <eq name="oinfo.deftime2st" value="0">待发货<else/>卖家违约</eq>
+                                        </if>
+                                        <eq name="oinfo.status" value="2">待收货</eq>
+                                        <eq name="oinfo.status" value="3">交易成功</eq>
+                                        <eq name="oinfo.status" value="4">买家已评价</eq>
+                                        <eq name="oinfo.status" value="5">申请退货</eq>
+                                        <eq name="oinfo.status" value="10">已互评</eq>
+                                    </p>
+                                    <in name="ACTION_NAME" value="mysucc,myorder">
+                                        <p class="order-info"><a class="link" href="{:U('Member/order_details',array('order_no'=>$oinfo['order_no']))}">订单详情</a></p>
+                                    </in>
+                                </div>
+                            </li>
+                            <in name="ACTION_NAME" value="mysucc,myorder,order_details">
+                                <li class="td td-change">
+                                    <eq name="whopage.seller" value="0">
+                                        <if condition="($oinfo['status'] eq 0) and ($oinfo['deftime1st'] eq 0)">
+                                            <a class="am-btn am-btn-danger anniu" href="{:U('Member/payment_order',array('order_no'=>$oinfo['order_no']))}">支付</a>
+                                        </if>
+                                        <eq name="oinfo.status" value="2">
+                                            <a class="am-btn am-btn-danger" href="{:U('Member/receipt',array('order_no'=>$oinfo['order_no']))}">确认收货</a>
+                                        </eq>
+                                        <eq name="oinfo.status" value="3">
+                                            <a class="am-btn am-btn-danger anniu" href="{:U('Member/evaluate',array('order_no'=>$oinfo['order_no']))}">立即评价</a>
+                                        </eq>
+                                        <eq name="oinfo.status" value="4">
+                                            <a class="am-btn am-btn-danger anniu" href="{:U('Member/evaluate_list',array('order_no'=>$oinfo[order_no]))}">我的评价</a>
+                                        </eq>
+                                    <else/>
+                                        <if condition="($oinfo['status'] eq 1) and ($oinfo['deftime2st'] eq 0)">
+                                            <a class="am-btn am-btn-warning anniu" href="{:U('Seller/deliver',array('order_no'=>$oinfo['order_no']))}">发货</a><br/>
+                                        </if>
+                                        <eq name="oinfo.status" value="4">
+                                            <a class="am-btn am-btn-danger anniu" href="{:U('Seller/evaluate',array('order_no'=>$oinfo[order_no]))}">评价买家</a>
+                                        </eq>
+                                    </eq>
+                                </li>
+                            </in>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </volist> 
+        {$page}
+    </div>
+</div>
+</empty>  

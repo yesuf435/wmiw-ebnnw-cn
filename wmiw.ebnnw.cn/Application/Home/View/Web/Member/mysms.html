@@ -1,0 +1,97 @@
+<include file="Common:meta" />
+<title>站内消息-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/newstyle.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+        <div class="center">
+            <div class="col-main">
+                <div class="main-wrap">
+                    <div class="main-wrap-box">
+                        <div class="user-news">
+                            <!--标题 -->
+                            <div class="am-cf on-user-title">
+                                <div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">站内消息</strong> / <small>Sms</small></div>
+                            </div>
+                            <div class="am-tabs am-tabs-d2">
+                                <ul class="am-avg-sm-3 am-tabs-nav am-nav am-nav-tabs">
+                                    <li <if condition="(ACTION_NAME eq 'mysms') and ($tp eq '')">class="am-active"</if>><a href="{:U('Member/mysms')}">系统消息</a></li>
+                                    <li <if condition="(ACTION_NAME eq 'mysms') and ($tp eq 'usend')">class="am-active"</if>><a href="{:U('Member/mysms',array('tp'=>'usend'))}">站内信</a></li>
+                                    <li <if condition="(ACTION_NAME eq 'sendmsg')">class="am-active"</if>><a href="{:U('Member/sendmsg')}">发送站内信</a></li>
+                                </ul>
+                                <div class="am-tabs-bd">
+                                    <div class="am-tab-panel am-fade am-in am-active" style="padding: 10px 0px;">
+                                        <div class="news-day">
+                                            <volist name="slist" id="svo">
+                                                <!--消息 -->
+                                                <div class="s-msg-item s-msg-temp i-msg-downup Js-li">
+                                                    <div class="s-msg-item-box">
+                                                        <h6 class="s-msg-bar"><span class="s-name"><eq name="svo.type" value="用户发送">用户{$svo.user.nickname}的留言<else/>{$svo.type}</eq></span></h6>
+                                                        <div class="s-msg-content i-msg-downup-wrap">
+                                                            <div class="i-msg-downup-con">
+                                                                <a class="i-markRead link" target="_blank" href="{:U('Member/mysms_default',array('sid'=>$svo['sid']))}">
+                                                                    <neq name="svo.pid" value="0"><p class="s-main-toobj am-text-truncate">关于拍品<span class="gname">“{$svo.auction.pname}”</span>的留言</p></neq>
+                                                                    <p class="s-main-content am-text-truncate">{$svo.content}</p>
+                                                                    <p class="s-main-tate">{$svo.time||date='Y-m-d H:i',###}</p>
+                                                                    <p class="s-row s-main-content">
+                                                                        <a class="link" href="{:U('Member/mysms_default',array('sid'=>$svo['sid']))}">
+                                                                        阅读全文 <eq name="svo.status" value="0"><span class="item-smsc">未读</span></eq> <i class="am-icon-angle-right"></i>
+                                                                        </a>
+
+                                                                    </p>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        <a sid="{$svo.sid}" class="i-btn-forkout link Js-del" href="javascript: void(0);"><i class="am-icon-close am-icon-fw"></i></a>
+                                                    </div>
+                                                </div>
+                                            </volist>
+                                        </div>
+                                    </div>
+                                </div>
+                                {$page}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--底部-->
+                <include file="Common:footer"/>
+            </div>
+            <include file="Member:menu"/>
+        </div>
+<script type="text/javascript">
+var delLink = "{:U('Member/del_mysms')}";
+$(function(){
+    // 删除地址【
+    $(".Js-del").click(function(){
+        var sid = $(this).attr("sid");
+        var delobj = $(this).parents('.Js-li');
+        AMUI.dialog.confirm({ title: '提示', content: '是否删除这条消息？', 
+            onConfirm: function() {
+                $.post(delLink,{'sid':sid},function(data){      //ajax后台
+                    if (data.status) {
+                        delobj.remove();
+                        if (data.url) {
+                            top.window.location.href=data.url;
+                        };
+                    } else {
+                        // 提示框
+                        AMUI.dialog.alert({ title: data.title, content: data.info});
+                    }
+                },'json'); 
+            }, 
+            onCancel: function() {}
+         }); 
+
+        return false;
+    });
+    // 删除地址】
+});
+</script>
+    </body>
+</html>

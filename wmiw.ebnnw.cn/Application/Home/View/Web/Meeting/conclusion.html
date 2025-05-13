@@ -1,0 +1,73 @@
+<include file="Common:meta" />
+<title>{$saytyp.ch|default=今日拍卖会}-拍卖会拍卖-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<style type="text/css">
+    .conclusion{max-width: 800px; margin: 0 auto; vertical-align: middle;}
+    .conclusion .tit{ position: relative;}
+    .conclusion h1{font-size: 22px; text-align: center;}
+    .conclusion .tit button{float: right;margin-top: 15px;}
+    .conclusion .tit span{ float: left;}
+    .conclusion .tit span img{height: 60px;width: auto;}
+    .conclusion table img{ height: 43px;float: left;    padding-right: 5px; }
+    table.am-table tr th,table.am-table tr td{ vertical-align: middle;}
+</style>
+<body>
+        <div class="conclusion">
+        <div class="tit am-cf">
+            {:showAdvPosition('logoA','span')}
+            <button class="am-print-hide am-btn am-btn-primary" type="button" onclick="window.print()">打印</button>
+        </div>
+        <h1>《{$meet.mname}》拍卖会结果统计</h1>
+        
+        <h2>拍卖会结束信息</h2>
+        <table class="am-table am-table-bordered am-table-radius am-table-striped">
+            <tr>
+                <th>开始时间</th>
+                <th>结束时间</th>
+                <th>数量</th>
+                <th>成交</th>
+                <th>流拍</th>
+                <th>成交总价</th>
+            </tr>
+            <tr>
+                <td align="center">{$meet.starttime|date='m-d H:i',###}</td>
+                <td align="center">{$meet.endtime|date='m-d H:i',###}</td>
+                <td align="center">{$meet.acount}件</td>
+                <td align="center">{$meet.acccount}件</td>
+                <td align="center">{$meet.loscount}件</td>
+                <td align="right"><strong class="am-text-warning"><b>￥</b>{$meet.accprice}</strong></td>
+            </tr>
+        </table>
+        <h2>拍卖会拍品结束信息</h2>
+        <table class="am-table am-table-bordered am-table-radius am-table-striped">
+            <tr>
+                <th>序号</th>
+                <th width="30%">拍品名称</th>
+                <th>竞价设定</th>
+                <th>结束状况</th>
+            </tr>
+            <volist name="alist" id="vo">
+            <tr>
+                <td align="center">{$vo.msort}</td>
+                <td> <img src="{$upWholeUrl}{$vo.pictures|getPicUrl=###,3,0}">{$vo.pname}</td>
+                <td align="left">
+                    开始于：{$vo.starttime|date='m-d H:i',###}<br/>
+                    结束于：{$vo.endtime|date='m-d H:i',###}<br/>
+                    起拍价：<b>￥</b>{$vo.onset|wipezero=###}<br/>
+                    保留价：<b>￥</b>{$vo.price|wipezero=###}<br/>
+                    保证金：{:pledgeShow($vo['pattern'],$vo['pledge_type'],$vo['onset'],$vo['pledge'],$vo['spledge'],$vo['mpledge'])}
+                </td>
+                <td align="left">
+                    溢价率：{$vo.premium}%<br/>
+                    出价次数：{$vo.bidcount}次<br/>
+                    价格：<span class="am-text-warning">{$vo.nowprice}</span><br/>
+                    状态：<span class="am-text-danger"><eq name="vo.endstatus" value="1">成交</eq><eq name="vo.endstatus" value="2">未达到目标价-流拍</eq><eq name="vo.endstatus" value="3">无人出价-流拍</eq><eq name="vo.endstatus" value="4">撤拍</eq></span>
+                </td>
+            </tr>
+            </volist>
+        </table>
+        </div>
+    </body>
+    </html>

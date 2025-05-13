@@ -1,0 +1,44 @@
+<!-- 顶部导航栏 (New Design) -->
+<header class="header">
+    <div class="header-container container">
+        <div class="logo">
+            <a href="/"><img src="/Public/Home/images/logo.png" alt="CHRISTIE'S 佳士得" onerror="this.onerror=null; this.src='data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%2224%22 height%3D%2224%22 viewBox%3D%220 0 24 24%22%3E%3Cpath fill%3D%22%23CCC%22 d%3D%22M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z%22%2F%3E%3C%2Fsvg%3E'"></a>
+            <div class="logo-text">佳士得</div>
+        </div>
+        
+        <div class="search-bar">
+            <form action="{:U('Index/search')}" method="get">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" name="keyword" class="search-input" placeholder="搜索古董、艺术品、拍卖会...">
+                <input type="hidden" name="type" value="all">
+            </form>
+        </div>
+        
+        <div class="nav-links">
+            <a href="{:U('Auction/index')}" class="nav-link">
+                <i class="fas fa-gavel"></i>
+                拍卖会
+            </a>
+            <a href="{:U('Special/index')}" class="nav-link">
+                <i class="fas fa-th-large"></i>
+                专场
+            </a>
+            <a href="{:U('Goods/goodsList', array('recommend'=>1))}" class="nav-link">
+                <i class="fas fa-star"></i>
+                精品
+            </a>
+        </div>
+        
+        <div class="user-actions">
+            <notempty name="Think.session.uid">
+                <a href="{:U('User/index')}" class="user-link">欢迎, {.session.uname}</a>
+                <a href="{:U('User/logout')}" class="logout-btn">退出</a>
+            <else/>
+                <a href="{:U('User/login')}" class="login-btn">登录</a>
+                <a href="{:U('User/register')}" class="register-btn">注册</a>
+            </notempty>
+        </div>
+    </div>
+</header>
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">

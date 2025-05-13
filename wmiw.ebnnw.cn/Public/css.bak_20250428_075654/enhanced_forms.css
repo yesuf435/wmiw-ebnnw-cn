@@ -1,0 +1,120 @@
+/* 增强表单交互体验的CSS */
+/* 适合45-70岁用户群体的表单优化 */
+
+/* 输入提示样式 */
+.input-tip {
+  color: #666;
+  font-size: 16px;
+  margin: 5px 0 15px 0;
+  padding: 8px 12px;
+  background-color: #f9f5f0;
+  border-radius: 6px;
+  border-left: 3px solid #8B0000;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* 输入框焦点效果增强 */
+.am-form input:focus,
+.am-form textarea:focus,
+.am-form select:focus {
+  border-color: #8B0000 !important;
+  box-shadow: 0 0 8px rgba(139, 0, 0, 0.2) !important;
+  outline: none !important;
+}
+
+/* 按钮悬停和点击效果 */
+.am-btn {
+  transition: all 0.3s ease !important;
+}
+
+.am-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
+}
+
+.am-btn:active {
+  transform: translateY(1px) !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+/* 表单错误消息样式 */
+.form-error-msg {
+  color: #8B0000;
+  font-size: 16px;
+  margin: 5px 0 10px 0;
+  padding: 8px 12px;
+  background-color: #ffeeee;
+  border-radius: 6px;
+  border-left: 3px solid #8B0000;
+  font-weight: bold;
+  animation: shake 0.5s ease-in-out;
+}
+
+/* 错误抖动动画 */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+/* 验证码区域优化 */
+.verification {
+  margin: 20px 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+}
+
+.verification .input {
+  flex: 1 !important;
+  min-width: 150px !important;
+  margin-right: 10px !important;
+}
+
+.verifyImg {
+  height: 50px !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  border: 1px solid #d4c0c0 !important;
+  transition: all 0.3s ease !important;
+}
+
+.verifyImg:hover {
+  transform: scale(1.05) !important;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
+}
+
+/* 复选框样式优化 */
+.am-checkbox {
+  margin: 15px 0 !important;
+}
+
+.am-checkbox input[type="checkbox"] {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+/* 表单分组间距优化 */
+.am-form-group {
+  margin-bottom: 25px !important;
+}
+
+/* 标签文字加粗 */
+.am-form label {
+  font-weight: 500 !important;
+}
+
+/* 响应式调整 */
+@media only screen and (max-width: 768px) {
+  .verification {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  
+  .verification .input {
+    width: 100% !important;
+    margin-right: 0 !important;
+    margin-bottom: 10px !important;
+  }
+}

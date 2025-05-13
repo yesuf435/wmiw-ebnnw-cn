@@ -1,0 +1,54 @@
+<include file="Common:meta" />
+<title>物流跟踪-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/lostyle.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+		<div class="center">
+			<div class="col-main">
+				<div class="main-wrap">
+					<div class="user-logistics">
+						<!--标题 -->
+						<div class="am-cf am-padding">
+							<div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">物流跟踪</strong> / <small>Logistics&nbsp;History</small></div>
+						</div>
+						<hr/>
+						<div class="package-title">
+							<div class="m-item">
+								<div class="item-pic">
+									<img style="height: 50px;" src="{$upWholeUrl}{$oinfo.pictures||getPicUrl=###,3,0}" class="itempic J_ItemImg">
+								</div>
+								<div class="item-info">
+									<!-- <p class="log-status"></p> -->
+									<p>承运公司：{$oinfo.express_ch}</p>
+									<p>快递单号：{$oinfo.express_no}</p>
+								</div>
+							</div>
+                         <div class="clear"></div>
+						</div>
+						<div class="package-status">
+							<ul class="status-list">
+								<foreach name="oinfo.exparr.result.list" item="rlv">
+								<li class="latest">
+									<p class="text">{$rlv.remark}</p>
+									<div class="time-list">
+										<span class="date">{$rlv.datetime}</span>
+									</div>
+								</li>
+								</foreach>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!--底部-->
+			<include file="Common:footer"/>
+            </div>
+            <eq name="whopage.seller" value="0"><include file="Member:menu"/></eq>
+            <eq name="whopage.seller" value="1"><include file="Seller:menu"/></eq>
+        </div>
+	</body>
+</html>

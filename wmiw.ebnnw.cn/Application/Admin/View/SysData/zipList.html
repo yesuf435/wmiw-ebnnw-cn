@@ -1,0 +1,209 @@
+<include file="Common:meta" />
+<title>数据库备份-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div id="opStatus" class="container-fluid" style="display: none;">
+                <p class="page-header-description"></p>
+            </div>
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">数据库备份</div>
+                            </div>
+                            <div class="widget-body am-cf">
+                                <empty name="list">
+                                没有备份的数据库
+                                <else/>
+                                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                                        <div class="am-form-group">
+                                            <div class="am-btn-toolbar">
+                                                <div class="am-btn-group am-btn-group-xs">
+                                                    <button type="button" class="am-btn am-btn-default am-btn-success on-btn unzipSelect"><span class="am-icon-file-zip-o"></span> 解压缩所选</button>
+                                                    <button type="button" class="am-btn am-btn-default am-btn-danger on-btn delZipFiles"><span class="am-icon-trash-o"></span> 删除所选</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="am-u-sm-12">
+                                        <form id="zipForm" class="am-form tpl-form-border-form tpl-form-border-br">
+                                            <table width="100%" id="example-r" class="am-table am-table-compact tpl-table-black " >
+                                                <thead>
+                                                    <tr>
+                                                        <td>
+                                                            <label class="am-checkbox am-margin-right-sm am-fl"><input class="chooseAll" type="checkbox" data-am-ucheck>全选</label>
+                                                            <label class="am-checkbox am-margin-right-sm am-fl"><input class="unsetAll" type="checkbox" data-am-ucheck>反选</label>
+                                                        </td>
+                                                        <td>打包时间</td>
+                                                        <td>文件大小</td>
+                                                        <td>解压</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <volist name="list" id="zip">
+                                                        <tr>
+                                                            <td>
+                                                                <label class="am-checkbox"><input pre="{$sql.pre}" type="checkbox" name="zipFiles[]" value="{$zip.file}" data-am-ucheck>
+                                                                <a href="{:U('SysData/downFile',array('file'=>$zip['file'],'type'=>'zip'))}" target="_blank">{$zip.file}</a>
+                                                                </label>
+                                                            </td>
+                                                            <td>{$zip.time}</td>
+                                                            <td>{$zip.size}</td>
+                                                            <td>
+                                                                <div class="tpl-table-black-operation">
+                                                                <a class="unzip" file="{$zip.file}" href="javascript:;">
+                                                                    <i class="am-icon-file-zip-o"></i> 解压
+                                                                </a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </volist>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td>
+                                                             <label class="am-checkbox am-margin-right-sm am-fl"><input class="chooseAll" type="checkbox" data-am-ucheck>全选</label>
+                                                            <label class="am-checkbox am-fl"><input class="unsetAll" type="checkbox" data-am-ucheck>反选</label>
+                                                        </td>
+                                                        <td>备份时间</td>
+                                                        <td>总计：{$total}</td>
+                                                        <td>解压</td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                            <input type="hidden" name="to" id="to" value="" />
+                                        </form>
+                                    </div>
+                                </empty>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+<div class="am-modal am-modal-prompt" tabindex="-1" id="sendTOemail">
+  <div class="am-modal-dialog">
+    <div class="am-modal-hd">请输入接收邮箱</div>
+    <div class="am-modal-bd">
+      <input type="text" class="am-modal-prompt-input">
+    </div>
+    <div class="am-modal-footer">
+      <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+      <span class="am-modal-btn" data-am-modal-confirm>确定发送邮件</span>
+    </div>
+  </div>
+</div>
+
+<include file="Common:footer_link" />
+<script type="text/javascript">
+    var form = $('#zipForm');
+            $(function(){
+                //全新反选
+                clickCheckbox();
+
+                var repeat=function(url){
+                    $.post(url, function(json){
+//                        var json = eval("(" + json + ")");
+                        if(json.status==1){
+                            if(json.url){
+                                $("#opStatus").show();
+                                $("#opStatus .page-header-description").html(json.info);
+                                repeat(json.url);
+                            }else{
+                                AMUI.dialog.confirm({content: '噢...耶！', onConfirm: function() {
+                                    $("#opStatus").hide('solw');
+                                    $(".unzipSelect").html('<span class="am-icon-file-zip-o"></span>解压缩所选');
+                                }, onCancel: function() { console.log('onCancel') } }); 
+                                $(".on-btn").removeAttr("disabledSubmit");
+                            }
+                        }else{
+                            AMUI.dialog.alert({content: json.info});
+                        }
+                    });
+                }
+                // 解压所选
+                var unZip = "{:U('SysData/unzipSqlfile')}";
+                $(".unzipSelect").click(function(){
+                    if($(this).attr("disabledSubmit")){
+                        AMUI.dialog.alert({content: '已提交，系统在处理中...'});
+                        return false;
+                    }
+                    if($("tbody input[type='checkbox']:checked").size()==0){
+                        AMUI.dialog.alert({content: '请先选择你要删除的数据库表吧'});
+                        return false;
+                    }
+                    var files=[];
+                    $("tbody input[type='checkbox'][name='zipFiles[]']:checked").each(function(i){
+                        files[i]=$(this).val();
+                    });
+                    $.post(unZip, {'zipFiles':files}, function(json){
+                        if(json.status==1){
+                            if(json.url){
+                                $("#opStatus").show();
+                                $("#opStatus .page-header-description").html(json.info);
+                                repeat(json.url);
+                            }
+                        }
+                    });
+
+                    return false;
+                });
+                $(".unzip").click(function(){
+                    if($(this).attr("disabledSubmit")){
+                        AMUI.dialog.alert({content: '已提交，系统在处理中...'});
+                        return false;
+                    }
+                    $.post(unZip,{'zipFiles[]':$(this).attr("file")},function(json){
+                        AMUI.dialog.alert({content: json.info});
+                        $(".on-btn").removeAttr("disabledSubmit");
+                        if(json.url&&json.url!=''){
+                            setTimeout(function(){
+                                top.window.location.href=json.url;
+                            },2000);
+                        }
+                    });
+                    return false;
+                });
+                //删除备份文件
+                var delUrl = "{:U('SysData/delZipFiles')}";
+                $(".delZipFiles").click(function(){
+                    if($(this).attr("disabledSubmit")){
+                        AMUI.dialog.alert({content: '已提交，系统在处理中...'});
+                        return false;
+                    }
+                    if($("tbody input[type='checkbox']:checked").size()==0){
+                        AMUI.dialog.alert({content: '请先选择你要删除的zip文件吧'});
+                        return false;
+                    }
+                    AMUI.dialog.confirm({ title: '温馨提示', content: '你确定要删除备份文件吗？', onConfirm: function() {
+                        $(".on-btn").attr("disabledSubmit",true);
+                        form.ajaxSubmit({
+                            url:delUrl,
+                            type:"POST",
+                            success:function(data, st) {
+                                AMUI.dialog.alert({ title: data.title, content: data.info});
+                                if(data.url&&data.url!=''){
+                                    setTimeout(function(){
+                                        top.window.location.href=data.url;
+                                    },2000);
+                                }
+                            }
+                        });
+                    }, onCancel: function() { console.log('onCancel') } });
+                    return false;
+                });
+            });
+        </script>
+</body>
+</html>

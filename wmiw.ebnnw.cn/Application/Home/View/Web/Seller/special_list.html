@@ -1,0 +1,185 @@
+<include file="Common:meta" />
+<title>我的专场-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/gdstyle.css" rel="stylesheet" type="text/css">
+<include file="Common:header" />
+<include file="Common:navigation" />
+        <div class="center">
+            <div class="col-main">
+                <div class="main-wrap">
+                    <div class="main-wrap-box">
+                        <div class="user-goods">
+                            <!--标题 -->
+                            <div class="am-cf on-user-title">
+                                <div class="am-fl am-cf">
+                                    <eq name="ACTION_NAME" value="special_list">
+                                        <strong class="am-text-danger am-text-lg">我的专场</strong> / <small>My Special List</small>
+                                    </eq>
+                                    <eq name="ACTION_NAME" value="special_search">
+                                        <strong class="am-text-danger am-text-lg">搜索结果</strong> / <small>Search result</small>
+                                    </eq>
+                                </div>
+                            </div>
+                            
+                            <div class="searchbox am-cf">
+                                <form class="am-form am-form-inline am-cf" action="{:U('Seller/special_search')}" method='get'>
+                                    <label for="">关键字：</label>
+                                    <input type="text" value="{$keys.keyword}" name="keyword" placeholder="搜索标题的关键字" />
+                                    <label for="">专场状态：</label>
+                                    <select name="type">
+                                        <option value="" <eq name="keys.type.get" value="">selected="selected"</eq> >全部专场</option>
+                                        <option value="biding" <eq name="keys.type.get" value="biding">selected="selected"</eq> >在拍专场</option>
+                                        <option value="future" <eq name="keys.type.get" value="future">selected="selected"</eq>>待拍专场</option>
+                                        <option value="endbid" <eq name="keys.type.get" value="endbid">selected="selected"</eq>>结束专场</option>
+                                    </select>
+                                    <label for="">保证金：</label>
+                                    <select name="special_pledge_type">
+                                        <option value="" <eq name="keys.pledge_type" value="">selected="selected"</eq> >全部缴纳方式</option>
+                                        <option value="0" <eq name="keys.pledge_type" value="0">selected="selected"</eq>>专场缴纳</option>
+                                        <option value="1" <eq name="keys.pledge_type" value="1">selected="selected"</eq>>分别缴纳</option>
+                                    </select>
+                                        <button class="am-btn am-btn-danger">筛选</button>
+                                </form>
+                            </div>
+                            <eq name="ACTION_NAME" value="special_search">
+                                <div class="searchmsg">
+                                    在<span class="keyword">{$keys.type.ch}</span>
+                                    找到<span class="keyword">{$keys.count}场</span>保证金缴纳类型为
+                                    <span class="keyword">
+                                    <eq name="keys.pledge_type" value="">全部缴纳方式</eq>
+                                    <eq name="keys.pledge_type" value="0">专场缴纳</eq>
+                                    <eq name="keys.pledge_type" value="1">分别缴纳</eq>
+                                    </span>的专场！
+                                </div>
+                            </eq>
+                            
+                            <div class="am-tabs am-tabs-d2">
+                                <div class="am-tabs-bd">
+                                    <empty name="list">
+                                        哎哟！这里空空如也！
+                                    <else/>
+                                        <div class="am-tab-panel am-fade am-in am-active">
+                                            <div class="goodslist">
+                                                <div class="order-top">
+                                                    <div class="th th-item">
+                                                        <td class="td-inner">专场</td>
+                                                    </div>
+                                                    <div class="th th-orderprice th-price">
+                                                        <td class="td-inner">拍品数量</td>
+                                                    </div>
+                                                    <div class="th th-changeprice th-price">
+                                                        <td class="td-inner">冻结方式/保证金</td>
+                                                    </div>
+                                                    <div class="th th-status th-moneystatus">
+                                                        <td class="td-inner">状态</td>
+                                                    </div>
+                                                    <div class="th th-change th-changebuttom">
+                                                        <td class="td-inner">操作</td>
+                                                    </div>
+                                                </div>
+                                                <div class="order-main">
+                                                    <div class="order-list">
+                                                        <volist name="list" id="vo">
+                                                            <div class="order-status5 Js-trbox">
+                                                                <div class="order-title">
+                                                                    <div class="dd-num">开拍时间：{$vo.starttime|date="Y-m-d H:i:s",###}</div>
+                                                                    <span>结束时间：{$vo.endtime|date="Y-m-d H:i:s",###}</span>
+                                                                    <!--    <em>店铺：小桔灯</em>-->
+                                                                </div>
+                                                                <div class="order-content">
+                                                                    <div class="order-left">
+                                                                        <ul class="item-list">
+                                                                            <li class="td td-item">
+                                                                                <div class="item-pic" style="height: 35px;">
+                                                                                    <a class="link" href="{:U('Special/speul',array('sid'=>$vo['sid']))}"><img src="{$upWholeUrl}{$vo.spicture}" class="itempic J_ItemImg"></a>
+                                                                                </div>
+                                                                                <div class="item-info">
+                                                                                    <div class="item-basic-info">
+                                                                                        <p>
+                                                                                            <a class="link" href="{:U('Special/speul',array('sid'=>$vo['sid']))}">{$vo.sname}</a>
+                                                                                        </p>
+                                                                                        <p class="info-little am-text-truncate">描述：{$vo.description}</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <ul class="td-changeorder">
+                                                                                <li class="td td-orderprice">
+                                                                                    <div class="item-orderprice">
+                                                                                        <span>&nbsp;&nbsp;拍品数量：</span>{$vo.bcount}件
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li class="td td-changeprice">
+                                                                                    <div class="item-changeprice">
+                                                                                        <span>保证金：</span>
+                                                                                        <eq name="vo.special_pledge_type" value="0">专场扣除/{$vo.spledge}</eq>
+                                                                                        <eq name="vo.special_pledge_type" value="1">分别扣除</eq>
+                                                                                    </div>
+                                                                                </li>
+                                                                            </ul>
+                                                                            <div class="clear"></div>
+                                                                        </ul>
+                                                                        <div class="change move-right">
+                                                                            <li class="td td-moneystatus td-status">
+                                                                                <div class="item-status">
+                                                                                    <p class="Mystatus">{$vo.saytyp.ch}</p>
+                                                                                </div>
+                                                                            </li>
+                                                                        </div>
+                                                                        <li class="td td-change td-changebutton">
+                                                                            <neq name="vo.saytyp.get" value="bidend">
+                                                                                <a class="am-btn am-btn-secondary anniu" href="{:U('Seller/special_edit',array('sid'=>$vo['sid']))}">编辑</a>
+                                                                                <a sid="{$vo.sid}" href="javascript:void(0)" name="{$vo.sname}" class="am-btn am-btn-primary anniu Js-del">删除 </a>
+                                                                            <else/>
+                                                                                <a class="am-btn am-btn-default anniu link" href="javascript:void(0)">禁止编辑/删除</a>
+                                                                            </neq>
+                                                                            <a class="am-btn am-btn-default anniu link" href="{:U('Seller/special_info',array('sid'=>$vo['sid']))}">详情</a>
+                                                                        </li>
+                                                                        <div class="clear"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            </volist> 
+                                                        {$page}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </empty>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--底部-->
+                <include file="Common:footer"/>
+            </div>
+            <include file="Seller:menu"/>
+            
+        </div>
+        <script type="text/javascript">
+            var delLink = "{:U('Seller/special_del')}";
+            $(function(){
+                // 删除
+                $(".Js-del").click(function(){
+                    var deltr = $(this).parents('.Js-trbox');
+                    var delsid = $(this).attr('sid');
+                    AMUI.dialog.confirm({ title: '温馨提示', content: '你真的打算将【<b>'+$(this).attr("name")+'</b>】删除吗?<br/>删除后，专场内拍品将与专场失去关联！', onConfirm: function() { 
+                        $.post(delLink,{'sid':delsid},function(data){      //ajax后台
+                            if (data.status) {
+                                    deltr.remove();
+                                    setTimeout(function(){
+                                        window.top.location.reload();
+                                    },2000);
+                                } else {
+                                    AMUI.dialog.alert({ title: '', content: data.msg}); 
+                                }
+                            },'json');
+                    }, onCancel: function() { console.log('onCancel') } }); 
+                });
+            });
+        </script>
+    </body>
+</html>

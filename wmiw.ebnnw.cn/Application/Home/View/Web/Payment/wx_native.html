@@ -1,0 +1,88 @@
+<include file="Common:meta" />
+<title>扫码支付-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+        <div class="center">
+            <div class="col-main">
+                <div class="main-wrap">
+                    <div class="main-wrap-box">
+                        <div class="user-news">
+                            <!--标题 -->
+                            <div class="am-cf on-user-title">
+                                <div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">扫码支付</strong> / <small>Scavenging payment</small></div>
+                            </div>
+                            <div class="payIng">
+                                <ul id="payCard">
+                                    <li class="title">{$adata.title}</li>
+                                    <li class="payitem">
+                                        <eq name="adata.purpose" value="pledge"><div class="bill_no">单号：{$adata.order_no}</div></eq>
+                                        <eq name="adata.purpose" value="auction">
+                                            <div class="bill_no">单号：{$adata.order_no}</div>
+                                            <div class="pinfo">
+                                                <img src="{$pinfo.pictures}">
+                                                <div class="con">
+                                                    <div class="pname am-text-truncate">{$pinfo.pname}</div>
+                                                    <div class="total">总价：￥{$oinfo.total}</span></div>
+                                                </div>
+                                                <div class="namely">成交价(￥{$oinfo.price|wipezero=###})+运费(￥{$oinfo.freight|wipezero=###})+{:C('Auction.broker_buy_name')}(￥{$oinfo.broker_buy|wipezero=###})</div>
+                                            </div>
+                                            <div class="othpay"><span class="oth">保证金抵货款：<span>￥{$adata.pledge}</span></span></div>
+                                        </eq>
+                                    </li>
+                                    <li class="moneybox"><span class="danwei">￥</span><span class="money">{$adata.money}</span></li>
+                                    <li class="qrcode"></li>
+                                    <button style="margin-bottom: 10px;" id="query" class="am-btn am-btn-danger">已扫码支付？</button>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <!--底部-->
+                
+                <include file="Common:footer"/>
+            </div>
+            <include file="Member:menu"/>
+        </div>
+<script src="__STATIC__/dependency/qrcode.js"></script>
+<script type="text/javascript">
+var code_url = '{$code_url}';
+var native_query = "{:U('Payment/native_query')}";
+var bill_no = '{$adata.bill_no}';
+var return_url = '{$adata.return_url}';
+var channel = '{$adata.paytype}';
+if(code_url) {
+    var options = {text: code_url};
+    //参数1表示图像大小，取值范围1-10；参数2表示质量，取值范围'L','M','Q','H'
+    var canvas = BCUtil.createQrCode(options);
+    $("#payCard .qrcode").html(canvas);
+}
+$('#payCard').on("click",'#query',function(){
+    querypost(1);
+});
+querytimer = setInterval(function(){
+    querypost(0);
+}, 3000);
+function querypost(type){
+    $.post(native_query,{'billNo':bill_no,'channel':channel},function(result){      //ajax后台
+        if(result.status){
+            clearInterval(querytimer);
+            $('#payCard #query').text('支付成功');
+            AMUI.dialog.alert({content: '支付成功！', onConfirm: function() { console.log('close'); } });
+            window.location.href = return_url;
+        }else{
+            if(type==1){
+                AMUI.dialog.alert({content: '未支付', onConfirm: function() { console.log('close'); } }); 
+            }
+        }
+    },'json');
+}
+</script>
+    </body>
+</html>

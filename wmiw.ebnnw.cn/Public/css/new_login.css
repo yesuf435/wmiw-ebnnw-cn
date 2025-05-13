@@ -1,0 +1,209 @@
+/* Extracted CSS for New Login Page Design */
+body {
+    background-color: #f8f8f8;
+    color: #333;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.login-container { /* Renamed from login-preview for clarity */
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 500px; /* Limit width on larger screens */
+    margin: 30px auto; /* Center the container */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.login-header { /* Optional header, can be adapted */
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    background-color: #fff;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.login-close {
+    font-size: 18px;
+    cursor: pointer;
+    color: #888;
+}
+
+.login-content {
+    padding: 30px; /* Increased padding */
+    background-color: #fff;
+}
+
+.login-greeting {
+    font-size: 22px; /* Larger greeting */
+    font-weight: 500;
+    margin-bottom: 25px;
+    line-height: 1.4;
+}
+
+.login-form .am-form-group { /* Add spacing for form groups */
+    margin-bottom: 18px;
+}
+
+.login-form label {
+    display: block;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 6px;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 14px; /* Increased padding */
+    margin-bottom: 15px;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px; /* More rounded corners */
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* Verification Code Specific Styles */
+.verification {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between input and image */
+}
+
+.verification .input {
+    flex-grow: 1;
+}
+
+.verifyImg {
+    height: 48px; /* Match input height */
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid #e5e5e5;
+    flex-shrink: 0;
+}
+
+.forgot-password-link {
+    display: block; /* Make it a block element */
+    text-align: right;
+    font-size: 13px; /* Slightly larger */
+    color: #888; /* Adjusted color */
+    margin-top: -5px; /* Adjust position */
+    margin-bottom: 15px;
+    text-decoration: none;
+}
+.forgot-password-link:hover {
+    color: #555;
+}
+
+.login-button {
+    width: 100%;
+    padding: 14px; /* Increased padding */
+    background-color: #e61e25; /* Red color from design */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.login-button:disabled {
+    background-color: #f8a0a4; /* Lighter red when disabled */
+    cursor: not-allowed;
+}
+
+.login-button:hover:not(:disabled) {
+    background-color: #c81a20; /* Darker red on hover */
+}
+
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    font-size: 14px; /* Larger font size */
+    color: #555; /* Darker color */
+}
+
+.login-options span, .login-options a {
+    color: #0066cc; /* Blue link color */
+    cursor: pointer;
+    text-decoration: none;
+}
+.login-options span:hover, .login-options a:hover {
+    text-decoration: underline;
+}
+
+.login-social {
+    display: flex;
+    justify-content: center; /* Center icons */
+    gap: 25px; /* Space between icons */
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #f2f2f2;
+}
+
+.social-icon {
+    width: 40px; /* Larger icons */
+    height: 40px;
+    background-color: #f2f2f2;
+    border-radius: 50%;
+    display: flex; /* For potential icon centering */
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    /* Add specific icons using background images or font icons */
+}
+
+/* Error Message Style */
+.form-error-msg {
+    color: #e61e25; /* Match button red */
+    background-color: #fdecea;
+    border: 1px solid #fbc7c9;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Responsive adjustments */
+@media only screen and (max-width: 480px) {
+    .login-container {
+        margin: 15px;
+        box-shadow: none;
+        border: 1px solid #eee;
+    }
+    .login-content {
+        padding: 20px;
+    }
+    .login-greeting {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    .login-form input[type="text"],
+    .login-form input[type="password"] {
+        padding: 12px;
+        font-size: 15px;
+    }
+    .verifyImg {
+        height: 44px; /* Adjust if needed */
+    }
+    .login-button {
+        padding: 12px;
+        font-size: 15px;
+    }
+    .login-options {
+        font-size: 13px;
+    }
+    .login-social {
+        margin-top: 25px;
+        padding-top: 15px;
+    }
+    .social-icon {
+        width: 36px;
+        height: 36px;
+    }
+}
+

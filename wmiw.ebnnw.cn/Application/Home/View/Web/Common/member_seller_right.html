@@ -1,0 +1,43 @@
+<!--新品 -->
+<div class="new-goods">
+    <div class="s-bar"><i class="s-icon"></i>今日新品</div>
+    <empty name="newbid">
+        <div class="new-goods-info">
+            <div class="datanull">今天没有新的拍卖</div>
+        </div>
+    <else/>
+        <foreach name="newbid" item="nbv">
+            <div class="new-goods-info">
+                <a target="_blank" class="shop-info" href="{:U('Auction/details',array('pid'=>$nbv['pid']))}">
+                    <div class="face-img-panel">
+                        <img src="{$upWholeUrl}{$nbv.pictures||getPicUrl=###,2,0}" alt="{$nbv.pname}">
+                    </div>
+                    <span class="new-goods-num ">￥{$nbv.nowprice|wipezero=###}</span>
+                    <span class="shop-title">{$nbv.pname}</span>
+                </a>
+                <a href="{:U('Auction/details',array('pid'=>$nbv['pid']))}" class="follow">参拍</a>
+            </div>
+        </foreach>
+    </empty>
+</div>       
+<!--热卖推荐 -->
+<div class="new-goods">
+    <div class="s-bar"><i class="s-icon"></i>热拍推荐</div>
+    <empty name="newbid">
+        <div class="new-goods-info">
+            <div class="datanull">没有推荐的拍品</div>
+        </div>
+    <else/>
+        <foreach name="htcbid" item="htv">
+            <div class="new-goods-info">
+                <a class="shop-info" href="{:U('Auction/details',array('pid'=>$htv['pid']))}" target="_blank">
+                    <div >
+                        <img src="{$upWholeUrl}{$htv.pictures||getPicUrl=###,2,0}" alt="">
+                    </div>
+                    <span class="one-hot-goods">￥{$htv.nowprice|wipezero=###}</span>
+                </a>
+            </div>
+        </foreach>
+    </empty>
+</div>                      
+<div class="clear"></div>

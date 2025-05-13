@@ -1,0 +1,29 @@
+<include file="Common:meta" />
+<title>{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<link href="__CSS__/sustyle.css" rel="stylesheet" type="text/css" />
+<body>
+<include file="Common:header_topnav" />
+<include file="Common:header_search" />
+<include file="Common:navigation" />
+<div class="take-delivery">
+    <div class="status">
+        <h2>授权登录成功</h2>
+        <div class="successInfo">
+            <ul>
+                <li>已授权登录《{$site.SITE_INFO.name}》电脑版</li>
+                <div class="user-info">
+                    <p>如果2秒后电脑版未自动登录，请尝试刷新电脑版网页重新扫码。</p>
+                </div>              
+            </ul>
+            <div class="option">
+                <span class="info">您也可以</span>在微信版<span>参与拍卖</span>
+            </div>
+        </div>
+    </div>
+</div>
+<include file="Common:footer"/>
+</body>
+</html>

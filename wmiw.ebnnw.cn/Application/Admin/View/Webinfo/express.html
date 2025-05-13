@@ -1,0 +1,67 @@
+<include file="Common:meta" />
+<title>快递配置-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="container-fluid">
+                <p class="page-header-description">设置【排序】，将变动快递显示的排列顺序；设置【禁用】用户将无法选择禁用的快递；设置【常用】，将显示在常用快递内。</p>
+            </div>
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">快递配置</div>
+                            </div>
+                            <div class="widget-body">
+                                <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                                    <div class="am-form-group">
+                                        <div class="am-btn-toolbar">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <a href="{:U('Webinfo/express_set')}" class="am-btn am-btn-default am-btn-success"><span class="am-icon-cog"></span> 接口配置</a>
+                                                <a href="{:U('Webinfo/express_test')}" class="am-btn am-btn-default am-btn-secondary"><span class="am-icon-location-arrow"></span> 快递查询测试</a>
+                                                <a href="{:U('Webinfo/express',array('type'=>'getcom'))}" class="am-btn am-btn-default am-btn-warning"><span class="am-icon-location-arrow"></span> 获取更新快递公司</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="am-u-sm-12">
+                                <empty name="list">
+                                    <div class="on-none">没有获取到所支持的快递公司，请点击接口配置填写AppKey</div>
+                                <else/>
+                                    <table width="100%" id="example-r" class="am-table am-table-compact tpl-table-black " >
+                                        <thead>
+                                            <tr>
+                                                <td>快递标示</td>
+                                                <td>快递名称</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                            <volist name="list" id="vo">
+                                                <tr id="{$vo.id}">
+                                                    <td>{$vo.no}</td>
+                                                    <td>{$vo.com}</td>
+                                                </tr>
+                                            </volist>
+                                        </tbody>
+                                    </table>
+                                </empty>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+</body>
+</html>

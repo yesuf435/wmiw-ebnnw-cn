@@ -1,0 +1,201 @@
+<include file="Common:meta" />
+<title><eq name="ACTION_NAME" value="payment">在线充值</eq><eq name="ACTION_NAME" value="rechargeable">充值卡充值</eq>-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/jsstyle.css" rel="stylesheet" type="text/css">
+<js href="--PUBLIC--/assets/js/jquery.form.js"/>
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+        <div class="center">
+            <div class="col-main">
+                <div class="main-wrap">
+                    <div class="main-wrap-box">
+                        <div class="user-news">
+                            <!--标题 -->
+                            <div class="am-cf on-user-title">
+                                <div class="am-fl am-cf">
+                                    <eq name="ACTION_NAME" value="payment"><strong class="am-text-danger am-text-lg">在线充值</strong> / <small>Online recharge</small></eq>
+                                    <eq name="ACTION_NAME" value="rechargeable"><strong class="am-text-danger am-text-lg">充值卡充值</strong> / <small>Recharge card recharge</small></eq>
+                                </div>
+                            </div>
+                            <div class="am-tabs am-tabs-d2">
+                                <ul class="am-avg-sm-3 am-tabs-nav am-nav am-nav-tabs">
+                                    <li <if condition="ACTION_NAME eq 'payment'">class="am-active"</if>><a href="{:U('Member/payment')}">在线充值</a></li>
+                                    <li <if condition="ACTION_NAME eq 'rechargeable'">class="am-active"</if>><a href="{:U('Member/rechargeable')}">充值卡充值</a></li>
+                                </ul>
+                                <div class="am-tabs-bd">
+                                    <if condition="ACTION_NAME eq 'payment'">
+                                    <!-- 在线充值【 -->
+                                        <form id="paymentForm" class="am-form am-form-horizontal" action="{:U('Payment/index')}" method="post">
+                                            <div class="am-tab-panel am-fade am-in am-active" style="padding: 10px 0px; z-index: 1;">
+                                                    <div class="am-alert am-alert-danger" data-am-alert>
+                                                        <button type="button" class="am-close">&times;</button>
+                                                        <p>尊敬的客户：账户充值成功后你将享有等额参拍保证金拍品的出价权限!出价后冻结相应金额作为保证金。如未拍到拍品，保证金将退回到您的余额内！<br/>你可以选择提现来获得充值的保证金！详情查看帮助中心</p>
+                                                    </div>
+                                                    <!-- 充值金额 -->
+                                                    <div class="logistics">
+                                                        <h3>充值金额</h3>
+                                                        <div class="am-form-group am-form-icon">
+                                                            <i class="am-icon-rmb am-text-sm"></i>
+                                                            <input type="number" name="data[money]" class="am-form-field" placeholder="充值金额（必须为数字，小数点后最多保留两位小数）" required>
+                                                        </div>
+                                                    </div>
+                                                    <!--支付方式-->
+                                                    <div class="logistics Js-channel-type">
+                                                        <h3>选择支付方式</h3>
+                                                        <ul class="pay-list am-avg-sm-4 am-avg-md-5 am-avg-lg-7">
+                                                            <foreach name="channel" item="v">
+                                                                <li channel="{$v.value}" class="pay <eq name='key' value='0'>selected</eq>">
+                                                                    <div class="avg-libox">
+                                                                        <img src="{$v.img}" /><span></span>
+                                                                    </div>
+                                                                </li>
+                                                            </foreach>
+                                                        </ul>
+                                                        <input type="hidden" name="data[channel]" value="{$channel.0.value}">
+                                                    </div>
+                                                <div class="clear"></div>
+                                            </div>
+                                            <input type="hidden" name="data[purpose]" value="pledge">
+                                            <input type="hidden" name="data[payType]" value="recharge" />
+                                            <input type="submit" value="充值" class="pay-btn-type submitBtn">
+                                        </form>
+                                    <!-- 在线充值】 -->
+                                        <script type="text/javascript">
+                                            //支付方式选择
+                                            $(function() {
+                                                var $form = $('#paymentForm');
+                                                var $subbtn = $(".submitBtn");
+                                                var $rechargeableUrl = "{:U('Member/rechargeable')}";
+                                                $form.validator({
+                                                    submit: function() {
+                                                        var formValidity = this.isFormValid();
+                                                        if (formValidity) {
+                                                            return true;
+                                                        } else {
+                                                            $subbtn.button('reset');
+                                                        // 验证失败的逻辑
+                                                        }
+                                                    //阻止原生form提交
+                                                    return false;
+                                                    }
+                                                });
+                                                $(".Js-channel-type").each(function() {
+                                                    var i = $(this);
+                                                    var p = i.find("ul>li");
+                                                    p.click(function() {
+                                                        if (!$(this).hasClass("selected")){
+                                                            $(this).addClass("selected").siblings("li").removeClass("selected");
+                                                            $("input[name='data[channel]']").val($(this).attr('channel'));
+                                                        }
+                                                    })
+                                                })
+                                            });
+                                        </script>
+                                    </if>
+                                    <if condition="ACTION_NAME eq 'rechargeable'">
+                                    <!-- 充值卡充值【 -->
+                                        <form id="rechargeableForm" class="am-form am-form-horizontal">
+                                            <div class="am-tab-panel am-fade am-in am-active" style="padding: 10px 0px; z-index: 1;">
+                                                    <div class="am-alert am-alert-danger" data-am-alert>
+                                                        <button type="button" class="am-close">&times;</button>
+                                                        <p>注：如果您的充值卡账号密码输入错误达到三次，充值卡将被锁定，第二天解锁！</p>
+                                                    </div>
+                                                    <div class="am-form-group">
+                                                        <label for="cardno" class="am-form-label">账号</label>
+                                                        <div class="am-form-content">
+                                                            <input id="cardno" placeholder="充值卡账号" type="text" name="data[cardno]" minlength="3" maxlength="20" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="am-form-group">
+                                                        <label for="pwd" class="am-form-label">密码</label>
+                                                        <div class="am-form-content">
+                                                            <input id="pwd" placeholder="充值卡密码" type="text" minlength="3" maxlength="20" name="data[pwd]">
+                                                        </div>
+                                                    </div>
+                                                    <div class="am-form-group formVerifyImg">
+                                                        <label for="pwd" class="am-form-label">验证码</label>
+                                                        <div class="am-form-content">
+                                                            <input class="input vcode" class="input" id="verify_code" name="verify_code" type="number" placeholder="验证码" />
+                                                        <img class="verifyImg" src="{:U('Login/verify_code')}"  title="看不清？单击此处刷新" onclick="this.src+='?rand='+Math.random();" />
+                                                        </div>
+                                                    </div>
+                                                <div class="clear"></div>
+                                            </div>
+                                            <input type="submit" value="查询/充值" class="pay-btn-type submitBtn">
+                                        </form>
+                                        <script type="text/javascript">
+                                            $(function(){
+                                                var $form = $('#rechargeableForm');
+                                                var $subbtn = $(".submitBtn");
+                                                var $rechargeableUrl = "{:U('Member/rechargeable')}";
+                                                $form.validator({
+                                                    submit: function() {
+                                                        var formValidity = this.isFormValid();
+                                                        if (formValidity) {
+                                                            var cardno = $("input[name='data[cardno]']").val();
+                                                            var pwd = $("input[name='data[pwd]']").val();
+                                                            // 验证成功的逻辑
+                                                            $subbtn.button('loading');
+                                                            // 验证成功的逻辑
+                                                            $form.ajaxSubmit({url:$rechargeableUrl,data:{'verify':1},type:"POST",
+                                                                success:function(data, st) {
+                                                                    if (data.status) {
+                                                                        AMUI.dialog.confirm({ title: '查询结果', content: data.info, onConfirm: function() {
+                                                                            $.post($rechargeableUrl,{'data[cardno]':cardno,'data[pwd]':pwd},function(data){
+                                                                                AMUI.dialog.alert({ title: data.title, content: data.info});
+                                                                                if (data.status) {
+                                                                                    setTimeout(function(){
+                                                                                        top.window.location.href = data.url;
+                                                                                    },1000);
+                                                                                } else {
+                                                                                    AMUI.dialog.alert({ title: data.title, content: data.info});
+                                                                                    $subbtn.button('reset');
+                                                                                    // 重置验证码
+                                                                                    restVerifyImg();
+                                                                                }
+                                                                            },'json'); 
+                                                                        }, onCancel: function() {
+                                                                            $subbtn.button('reset');
+                                                                            // 重置验证码
+                                                                            restVerifyImg();
+                                                                        } }); 
+                                                                    }else{
+                                                                        AMUI.dialog.alert({ title: '查询结果', content: data.info});
+                                                                        $subbtn.button('reset');
+                                                                        // 重置验证码
+                                                                        restVerifyImg();
+                                                                    }
+                                                                    return false;
+                                                                }
+                                                            });
+                                                        } else {
+                                                            $subbtn.button('reset');
+
+                                                        // 验证失败的逻辑
+                                                        }
+                                                        
+                                                    //阻止原生form提交
+                                                    return false;
+                                                    }
+                                                });
+                                            });
+                                        </script>
+                                    <!-- 充值卡充值】 -->
+                                    </if>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--底部-->
+                <include file="Common:footer"/>
+            </div>
+            <include file="Member:menu"/>
+        </div>
+    </body>
+</html>

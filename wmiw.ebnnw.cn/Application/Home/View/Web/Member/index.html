@@ -1,0 +1,286 @@
+<include file="Common:meta" />
+<title>个人中心-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/vipstyle.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+        <div class="center">
+            <div class="col-main">
+                <div class="main-wrap am-cf">
+                    <div class="wrap-left">
+                        <div class="wrap-list">
+                            <div class="m-user">
+                                <!--个人信息 -->
+                                <div class="m-userinfo">
+                                    <a href="{:U('Member/mysms')}">
+                                        <div class="tipsBox"><i class="am-icon-envelope"></i></div>
+                                    </a>
+                                    <div class="m-baseinfo">
+                                        <a class="m-pic" href="{:U('Member/my_info')}">
+                                            <img class="userPic" src="<notempty name='info.avatar'>{$info.uid|getUserpic=###,1}<else/>__IMG__/getAvatar.do.jpg</notempty>">
+                                        </a>
+                                        <div class="m-info">
+                                            <em class="s-name"><empty name="info.nickname">{$info.account}<else/>{$info.nickname}</empty></em> 
+                                            <div class="vip1"><a href="javascript: void(0);">买家等级:<img alt="{$info.scorebuy}" src="{$info.scorebuy|getlevel=###}"></a></div>
+                                            <div class="safeText"><a href="{:U('Member/safety')}">账户安全:<em style="margin-left:20px ;">{$score}</em>分</a>
+                                                <div class="progressBar"><span style="width: {$score}%;" class="progress"></span></div>
+                                            </div>
+                                            <div class="m-address">
+                                                <a href="{:U('Member/deliver_address')}" class="i-trigger">收货地址<i class="am-icon-angle-right" style="padding-left:5px ;"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <a  class="m-loginOut" class="link" href="{:U('Login/loginOut')}" target="_top"><i class="am-icon-sign-out am-icon-fw"></i>退出</a>
+
+
+                                    <div class="m-right">
+                                        <div class="m-new">
+                                            <a href="{:U('Member/mysms')}"><i class="am-icon-dropbox  am-icon-md" style="padding-right:5px ;"></i>消息盒子 <span class="num">({$smsc})</span></a>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <!--个人资产-->
+                                <div class="m-userproperty">
+                                    <div class="s-bar">
+                                        <i class="s-icon"></i>个人资产
+                                    </div>
+                                    <p class="m-coupon">
+                                        <a class="link" href="{:U('Member/wallet',array('option'=>'cash'))}">
+                                            <em class="m-num">{$info.wallet_pledge}</em>
+                                            <span class="m-title">账户余额</span>
+                                        </a>
+                                    </p>
+                                    <p class="m-wallet">
+                                        <a class="link" href="{:U('Member/wallet',array('option'=>'cash'))}">
+                                            <em class="m-num">{$info.pledge_usable}</em>
+                                            <span class="m-title">可用余额</span>
+                                        </a>
+                                    </p>
+                                    <p class="m-bill">
+                                        <a class="link" href="{:U('Member/wallet',array('option'=>'limsum'))}">
+                                            <em class="m-num">{$info.wallet_limsum}</em>
+                                            <span class="m-title">信誉额度</span>
+                                        </a>
+                                    </p>
+                                    <p class="m-bill">
+                                        <a class="link" href="{:U('Member/wallet',array('option'=>'limsum'))}">
+                                            <em class="m-num">{$info.limsum_usable}</em>
+                                            <span class="m-title">可用额度</span>
+                                        </a>
+                                    </p>
+                                </div>
+
+                                <!--我的钱包-->
+                                <div class="wallet">
+                                    <div class="s-bar">
+                                        <i class="s-icon"></i>账户余额
+                                    </div>
+                                    <p class="m-big squareS">
+                                        <a class="link" href="{:U('Member/myatt')}">
+                                            <i><img src="__IMG__/shopping.png"/></i>
+                                            <span class="m-title">能参拍</span>
+                                        </a>
+                                    </p>
+                                    <p class="m-big squareA">
+                                        <a class="link" href="{:U('Member/safety')}">
+                                            <i><img src="__IMG__/safe.png"/></i>
+                                            <span class="m-title">够安全</span>
+                                        </a>
+                                    </p>
+                                    <p class="m-big squareL">
+                                        <a class="link" href="{:U('Member/wallettake')}">
+                                            <i><img src="__IMG__/profit.png"/></i>
+                                            <span class="m-title">可提现</span>
+                                        </a>
+                                    </p>
+                                </div>
+
+                            </div>
+                            <div class="box-container-bottom"></div>
+
+                            <!--订单 -->
+                            <div class="m-order">
+                                <div class="s-bar">
+                                    <i class="s-icon"></i>我的订单
+                                    <a class="i-load-more-item-shadow" href="{:U('Member/mysucc')}">全部订单</a>
+                                </div>
+                                <ul class="am-cf">
+                                    <li><a href="{:U('Member/mysucc',array('st'=>0))}"><i><img src="__IMG__/pay.png"/></i><span>待付款<em class="m-num">{$ocount.fukuai}</em></span></a></li>
+                                    <li><a href="{:U('Member/mysucc',array('st'=>1))}"><i><img src="__IMG__/send.png"/></i><span>待发货<em class="m-num">{$ocount.fahuo}</em></span></a></li>
+                                    <li><a href="{:U('Member/mysucc',array('st'=>2))}"><i><img src="__IMG__/receive.png"/></i><span>待收货<em class="m-num">{$ocount.shouhuo}</em></span></a></li>
+                                    <li><a href="{:U('Member/mysucc',array('st'=>3))}"><i><img src="__IMG__/comment.png"/></i><span>待评价<em class="m-num">{$ocount.pingjia}</em></span></a></li>
+                                    <li><a href="{:U('Member/mysucc',array('rstatus'=>1))}"><i><img src="__IMG__/refund.png"/></i><span>退换货<em class="m-num">{$ocount.tuihuo}</em></span></a></li>
+                                </ul>
+                                <empty name="orderlist">
+                                    <div class="orderContentBox">
+                                        <div class="datanull">没有订单信息</div>
+                                    </div>
+                                <else />
+                                    <foreach name="orderlist" item="odlv">
+                                        <div class="orderContentBox">
+                                            <div class="orderContent">
+                                                <div class="orderContentpic">
+                                                    <div class="imgBox">
+                                                        <a href="{:U('Auction/details',array('pid'=>$odlv['pid']))}"><img src="{$upWholeUrl}{$odlv.pictures||getPicUrl=###,3,0}"></a>
+                                                    </div>
+                                                </div>
+                                                <div class="detailContent">
+                                                    <a href="{:U('Member/order_details',array('order_no'=>$odlv['order_no']))} " class="delivery">{$odlv.pname}</a>
+                                                    <div class="orderID">
+                                                        <span class="time">{$odlv.time|date='Y-m-d',###}</span>
+                                                        <span class="splitBorder">|</span>
+                                                        <span class="time">{$odlv.time|date='H:i:s',###}</span>
+                                                    </div>
+                                                    <div class="orderID">
+                                                        <span class="num">含运费：<span>{$odlv.freight|wipezero=###}元</span>&nbsp;&nbsp;&nbsp;&nbsp;含{:C('Auction.broker_buy_name')}：<span>{$odlv.broker_buy|wipezero=###}元</span></span>
+                                                    </div>
+                                                </div>
+                                                <div class="state">
+                                                    <eq name="odlv.status" value="0">待付款</eq>
+                                                    <eq name="odlv.status" value="1">待发货</eq>
+                                                    <eq name="odlv.status" value="2">待收货</eq>
+                                                    <eq name="odlv.status" value="3">待评价</eq>
+                                                </div>
+                                                <div class="price"><span class="sym">￥</span>{$odlv.total}<span class="sym"></span></div>
+                                            </div>
+                                            <eq name="odlv.status" value="0"><a href="{:U('Member/payment_order',array('order_no'=>$odlv['order_no']))}" class="btnPay">支付</a></eq>
+                                            <eq name="odlv.status" value="1"><a href="{:U('Member/order_details',array('order_no'=>$odlv['order_no']))}" class="btnPay">订单详情</a></eq>
+                                            <eq name="odlv.status" value="2"><a class="btnPay" href="{:U('Member/receipt',array('order_no'=>$odlv['order_no']))}">确认收货</a></eq>
+                                            <eq name="odlv.status" value="3"><a class="btnPay anniu" href="{:U('Member/evaluate',array('order_no'=>$odlv['order_no']))}">立即评价</a></eq>
+                                        </div>
+                                    </foreach>
+                                </empty>
+                            </div>
+                            <!--收藏和足迹-->
+                     <div data-am-widget="tabs" class="am-tabs collection">
+                         <ul class="am-tabs-nav am-cf">
+                            <li class="am-active"><a href="[data-tab-panel-0]"><i class="am-icon-heart"></i>我的关注</a></li>
+                            <li class=""><a href="[data-tab-panel-1]"><i class="am-icon-paw"></i>我的足迹</a></li>
+                        </ul>
+                        <div class="am-tabs-bd">
+
+                            <div data-tab-panel-0 class="am-tab-panel am-active">
+                                <div class="am-slider am-slider-default am-slider-carousel" data-am-flexslider="{itemWidth:110,slideshow: false}">
+                                    <ul class="am-slides">
+                                        <foreach name="attention" item="atv">
+                                            <li>
+                                              <a target="_blank" href="{:U('Auction/details',array('pid'=>$atv['pid']))}"><img class="am-thumbnail" src="{$upWholeUrl}{$atv.pictures||getPicUrl=###,3,0}" /></a>
+                                              <strong class="price">￥{$atv.nowprice}</strong>
+                                           </li>
+                                        </foreach>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div data-tab-panel-1 class="am-tab-panel "> 
+                                <div class="am-slider am-slider-default am-slider-carousel" data-am-flexslider="{itemWidth:110, slideshow: false}">
+                                    <ul class="am-slides">
+                                        <foreach name="footprint" item="ftv">
+                                            <li>
+                                               <a target="_blank" href="{:U('Auction/details',array('pid'=>$ftv['pid']))}"><img class="am-thumbnail" src="{$upWholeUrl}{$ftv.pictures||getPicUrl=###,3,0}" /></a>
+                                               <strong class="price">￥{$ftv.nowprice}</strong>
+                                            </li>
+                                        </foreach>
+                                    </ul>
+                                </div>                              
+                            </div>
+                        </div>
+                     </div>
+                            <!--九宫格-->
+                            <div class="user-squaredIcon">
+                                <div class="s-bar">
+                                    <i class="s-icon"></i>我的常用
+                                </div>
+                                <ul class="am-cf">
+                                    <a href="{:U('Member/payment')}">
+                                        <li class="am-u-sm-4"><i class="am-icon-paypal am-icon-md"></i>
+                                            <p>在线充值</p>
+                                        </li>
+                                    </a>
+                                    <a href="{:U('Member/wallettake')}">
+                                        <li class="am-u-sm-4"><i class="am-icon-money am-icon-md"></i>
+                                            <p>余额提现</p>
+                                        </li>
+                                    </a>
+                                    <a href="{:U('Member/mybid')}">
+                                        <li class="am-u-sm-4"><i class="am-icon-gavel am-icon-md"></i>
+                                            <p>参与的拍卖</p>
+                                        </li>
+                                    </a>
+                                    <a href="{:U('Member/myatt',array('type'=>'pm'))}">
+                                        <li class="am-u-sm-4"><i class="am-icon-heart am-icon-md"></i>
+                                            <p>关注的拍品</p>
+                                        </li>
+                                    </a>
+                                    <a href="{:U('Member/footprint')}">
+                                        <li class="am-u-sm-4"><i class="am-icon-paw am-icon-md"></i>
+                                            <p>我的足迹</p>
+                                        </li>
+                                    </a>
+                                    <a href="Member/attseller">
+                                        <li class="am-u-sm-4"><i class="am-icon-user-secret am-icon-md"></i>
+                                            <p>关注的卖家</p>
+                                        </li>
+                                    </a>
+                                    <a href="{:U('Member/generalize')}">
+                                        <li class="am-u-sm-4"><i class="am-icon-share-alt am-icon-md"></i>
+                                            <p>我的分享</p>
+                                        </li>
+                                    </a>
+                                    <a href="{:U('Member/settixing')}">
+                                        <li class="am-u-sm-4"><i class="am-icon-clock-o am-icon-md"></i>
+                                            <p>提醒方式</p>
+                                        </li>
+                                    </a>
+                                    <if condition="!$isbc or ($isbc and $myidentity)">
+                                    <a href="{:U('Seller/index')}">
+                                        <li class="am-u-sm-4"><i class="am-icon-university am-icon-md"></i>
+                                            <p>卖家中心</p>
+                                        </li>
+                                    </a>
+                                    </if>
+                                </ul>
+                            </div>
+
+                            <div class="user-suggestion">
+                                <div class="s-bar">
+                                    <i class="s-icon"></i>会员中心
+                                </div>
+                                <div class="s-bar">
+                                    <a href="{:U('Member/consultation')}"><i class="s-icon"></i>意见反馈</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wrap-right">
+
+                        <!-- 日历-->
+                        <div class="day-list">
+                            <div class="s-title">
+                                {$fresh.cname}
+                            </div>
+                            <div class="s-box">
+                                <ul>
+                                    <foreach name="fresh.list" item="flv">
+                                        <li><a target="_blank" href="{:U('Article/details',array('id'=>$flv['id']))}"><p>{$flv.title}</p></a></li>
+                                    </foreach>                                
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- 今日新品和热拍推荐 -->
+                        {:W('Oncoo/member_seller_right')}
+                    </div>
+                </div>
+                <!--底部-->
+                <include file="Common:footer"/>
+            </div>
+            <include file="Member:menu" />
+        </div>
+</body>
+</html>

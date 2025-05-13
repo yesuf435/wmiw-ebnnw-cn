@@ -1,0 +1,129 @@
+<include file="Common:meta" />
+<title>数据库优化修复-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div id="opStatus" class="container-fluid" style="display: none;">
+                <p class="page-header-description">数据库中共有{$list|count}张表，共计{$totalsize.table|byteFormat}</p>
+            </div>
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">数据库优化修复</div>
+                            </div>
+                            <div class="widget-body am-cf">
+                                <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                                    <div class="am-btn-toolbar">
+                                        <div class="am-btn-group am-btn-group-xs">
+                                            <a href="javascript:void(0);" class="am-btn am-btn-default am-btn-success optimize"><span class="am-icon-dashboard"></span> 优化所选</a>
+                                            <a href="javascript:void(0);" class="am-btn am-btn-default am-btn-secondary repair"><span class="am-icon-gavel"></span> 修复所选</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="am-u-sm-12">
+                                    <form id="thisForm" class="am-form tpl-form-border-form tpl-form-border-br">
+                                        <table width="100%" id="example-r" class="am-table am-table-compact tpl-table-black " >
+                                            <thead>
+                                                <tr>
+                                                    <td>
+                                                        <label class="am-checkbox am-margin-right-sm am-fl"><input class="chooseAll" type="checkbox" data-am-ucheck>全选</label>
+                                                        <label class="am-checkbox am-fl"><input class="unsetAll" type="checkbox" data-am-ucheck>反选</label>
+                                                    </td>
+                                                    <td>表用途</td>
+                                                    <td>记录行数</td>
+                                                    <td>引擎类型</td>
+                                                    <td>字符集</td>
+                                                    <td>碎片</td>
+                                                    <td>表大小</td>
+                                                    <td>数据</td>
+                                                    <td>索引</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <volist name="list" id="tab">
+                                                    <tr>
+                                                        <td>
+                                                            <label class="am-checkbox"><input type="checkbox" name="table[]" value="{$tab.Name}" data-am-ucheck>{$tab.Name}</label>
+                                                        </td>
+                                                        <td>{$tab.Comment}</td>
+                                                        <td>{$tab.Rows}</td>
+                                                        <td>{$tab.Engine}</td>
+                                                        <td>{$tab.Collation}</td>
+                                                        <td>{$tab.Data_free}</td>
+                                                        <td>{$tab.size}</td>
+                                                        <td>{$tab.Data_length}</td>
+                                                        <td>{$tab.Index_length}</td>
+                                                    </tr>
+                                                </volist>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td>
+                                                        <label class="am-checkbox am-margin-right-sm am-fl"><input class="chooseAll" type="checkbox" data-am-ucheck>全选</label>
+                                                        <label class="am-checkbox am-fl"><input class="unsetAll" type="checkbox" data-am-ucheck>反选</label>
+                                                    </td>
+                                                    <td>表用途</td>
+                                                    <td>记录行数</td>
+                                                    <td>引擎类型</td>
+                                                    <td>字符集</td>
+                                                    <td><b>{$totalsize.free|byteFormat}</b></td>
+                                                    <td><b>{$totalsize.table|byteFormat}</b></td>
+                                                    <td><b>{$totalsize.data|byteFormat}</b></td>
+                                                    <td><b>{$totalsize.index|byteFormat}</b></td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                        <input type="hidden" name="act" id="act" />
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<script type="text/javascript">
+    var form = $('#thisForm');
+    var postUrl = "{:U('SysData/repair')}";
+            $(function(){
+                clickCheckbox();
+                var handle=function(act){
+                    if($("tbody input[type='checkbox']:checked").size()==0){
+                        AMUI.dialog.alert({content: '请先选择你要优化的数据库表吧'});
+                        return false;
+                    }
+                    $("#act").val(act);
+                    var loading = AMUI.dialog.loading({title: '处理中...'}); 
+                    // 提交表单
+                    form.ajaxSubmit({
+                        url:postUrl,
+                        type:"POST",
+                        success:function(data, st) {
+                            loading.modal('close');
+                            AMUI.dialog.alert({ title: data.title, content: data.info});
+                            if(data.url&&data.url!=''){
+                                setTimeout(function(){
+                                    top.window.location.href=data.url;
+                                },2000);
+                            }
+                        }
+                    });
+                }
+                $(".optimize").click(function(){ handle("optimize"); });
+                $(".repair").click(function(){  handle("repair"); });
+            });
+        </script>
+</body>
+</html>

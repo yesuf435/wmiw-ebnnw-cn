@@ -1,0 +1,74 @@
+@charset "utf-8";
+[class*="am-u-"] {
+    padding-left: 0;
+    padding-right: 0;
+}
+/* CSS Document */
+/*交易时间*/
+.order-time{display:none;padding:10px 5px ;}
+.form-label{width: 80px;float: left;color:#FF0000;font-weight: 600;font-size: 16px;line-height:32px ;}
+.am-selected-list li{font-size:12px ;}
+.finance,.walletTitle,.takeTitle{display: none;}
+.walletList,.takeList{width:100% ;}
+.walletCont li,.takeCont li{border-bottom: 1px solid #eee;height:60px ;position: relative;}
+.walletCont li div,.takeCont li div{padding:5px 15px;height:30px ;line-height:20px ;}
+li .time{position: absolute;right:0px ;top:0px;}
+li .amount{position: absolute;right:0px ;bottom:0px;}
+.time p{display: inline-block;}
+li .annotation p{ line-height: 20px; overflow: hidden; text-align: left;}
+/*提现按钮*/
+.take-option {background-color: #fff;
+    margin: 0 auto 20px;
+    width: 100%;}
+.take-option .take-money li{float: left; }
+.take-option .take-money li p{ margin:0 10px 5px; font-size: 12px; }
+.take-option .take-money li p span{ color: #ff0000;
+    font-size: 16px;
+    font-weight: bold;}
+.take-option a.take-abtn-type{display: block;padding: 8px; z-index: 1; overflow:hidden; border-radius: 2px; background-color: #C00;font-size: 14px; color:#FFF;text-align: center;width:100% ;cursor: pointer;}
+
+/*字体*/
+.content{font-size:14px;font-weight: 600;}
+.balance,.wusable{color:#a5a5a5 ;}
+li .amount{color:#72b905;font-size:18px ;font-weight: 600;}
+.cost .amount,.dec{color: #fd6d37;font-weight: 600;}
+@media only screen and (min-width: 640px){
+.finance,.order-time,.walletTitle,.takeTitle{display:block;}
+.order-time{padding:10px 15px 20px;}
+.walletList,.takeList{border-left:  1px solid #eee;border-top:  1px solid #eee;}
+.walletTitle li,.takeTitle li{text-align: center;border-right: 1px solid #f5f5f5;border-bottom: 1px solid #f5f5f5;float:left;height:40px ;line-height:40px ;background: #f5f5f5;}		
+.walletCont li div,.takeCont li div{float: left;height:60px ;border-right: 1px solid #eee;line-height:40px ;text-align: center ;padding:10px ;}
+
+.time{width:30%;position: static !important;}
+li .title.name,li.name{width:25%;}
+.amount,.balance,.wusable{width:15%;position: static !important;}
+li .balance span,.wusable span{display: none;}
+
+/*字体*/
+.content,.balance,li .amount,.wusable{font-size:14px ;font-weight:100;color:#000 ;}
+.financeText{border: none;padding: 10px 5px;position: relative;margin-bottom:0px ;}
+.financeText p{border: none;height: 30px;}
+.financeText p span{font-size: 18px;}
+.financeText a{position: absolute;top:10px;left:250px;height: 30px;}
+/*提现按钮*/
+.take-option { margin: 0 auto;}
+.take-option a.take-abtn-type{ }
+
+.am-form-content {margin-left: 105px;}
+
+}
+@media only screen and (min-width:1025px){
+.time{width:25%}
+li .title.name,li.name{width:30%;}
+.walletList,.financeText{}
+.order-time{padding:10px 20px 20px;}
+}
+
+/*订单详情*/
+.package-title{padding-left:20px ;padding-top: 10px;margin:0px auto;margin-top:10px ;max-width: 900px;}
+.package-status {padding: 18px 0px 0px;margin:0px auto;margin-bottom:10px ;max-width: 900px;}
+.item-info{float:left;}
+.item-info .log-status{font-size:15px ;}
+.item-info p{margin-bottom: 5px ;}
+
+

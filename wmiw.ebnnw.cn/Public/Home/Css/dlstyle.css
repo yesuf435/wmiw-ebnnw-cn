@@ -1,0 +1,135 @@
+hr{margin:5px 5px}
+.clear{ clear:both;}
+.login-box {width: 100%;}
+.login-banner-bg,.login-boxtitle{display: none;}
+
+body{background: #F5F8FA none repeat scroll 0% 0%;}
+/*标题*/
+.zcnext{font-size: 14px;
+    padding: 5px;
+    position: absolute;
+    right: 10px;
+    top: 5px;}
+
+/*主题*/
+.login-form{width: 100%;}
+form{margin:20px auto ; padding: 0 20px 10px;}
+.verification{position: relative;margin-bottom:5px;}
+form .i-box{position:absolute;display: block;width: 40px;height: 40px;line-height: 40px;background:#fff;text-align: center;top:1px;left:1px}
+form .input{font-size: 14px;line-height: 18px;height:42px;padding: 11px 8px 11px 50px;width:100%;border:none;}
+input:-webkit-autofill { -webkit-box-shadow: 0 0 0px 1000px #fff inset;}
+.am-cf input{width: 100%;font-size: 14px;}
+.login-links{
+    font-size: 14px;
+    margin: 10px auto;
+    max-width: 320px;
+}
+
+/*合作账号*/
+.partner{width: 100%;max-width:320px;margin:20px auto ;font-size:14px;}
+.partner h3{text-align: center;}
+.am-btn-group{display: block;overflow: hidden;}
+.am-btn-group li{width:33.333% ;display: block;float: left;}
+.am-btn-group i{margin:0px auto ;display: block;width: 42px;height: 42px;border-radius: 42px;line-height:42px ;padding-left: 10px;border:1px solid #eee ;background:#fff ;color: #0e90d2;}
+.am-btn-group span{display: none;}
+
+.partner{ display: none;}
+/*注册方式切换*/
+.tabMenuLink{border: solid 1px #f1f1f1; position: relative;
+    margin-bottom: 15px;}
+.tabMenuLink .on-mli{
+    text-align: center;}
+.tabMenuLink .on-mli.on {
+    border-bottom: 2px solid #980000;
+}
+.tabMenuLink .on-mli a,.tabMenuLink .on-mli h3 {
+    display: block;
+    overflow: hidden;
+    overflow-wrap: normal;
+    padding: 0.8rem 0.5rem;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.tabMenuLink .on-mli a:hover,.tabMenuLink .on-mli a:focus{color: #980000;}
+
+
+/*注册*/
+.verification {position: relative;}
+input#code {width: 80%;}
+.obtainCodeButton{background: #f4f4f4 none repeat scroll 0 0; 
+    border: 1px solid #ddd;
+     cursor:pointer;
+    color: #333;
+    line-height: 40px;
+    padding: 0 10px;
+    text-align: center;
+    text-decoration: none;
+    }
+
+.obtainCodeButton,.verifyImg{margin-left: 10px;height: 40px;margin-top: 0px;position: absolute;right: 1px; top:1px;}
+
+.source-feedback,.login-links{ color: #999;}
+.source-feedback .tit{ font-size: 14px;
+    margin: 10px 0;}
+.source-feedback .source-list label {
+    float: left;
+    font-size: 12px;
+    line-height: 22px;
+    margin: 0 5px 0 0;
+}
+
+.pwdtip{text-align: right;color: #980000;font-size: 12px;margin-bottom: 10px;}
+
+/*修改的样式*/
+#doc-my-tabs li.am-active a,#doc-my-tabs li a{ background:#f8f8f8;}
+.am-tabs-bd{border: none;}
+.am-nav-tabs.am-nav-justify li {padding:5px;}
+.am-nav-tabs>li>a,.am-nav-tabs.am-nav-justify>li>a,.am-nav-tabs.am-nav-justify>.am-active>a,.am-nav-tabs>li.am-active>a, .am-nav-tabs>li.am-active>a:focus, .am-nav-tabs>li.am-active>a:hover {border: none; color: #000;font-weight: 600;}
+.am-nav-tabs.am-nav-justify > .am-active> a, .am-nav-tabs.am-nav-justify>.am-active>a:focus, .am-nav-tabs.am-nav-justify>.am-active>a:hover ,.am-nav-tabs>li.am-active>a,.am-nav-tabs>li.am-active>a:focus, .am-nav-tabs>li.am-active>a:hover {
+margin-right: 0px;border-bottom: 1px solid #0e90d2;border-radius: 0px;}
+
+
+@media screen and (min-width:640px){
+form,.am-cf,.partner{max-width:100%;margin:0 auto 20px ;}
+.partner h3 {text-align:left;}
+.am-btn-group i { display:inline-block;border-radius:0px;border:0px;background-color:transparent ;}
+.am-btn-group span{display:inline-block;}
+.am-cf input{width: 100%;font-size: 16px;}
+
+
+}
+@media screen and (min-width:1025px){
+.partner{ display: block;}
+.login-box,.login-box2 {background: #f8f8f8 none repeat scroll 0 0;
+    float: right;
+    margin: 50px 2% 50px 0;
+    max-width: 360px;
+    
+    width: 100%;}
+.login-box2 {height:430px;}
+.login-boxtitle {    margin: 0px auto; height: 90px; max-width: 1200px;}
+.login-boxtitle img{ width: 200px;height: 90px;}
+.login-banner,.res-banner{  overflow: hidden;   width: 100%; background-color: #e4e4e4;
+    position: relative;}
+.login-main,.res-main{max-width:1000px; margin:0px auto; position:relative;}
+
+/*头部*/
+.login-boxtitle{display: block;}
+/*背景*/
+.login-banner-bg{    display: block;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+} 
+.login-banner-bg,.login-banner-bg div{ height: 100%;}
+.login-banner-bg img {
+    max-width: 1000px;
+}
+.am-btn-primary{width:100%;}
+
+/*修改的样式*/
+#doc-my-tabs li.am-active a,#doc-my-tabs li a{ background:#f8f8f8;}
+.am-nav-tabs>li>a,.am-nav-tabs.am-nav-justify>li>a,.am-nav-tabs.am-nav-justify>.am-active>a,.am-nav-tabs>li.am-active>a, .am-nav-tabs>li.am-active>a:focus, .am-nav-tabs>li.am-active>a:hover {border: none; }
+	}
+

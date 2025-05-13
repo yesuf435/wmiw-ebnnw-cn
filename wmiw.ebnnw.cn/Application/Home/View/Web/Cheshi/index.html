@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="keywords" content="{$site.SITE_INFO.keyword}" />
+		<meta name="description" content="{$site.SITE_INFO.description}" />
+        <title>{$site.SITE_INFO.title}</title>
+        <style type="text/css">.navleft .leftlist {display: block;}</style>
+        <include file="Common:intoHead" />
+		<css href="__CSS__/cuitindex.css"/>
+		<js href="__JS__/indexjs.js"/>
+    </head>
+    <body>
+    <div class="container">
+       <body onLoad="javascript:document.E_FORM.submit()">
+            <form name="E_FORM" action="https://shenghuo.alipay.com/send/payment/fill.htm" method="post">  
+                支付宝账号：<input type="input" name="optEmail" value="oncoo_net@163.com"><br/> 
+                金额：<input type="input" name="payAmount" value="250">  <br/> 
+                标题：<input type="input" name="title" value="免签支付">  <br/> 
+                备注：<input type="input" name="memo" value="阿萨德飞洒地方撒旦"><br/> 
+                <input type="submit" value="提交" />
+            </form>  
+        </body>
+    </div>
+<!---底部开始-->
+<include file="Common:help_wide" />
+<include file="Common:footer"/>
+</body>
+</html>

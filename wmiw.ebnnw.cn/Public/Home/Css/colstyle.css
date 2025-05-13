@@ -1,0 +1,90 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*收藏夹*/
+.you-like{ display:block;margin-bottom:5px;overflow:hidden;background: #fff;margin-top:15px ;}
+.you-like .s-bar{font-size: 15px;line-height: 18px;padding: 11px 10px;position: relative;border-bottom:#E4EAEE solid 1px;}
+
+.you-like .s-bar a.on-label{ color: #fff; }
+.you-like .s-bar a.on-label.on-active{background-color: #dd514c; }
+
+.am-badge {font-size:11px}
+.you-like .s-content{ padding-top:20px; overflow:hidden;}
+.s-item-wrap{width:100%}
+.s-item .s-pic {width:120px;position: absolute;}
+.s-item .s-info{float: left;margin-left:120px ;padding-top:5px ;}
+.s-item {position: relative;margin: 0px 8px 10px 8px;background: #FFF none repeat scroll 0% 0%;border: 1px solid #E4EAEE;color: #595959;overflow: hidden;min-height: 120px;}
+.s-item .s-pic .s-pic-link { margin:0px auto;overflow: hidden;text-align: center;}
+.s-item .s-pic .s-pic-link img{ width:100%;}
+.s-item .s-pic .tip-title{position: absolute;top:50%;left:50%;width:50px;height: 50px;margin-left:-25px;margin-top: -25px;border-radius:50% ;background: rgba(0, 0, 0, 0.5) none repeat scroll 0% 0%;
+color:#fff ;text-align: center;vertical-align: middle;padding-top:15px;}
+
+
+/*商品信息*/
+.s-item .s-price-box { overflow: hidden;line-height: 16px;margin: 0 5px;position: absolute;bottom:30px;}
+.s-item .s-nopic,.s-item .s-price{ float: left;}
+.s-item .s-price {font-size:15px; vertical-align: bottom;color: #F40;}
+.s-item .s-price .s-price-sign {font-family: Arial; margin-right: 4px;}
+.s-item .s-price .s-value {font-family: Verdana;font-weight: 700;}
+
+/*好评*/
+.s-item .s-title {font-size: 15px;
+    overflow: hidden;
+    height: 20px;
+    line-height: 20px;
+    margin: 0 5px;
+    overflow: hidden;
+    display: block;}
+.s-item .s-extra-box {
+    color: #9c9c9c;
+    font-size: 12px;
+    margin: 0 5px;
+}
+ul.s-extra-box li .lh,.s-item .s-nopic{width: 60px; text-align: right;}
+ul.s-extra-box li .lh,ul.s-extra-box li .ld{ float: left;}
+ul.s-extra-box li{}
+.s-more-btn {color: #595959;border: 1px solid #E4EAEE; margin: 10px 7px 38px;text-align: center; cursor: pointer;font-size: 12px;height: 28px; line-height: 28px;background-color: #FFF;}
+
+/*操作*/
+.s-tp{position: absolute;right:10px;bottom:5px; height: 22px;}
+.ui-btn-loading-before{display: inline-block;width: 65px;height: 22px; line-height: 22px;text-align: center;color: #999;font-size: 12px; border: 1px solid #D7D7D7;text-decoration: none;}
+
+.ui-btn-loading-before.buy{}
+
+.ing .endtime span{ color: #F40;}
+.endtime span.second{ font-size: 12px;}
+.endtime .dw{}
+
+
+@media only screen and (min-width:640px) {
+.s-item-wrap{width:33.33%; float:left;}
+.s-item .s-pic {width: 100%;position:relative;}	
+
+.s-item .s-info {float: none; margin-left:0;padding-bottom:10px ;}	
+.s-item .s-price-box {position: static;}	
+.s-item .s-title {height:20px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
+
+.s-price-box{}	
+.s-price-box {}	
+
+.s-info .s-title{font-size:14px ;}
+/*操作*/
+.s-tp {position: absolute;right:0px;top:170px;width:100% ;left:0px ;}
+.ui-btn-loading-before {cursor: pointer;width:50%;border: none;text-align: center;background: rgba(0, 0, 0, 0.5) none repeat scroll 0% 0%;
+color: #FFF;}
+.ui-btn-loading-before a{ color: #fff;}
+.ui-btn-loading-before.buy{display:inline-block;position: absolute;right:-1px;top: 1px;}
+	
+}	
+@media only screen and (min-width:1025px) 
+{
+.s-item-wrap{width:25%; float:left;}
+}
+
+@media only screen and (min-width:1200px) 
+{
+.s-item-wrap{width:25%; float:left;}
+}
+
+
+	

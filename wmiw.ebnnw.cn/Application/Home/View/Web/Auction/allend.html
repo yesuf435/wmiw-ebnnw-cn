@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="keywords" content="{$site.SITE_INFO.keyword}" />
+		<meta name="description" content="{$site.SITE_INFO.description}" />
+        <title>最近成交拍品-{$site.SITE_INFO.title}</title>
+        <include file="Common:intoHead" />
+		<css href="__CSS__/cuitindex.css"/>
+		<css href="__CSS__/list.css"/>
+		<js href="__JS__/indexjs.js"/>
+		<js href="__JS__/bid_list.js"/>
+    </head>
+    <body>
+    <include file="Common:head_wide" />
+    
+    <div  class="container auction_list">
+    <div class="ad_list_a">
+        {:showAdvPosition('endall_list_a','span','false')} 
+    </div>
+    <div class="selection">
+        <div class="contitle" id="contit">
+            <a href="" class="on">已成交拍品</a>  
+        </div>
+        <div class="jiesao">
+            <strong><a <eq name="type" value="0"> class="on"</eq> href="{:U('Auction/allend',array('type'=>0))}">竞拍</a>：</strong>  规定时间，多次出价，价高者得。 
+            <strong><a <eq name="type" value="1"> class="on"</eq> href="{:U('Auction/allend',array('type'=>1))}">竞标</a>：</strong>  规定时间，一次出价，价高者得。 
+        </div>
+     </div>
+     <div class="auction mb10">
+        <!-- 已成交拍品 -->
+        <div class="auctionbox clearfix">
+            <foreach name="endlist" item="bav">
+                <!-- 全部未开拍 -->
+                <div id="elistA" class="auctionbox tab_con clearfix" style="display:block;">
+                    <empty name="bav.elistA">
+                        <div class="datanull">很抱歉该条件下暂无拍品，您可以重新查询！</div>
+                    <else />
+                        <volist name="bav.elistA" id="avo">
+                            <include file="Auction/bidbox" />
+                        </volist>
+                    </empty>
+                </div>
+            </foreach>
+        </div>
+        <!-- 已成交拍品——end -->
+        <!--分页开始-->
+        <div class="mod_page clearfix">
+            <div class="bid_list_page">
+            {$page}
+            </div>
+        </div>
+        <!--------分页结束-------->
+                    
+        </div>
+    <!-- 广告列表 -->
+    <include file="footer_add" />
+    <!-- 广告列表 -->
+<!---底部开始-->
+<include file="Common:help_wide" />
+<include file="Common:footer"/>
+</body>
+</html>

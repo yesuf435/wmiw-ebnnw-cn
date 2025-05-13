@@ -1,0 +1,9 @@
+<!--头 -->
+<header>
+    <article>
+        <div class="mt-logo">
+            <include file="Common:header_topnav" />
+            <include file="Common:header_search" />
+        </div>
+    </article>
+</header>

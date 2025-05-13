@@ -1,0 +1,75 @@
+    <!-- 左侧分类导航栏】 -->
+    <div id="nav-cate" class="navfull am-cf <eq name='CONTROLLER_NAME' value='cate'>catepage</eq>"> 
+        <empty name="cateshow">
+            <style type="text/css">#Js-category{ display: none;}</style>
+        </empty>
+        
+        <div class="category-content">
+            <div  class="long-title" <empty name="cateshow">id="Js-long-title"</empty>>
+                <span class="all-goods">全部分类</span>
+                <span id="meauBack"><a href="{:U('Index/index')}">返回</a></span>
+            </div>
+            <div class="category <notempty name='catepage'>Js-categoryB</notempty>" <empty name="cateshow">id="Js-category"</empty>>
+                <ul class="category-list" id="js_climit_li">
+                    <foreach name="clist" item="clv">
+                        <li class="appliance  relative <empty name='catepage'>Js_toggle<else/>Js_toggle_click <eq name="key" value="0">first selected</eq></empty>"> 
+                            <div class="category-info">
+                                <h3 class="category-name b-category-name">
+                                    <i><empty name="clv.ico"><img src="__IMG__/cate_default.png"><else/><img src="{$upWholeUrl}{$clv.ico}"></empty></i>
+                                    <a class="ml-22 am-text-truncate" title="{$clv.name}" <empty name='catepage'>href="{:U('Auction/index',array('gt'=>$clv['cid']))}"<else/>href="javascript:void(0);"</empty>>{$clv.name}</a>
+                                </h3>
+                                <if condition="!empty($clv['children']) or !empty($clv['children'])"><em>&gt;</em></if>
+                            </div>
+                            <if condition="!empty($clv['children']) or !empty($clv['children']) or ACTION_NAME == 'cate'">
+                                <div class="menu-item menu-in top">
+                                    <div class="area-in">
+                                        <div class="area-bg">
+                                            <div class="menu-srot">
+                                                <div class="brand-side">
+                                                  <dl class="dl-sort"><dt><span>为您推荐</span></dt>
+                                                    {:showAdvPosition('recommend','span')}
+                                                  </dl>
+                                                </div>
+                                                <div class="sort-side">
+                                                    <dl class="dl-sort am-text-truncate childin">
+                                                        <dt><a class="am-text-truncate" title="{$clv.name}" href="{:U('Auction/index',array('gt'=>$clv['cid']))}"><empty name="clv.ico"><img src="__IMG__/cate_default.png"><else/><img src="{$upWholeUrl}{$clv.ico}"></empty><span>进入{$clv.name}频道</span> <i class="am-icon-chevron-right"></i></a></dt>
+                                                    </dl>
+                                                    <notempty name="clv.children">
+                                                        <foreach name="clv.children" item="clcv">
+                                                            <dl class="dl-sort am-text-truncate">
+                                                                <dt><a class="am-text-truncate" title="{$clcv.name}" href="{:U('Auction/index',array('gt'=>$clcv['cid']))}"><empty name="clcv.ico"><img src="__IMG__/cate_default.png"><else/><img src="{$upWholeUrl}{$clcv.ico}"></empty><span>{$clcv.name}</span></a></dt>
+                                                                <notempty name="clcv.children">
+                                                                    <foreach name="clcv.children" item="ctv">
+                                                                        <dd>
+                                                                            <a class="am-text-truncate" title="{$ctv.name}" href="{:U('Auction/index',array('gt'=>$ctv['cid']))}">
+                                                                                <span><empty name="ctv.ico"><img src="__IMG__/cate_default.png"><else/><img src="{$upWholeUrl}{$ctv.ico}"></empty><span>{$ctv.name}</span></span>
+                                                                            </a>
+                                                                        </dd>
+                                                                    </foreach>
+                                                                </notempty>
+                                                            </dl>
+                                                        </foreach>
+                                                    </notempty>
+                                                </div>
+                                                <notempty name="clv.strength">
+                                                    <div class="brand-side">
+                                                        <dl class="dl-sort"><dt><span>实力商家</span></dt>
+                                                            <foreach name="clv.strength" item="sv">
+                                                                <dd><a rel="nofollow" title="{$sv.organization}" target="_blank" href="{:U('Shop/index',array('sellerid'=>$sv['uid']))}" rel="nofollow"><span  class="red" >{$sv.organization}</span><i class="am-icon-fire"></i>{$sv.count}</a></dd>
+                                                            </foreach>
+                                                        </dl>
+                                                    </div>
+                                                </notempty>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <b class="arrow"></b>
+                            </if>
+                           
+                        </li>
+                    </foreach>
+                </ul>
+            </div>
+        </div>
+    </div>

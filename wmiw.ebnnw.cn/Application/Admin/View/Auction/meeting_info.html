@@ -1,0 +1,85 @@
+<include file="Common:meta" />
+<title>拍卖会信息-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">拍卖会信息</div>
+                            </div>
+
+                            <div class="widget-body am-fr">
+                                    <div class="am-form-group am-cf">
+                                        <label for="pname" class="am-u-sm-3 am-form-label am-text-right">拍卖会名称</label>
+                                        <div class="am-u-sm-9">{$info.mname}</div>
+                                    </div>
+                                    <div class="am-form-group am-cf">
+                                        <label for="pname" class="am-u-sm-3 am-form-label am-text-right">拍卖会描述</label>
+                                        <div class="am-u-sm-9">{$info.description}</div>
+                                    </div>
+                                    
+                                    <div class="am-form-group am-cf">
+                                        <label for="start_time" class="am-u-sm-3 am-form-label am-text-right">开始时间</label>
+                                        <div class="am-u-sm-9">{$info.starttime|date='Y-m-d H:i',###}</div>
+                                    </div>
+                                    <div class="am-form-group am-cf">
+                                        <label for="end_time" class="am-u-sm-3 am-form-label am-text-right">流拍时间</label>
+                                        <div class="am-u-sm-9">{$info.losetime}秒</div>
+                                    </div>
+                                    <div class="am-form-group am-cf">
+                                        <label for="end_time" class="am-u-sm-3 am-form-label am-text-right">间隔时间</label>
+                                        <div class="am-u-sm-9">{$info.intervaltime}秒</div>
+                                    </div>
+                                    <div class="am-form-group am-cf">
+                                        <label for="end_time" class="am-u-sm-3 am-form-label am-text-right">拍卖时间</label>
+                                        <div class="am-u-sm-9">{$info.bidtime}秒</div>
+                                    </div>
+                                    <div class="am-form-group am-cf">
+                                        <label for="succtype" class="am-u-sm-3 am-form-label am-text-right">保证金</label>
+                                        <div class="am-u-sm-9">
+                                            <eq name="info.meeting_pledge_type" value="0">拍卖会扣除/{$info.mpledge}</eq>
+                                            <eq name="info.meeting_pledge_type" value="1">分别扣除</eq>
+                                        </div>
+                                    </div> 
+                                    <div class="am-form-group am-cf">
+                                        <label for="end_time" class="am-u-sm-3 am-form-label am-text-right">拍品数量</label>
+                                        <div class="am-u-sm-9">{$info.count}件</div>
+                                    </div>
+                                    <div class="am-form-group am-cf">
+                                        <label for="end_time" class="am-u-sm-3 am-form-label am-text-right">拍卖会状态</label>
+                                        <div class="am-u-sm-9">
+                                            <strong class="am-text-secondary">{$info.st}&nbsp;&nbsp;</strong>
+                                            <notempty name="chengjiao">成交：{$info.chengjiao}件&nbsp;&nbsp;</notempty>
+                                            <notempty name="liupai">流拍：{$info.liupai}件&nbsp;&nbsp;</notempty>
+                                            <notempty name="chepai">撤拍：{$info.chepai}件&nbsp;&nbsp;</notempty>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group am-cf">
+                                        <label for="pname" class="am-u-sm-3 am-form-label am-text-right" style="line-height: 110px;">列表图</label>
+                                        <div class="am-u-sm-9"><img style="max-height: 100px;" src="{$upWholeUrl}{$info.mpicture}"></div>
+                                    </div>
+                                    <div class="am-form-group am-cf">
+                                        <label for="pname" class="am-u-sm-3 am-form-label am-text-right" style="line-height: 110px;">BANNER图</label>
+                                        <div class="am-u-sm-9"><img style="max-height: 100px;" src="{$upWholeUrl}{$info.mbanner}"></div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+
+</body>
+</html>

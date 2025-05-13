@@ -1,0 +1,158 @@
+ALTER TABLE `on_goods` ADD `sellerid` INT NOT NULL COMMENT '卖家id' AFTER `update_time`;
+
+--
+-- 表的结构 `on_seller_pledge`
+--
+
+CREATE TABLE IF NOT EXISTS `on_seller_pledge` (
+  `id` int(11) NOT NULL,
+  `sellerid` int(11) NOT NULL COMMENT '商户UID',
+  `pid` int(11) NOT NULL COMMENT '拍品id',
+  `type` varchar(15) NOT NULL COMMENT '[seller_pledge_disposable]一次性缴纳；[seller_pledge_every]每件缴纳；[seller_pledge_proportion]按照起拍比例缴纳',
+  `pledge` decimal(10,2) NOT NULL COMMENT '保证金',
+  `limsum` decimal(10,2) NOT NULL COMMENT '信誉额度',
+  `time` int(10) NOT NULL COMMENT '缴纳时间',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '记录是否有效，1有效；2无效'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='商家保证金表';
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `on_seller_pledge`
+--
+ALTER TABLE `on_seller_pledge`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `status` (`status`),
+  ADD KEY `sellerid` (`sellerid`),
+  ADD KEY `type` (`type`),
+  ADD KEY `pid` (`pid`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `on_seller_pledge`
+--
+ALTER TABLE `on_seller_pledge`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+
+
+ALTER TABLE `on_auction` CHANGE `pledge_type` `pledge_type` VARCHAR(10) NOT NULL DEFAULT 'fixation' COMMENT '佣金收取方式ratio比例;fixation定额';
+ALTER TABLE `on_auction` CHANGE `broker_type` `broker_type` VARCHAR(10) NOT NULL DEFAULT 'fixation' COMMENT '佣金收取方式ratio比例;fixation定额';
+
+ALTER TABLE `on_auction` CHANGE `pledge` `pledge` DECIMAL(10,2) NOT NULL COMMENT '参拍保证金';
+ALTER TABLE `on_auction` CHANGE `broker` `broker` DECIMAL(10,2) NOT NULL DEFAULT '0' COMMENT '佣金';
+
+
+ALTER TABLE `on_auction` ADD `freight` DECIMAL(10,2) NOT NULL COMMENT '运费' AFTER `succprice`;
+
+CREATE TABLE IF NOT EXISTS `on_attention_seller` (
+  `uid` int(11) NOT NULL COMMENT '用户id',
+  `sellerid` int(11) NOT NULL COMMENT '卖家id',
+  `time` int(10) NOT NULL COMMENT '关注时间'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+--
+-- 表的结构 `on_goods_evaluate`
+--
+
+CREATE TABLE IF NOT EXISTS `on_goods_evaluate` (
+  `id` int(11) NOT NULL COMMENT '评价id',
+  `uid` int(11) NOT NULL COMMENT '评价用户id',
+  `sellerid` int(11) NOT NULL COMMENT '商品所属用户',
+  `pid` int(11) NOT NULL COMMENT '拍品id',
+  `order_no` varchar(100) NOT NULL COMMENT '对应订单号',
+  `service_evaluate` varchar(255) NOT NULL COMMENT '服务评价',
+  `conform_evaluate` varchar(255) NOT NULL COMMENT '商品评价',
+  `conform` int(1) NOT NULL COMMENT '商品评分',
+  `service` int(1) NOT NULL COMMENT '服务评分',
+  `express` int(1) NOT NULL COMMENT '物流评分',
+  `time` int(10) NOT NULL COMMENT '评价时间'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='商品评价表';
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `on_goods_evaluate`
+--
+ALTER TABLE `on_goods_evaluate`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `on_goods_evaluate`
+--
+ALTER TABLE `on_goods_evaluate`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '评价id';
+
+
+ALTER TABLE `on_member` ADD `score` INT(10) NOT NULL COMMENT '卖家得分' AFTER `wallet_limsum_freeze`;
+
+
+ALTER TABLE `on_goods_order` ADD `sellerid` INT NOT NULL COMMENT '卖家uid' AFTER `uid`;
+
+ALTER TABLE `on_goods_order` ADD `freight` DECIMAL(10,2) NOT NULL COMMENT '运费' AFTER `price`;
+
+
+ALTER TABLE `on_mysms` ADD `rsid` INT NOT NULL COMMENT '回复消息的sid' AFTER `uid`;
+ALTER TABLE `on_mysms` ADD `pid` INT NOT NULL COMMENT '对应拍品的pid' AFTER `aid`;
+
+
+ALTER TABLE `on_goods_order` CHANGE `status` `status` TINYINT(2) NOT NULL COMMENT '支付状态0：未支付1：已支付 2：已发货3：买家已收货 4：订单过期已扣除保证金 5：已评价 6：申请退货 7：已同意退货 8：不同意退货 9：买家已发货 10：卖家确认收货 11：已评价买家';
+
+ALTER TABLE `on_goods_order` ADD `time5` INT(10) NOT NULL COMMENT '评价卖家时间' AFTER `time4`, ADD `time6` INT(10) NOT NULL COMMENT '申请退货时间' AFTER `time5`, ADD `time7` INT(10) NOT NULL COMMENT '同意退货时间' AFTER `time6`, ADD `time8` INT(10) NOT NULL COMMENT '不同意退货时间' AFTER `time7`, ADD `time9` INT(10) NOT NULL COMMENT '买家发货时间' AFTER `time8`, ADD `time10` INT(10) NOT NULL COMMENT '卖家确认收货时间' AFTER `time9`;
+ALTER TABLE `on_goods_order` ADD `time11` INT(10) NOT NULL COMMENT '卖家评价时间' AFTER `time10`;
+
+ALTER TABLE `on_goods_order` ADD `pledge` DECIMAL(10,2) NOT NULL COMMENT '缴纳的保证金' AFTER `freight`;
+
+--
+-- 表的结构 `on_member_evaluate`
+--
+
+CREATE TABLE IF NOT EXISTS `on_member_evaluate` (
+  `id` int(11) NOT NULL,
+  `uid` int(11) NOT NULL COMMENT '评价所属人',
+  `sellerid` int(11) NOT NULL COMMENT '卖家id',
+  `pid` int(11) NOT NULL COMMENT '拍品id',
+  `score` tinyint(1) NOT NULL COMMENT '得分：0差评；1中评；2好评',
+  `evaluate` varchar(255) NOT NULL COMMENT '评价内容',
+  `time` int(10) NOT NULL COMMENT '评价时间',
+  `order_no` varchar(100) NOT NULL COMMENT '对应订单'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='卖家对用户的评价';
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `on_member_evaluate`
+--
+ALTER TABLE `on_member_evaluate`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `on_member_evaluate`
+--
+ALTER TABLE `on_member_evaluate`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+
+ALTER TABLE `on_weiurl` ADD `sellerid` INT NOT NULL COMMENT '卖家id' AFTER `rid`;
+
+ALTER TABLE `on_member` ADD `scorebuy` INT NOT NULL COMMENT '买家得分' AFTER `score`;
+
+ALTER TABLE `on_member` ADD `organization` VARCHAR(100) NOT NULL COMMENT '机构组织' AFTER `nickname`, ADD `intro` VARCHAR(255) NOT NULL COMMENT '机构简介' AFTER `organization`;

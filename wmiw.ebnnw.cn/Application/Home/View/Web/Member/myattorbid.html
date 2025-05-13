@@ -1,0 +1,202 @@
+<include file="Common:meta" />
+<title> <eq name="ACTION_NAME" value="myatt">关注的拍卖</eq><eq name="ACTION_NAME" value="mybid">参与的拍卖</eq><eq name="ACTION_NAME" value="footprint">我的足迹</eq>-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/colstyle.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+        <div class="center">
+            <div class="col-main">
+                <div class="main-wrap">
+                    <div class="main-wrap-box">
+                        <div class="user-collection">
+                            <!--标题 -->
+                            <div class="am-cf on-user-title">
+                                <div class="am-fl am-cf"><strong class="am-text-danger am-text-lg"><eq name="ACTION_NAME" value="myatt">关注的拍卖</eq><eq name="ACTION_NAME" value="mybid">参与的拍卖</eq><eq name="ACTION_NAME" value="footprint">我的足迹</eq></strong> / <small><eq name="ACTION_NAME" value="myatt">My&nbsp;Concerned</eq><eq name="ACTION_NAME" value="mybid">My&nbsp;Bid</eq><eq name="ACTION_NAME" value="footprint">My&nbsp;footprint</eq></small></div>
+                            </div>
+                            <div class="you-like">
+                                <div class="s-bar">
+                                    <eq name="ACTION_NAME" value="myatt">关注的拍卖</eq><eq name="ACTION_NAME" value="mybid">参与的拍卖</eq><eq name="ACTION_NAME" value="footprint">我的足迹</eq>
+                                    <a href="{:U('Member/'.ACTION_NAME)}" class="am-badge am-round on-label <empty name='option'>on-active</empty>">全部</a>
+                                    <a href="{:U('Member/'.ACTION_NAME,array('option'=>'ing'))}" class="am-badge am-round on-label <eq name='option' value='ing'>on-active</eq>">正在拍</a>
+                                    <a href="{:U('Member/'.ACTION_NAME,array('option'=>'fut'))}" class="am-badge am-round on-label <eq name='option' value='fut'>on-active</eq>">未开始</a>
+                                    <a href="{:U('Member/'.ACTION_NAME,array('option'=>'end'))}" class="am-badge am-round on-label <eq name='option' value='end'>on-active</eq>">已结束</a>
+                                </div>
+                                <div class="s-content">
+                                <empty name="alist">
+                                    哎哟！这里空空如也！
+                                <else/>
+                                    <volist name="alist" id="avo">
+                                        <div class="s-item-wrap">
+                                            <div class="s-item">
+
+                                                <div class="s-pic">
+                                                    <a href="{:U('Auction/details',array('pid'=>$avo['pid']))}" class="s-pic-link">
+                                                        <img src="{$upWholeUrl}{$avo.pictures||getPicUrl=###,3,0}" alt="{$avo.pname}" title="{$avo.pname}" class="s-pic-img s-guess-item-img">
+                                                        <eq name="avo.stage" value="end"><span class="tip-title">已结束</span></eq>
+                                                    </a>
+                                                </div>
+                                                <eq name="ACTION_NAME" value="myatt">
+                                                    <div class="s-tp">
+                                                        <span class="ui-btn-loading-before">
+                                                            <a pid="{$avo.pid}" rela="p-u" yn="y" href="javascript:void(0)" class="Js-att">取消关注</a>
+                                                        </span>
+                                                        <span class="ui-btn-loading-before buy">
+                                                            <a href="{:U('Auction/details',array('pid'=>$avo['pid']))}" target="_blank"><if condition="$option eq 'ing'">出价<else />查看</if></a>
+                                                        </span>
+                                                    </div>
+                                                </eq>
+                                                <eq name="ACTION_NAME" value="mybid">
+                                                    <div class="s-tp">
+                                                        <span class="ui-btn-loading-before">
+                                                            <a href="{:U('Auction/details',array('pid'=>$avo['pid']))}" target="_blank"><if condition="$option eq 'ing'">出价<else />查看</if></a>
+                                                        </span>
+                                                        <span class="ui-btn-loading-before buy">
+                                                            <a href="{:U('Auction/details',array('pid'=>$avo['pid']))}" target="_blank">我的出价</a>
+                                                        </span>
+                                                    </div>
+                                                </eq>
+                                                <div class="s-info">
+                                                    <a class="s-title" href="{:U('Auction/details',array('pid'=>$avo['pid']))}" title="{$avo.pname}">{$avo.pname}</a>
+                                                    <div class="s-price-box am-cf">
+                                                        <div class="s-nopic">
+                                                            <eq name="avo.stage" value="end">成交价：</eq>
+                                                            <eq name="avo.stage" value="fut">起拍价：</eq>
+                                                            <eq name="avo.stage" value="ing">当前价：</eq>
+                                                        </div>
+                                                        <div class="s-price"><em class="s-price-sign">¥</em><em class="s-value">
+                                                            <eq name="avo.stage" value="end">{$avo.nowprice|wipezero=###}</eq>
+                                                            <eq name="avo.stage" value="fut">{$avo.onset|wipezero=###}</eq>
+                                                            <eq name="avo.stage" value="ing">{$avo.nowprice|wipezero=###}</eq>     
+                                                        </em></div>
+                                                    </div>
+                                                    <ul class="s-extra-box">
+                                                        <li class="am-cf">
+                                                            <div class="lh">保证金：</div>
+                                                            <div class="ld">{:pledgeShow($avo['pattern'],$avo['pledge_type'],$avo['onset'],$avo['pledge'],$avo['spledge'],$avo['mpledge'])}</li>
+                                                        <li class="am-cf {$avo.stage}">
+                                                            <eq name="avo.stage" value="end">
+                                                                <div class="lh">状态：</div>
+                                                                <div class="ld">
+                                                                    <eq name="avo.endstatus" value="1">成交</eq>
+                                                                    <in name="avo.endstatus" value="2,3">流拍</in>
+                                                                    <eq name="avo.endstatus" value="4">撤拍</eq>
+                                                                </div>
+                                                            </eq>
+                                                            <eq name="avo.stage" value="fut">
+                                                                <div class="lh">距开始：</div>
+                                                                <div class="ld">{$avo.starttime|date='Y-m-d H:i',###}</div>
+                                                            </eq>
+                                                            <eq name="avo.stage" value="ing">
+                                                                <div class="lh">距结束：</div>
+                                                                <div id="bid{$avo.pid}" class="ld endtime">
+                                                                    <span class="day">-</span>
+                                                                    <span class="dw">:</span>
+                                                                    <span class="hour">-</span>
+                                                                    <span class="dw">:</span>
+                                                                    <span class="minute">-</span>
+                                                                    <span class="dw">:</span>
+                                                                    <span class="second">-</span>
+                                                                    <script type="text/javascript">
+                                                                        $(function(){
+                                                                            endDown("{$avo.endtime}","{$nowtime}","#bid{$avo.pid}","#bid{$avo.pid} .day","#bid{$avo.pid} .hour","#bid{$avo.pid} .minute","#bid{$avo.pid} .second");
+                                                                        });
+                                                                    </script>
+                                                                </div>
+                                                            </eq>
+                                                        </li>
+                                                    </ul>
+                                                    
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </volist>
+                                </empty> 
+                                </div>
+                                {$page}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--底部-->
+                <!--底部-->
+                <include file="Common:footer"/>
+            </div>
+            <include file="Member:menu"/>
+        </div>
+<script type="text/javascript">
+$(function(){
+    // 取消关注
+    $('.s-tp').on("click",".Js-att",function(){
+        var thisObj = $(this);
+        var gid = $(this).attr('pid');
+        var rela = $(this).attr('rela');
+        $.post(attUrl,{'gid':gid , 'rela':rela, 'yn':'y'},function(data){
+            if (data.status) {
+                thisObj.parents('.s-tp').remove();
+            } else {
+                // 提示框
+                AMUI.dialog.alert({ title: data.title, content: data.info});
+            }
+        },'json');  
+         
+    });
+});
+
+
+// 结束倒计时
+function endDown(etime,ntime,boxobj,day_elem,hour_elem,minute_elem,second_elem){
+    var now_time = new Date(ntime*1000);
+    var end_time = new Date(etime*1000);
+    var sys_second = (end_time-now_time)/1000;
+    var timer = setInterval(function(){
+        if (sys_second > 0) {
+            sys_second -= 1;
+            var day = Math.floor((sys_second / 3600) / 24);
+            var hour = Math.floor((sys_second / 3600) % 24);
+            var minute = Math.floor((sys_second / 60) % 60);
+            var second = Math.floor(sys_second % 60);
+            day_elem && $(day_elem).text(day);//计算天
+            $(hour_elem).text(hour<10?"0"+hour:hour);//计算小时
+            $(minute_elem).text(minute<10?"0"+minute:minute);//计算分
+            $(second_elem).text(second<10?"0"+second:second);// 计算秒
+        } else { 
+            clearInterval(timer);
+            $('#bidTimeStatus').remove();
+            $(boxobj).html('');
+            $(boxobj).addClass('end');
+        }
+    }, 1000);
+}
+// 开始倒计时
+function startDown(etime,ntime,boxobj,day_elem,hour_elem,minute_elem,second_elem){
+    var now_time = new Date(ntime*1000);
+    var end_time = new Date(etime*1000);
+    var sys_second = (end_time-now_time)/1000;
+    var timer = setInterval(function(){
+        if (sys_second > 0) {
+            sys_second -= 1;
+            var day = Math.floor((sys_second / 3600) / 24);
+            var hour = Math.floor((sys_second / 3600) % 24);
+            var minute = Math.floor((sys_second / 60) % 60);
+            var second = Math.floor(sys_second % 60);
+            day_elem && $(day_elem).text(day);//计算天
+            $(hour_elem).text(hour<10?"0"+hour:hour);//计算小时
+            $(minute_elem).text(minute<10?"0"+minute:minute);//计算分
+            $(second_elem).text(second<10?"0"+second:second);// 计算秒
+        } else { 
+            $('.noStartBidTbox .th').html('拍卖已开始');
+            $(boxobj).html('');
+            $(boxobj).addClass('into');
+        }
+    }, 1000);
+}
+
+
+</script>
+    </body>
+</html>

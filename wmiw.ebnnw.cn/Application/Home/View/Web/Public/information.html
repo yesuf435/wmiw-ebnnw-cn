@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="keywords" content="{$site.SITE_INFO.keyword}" />
+		<meta name="description" content="{$site.SITE_INFO.description}" />
+        <title>用户协议-{$site.SITE_INFO.title}</title>
+<style type="text/css">
+.container{
+	margin: 0 auto;
+    width: 70%;
+}
+.title{
+	border-top: 3px solid #EDEDED;
+    color: #707070;
+    line-height: 22px;
+    padding:20px 0 5px 20px;
+}
+.title h1{
+	color: #444444;
+	font: 30px 
+}
+.title h1 span{
+	color: #DCDCDC;
+	font-weight: 700;
+}
+</style>
+    </head>
+    <body>
+	<div class="container">
+		<div class="box">
+			<div class="title">
+				<h1 style=""Microsoft Yahei",Tahoma;">用户协议 <span>USER AGREEMENT </span></h1>	
+			</div>
+			<div class="editbox">
+				{$userAgreement}
+			</div>
+		</div>
+	</div>
+<script src="--PUBLIC--/ueditor/ueditor.parse.js"></script>
+<script>
+setTimeout(function(){uParse('.editbox',
+{
+ 'highlightJsUrl':'--PUBLIC--/ueditor/third-party/SyntaxHighlighter/shCore.js',
+ 'highlightCssUrl':'--PUBLIC--/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css'})
+},300);
+</script>
+</body>
+</html>

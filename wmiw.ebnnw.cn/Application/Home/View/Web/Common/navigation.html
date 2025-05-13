@@ -1,0 +1,42 @@
+<div class="nav-table">
+    {:W('Oncoo/allcate')}
+    <div class="nav-cont">
+        <ul class="am-cf">
+            <li class="index"><a href="{:U('Index/index')}" title="{$site.SITE_INFO.title}">首页</a></li>
+            <!-- <foreach name="channelMenu" item="cm">
+                <li class="qc <eq name='gt.0' value='$cm.cid'>navcur</eq>">
+                   <a href="{:U('Auction/index',array('gt'=>$cm['cid']))}"> {$cm.name}</a> 
+                </li>
+            </foreach> -->
+            <if condition="C('Auction.sort_time') eq 1">
+                <li class="qc <if condition="(CONTROLLER_NAME eq 'index') and ($sort = 'time')">navcur</if>"><a href="{:U('Auction/index',array('sort'=>'time'))}">最新拍品</a></li>
+            </if>
+            <if condition="C('Auction.jianlou') eq 1">
+                <li class="qc <if condition="(CONTROLLER_NAME eq 'index') and ($screen = 'jianlou')">navcur</if>"><a href="{:U('Auction/index',array('screen'=>'jianlou'))}">0元捡漏</a></li>
+            </if>
+            <if condition="C('Auction.yikoujia') eq 1">
+                <li class="qc <if condition="(CONTROLLER_NAME eq 'index') and ($screen = 'jscj')">navcur</if>"><a href="{:U('Auction/index',array('screen'=>'jscj'))}">限时一口价</a></li>
+            </if>
+            <if condition="C('Auction.special_page') eq 1">
+                <li class="qc<eq name='CONTROLLER_NAME' value='Special'>navcur</eq>"><a href="{:U('Special/index')}">专场拍卖</a></li>
+            </if>
+            <if condition="C('Auction.meeting_page') eq 1">
+                <li class="qc<eq name='CONTROLLER_NAME' value='Meeting'>navcur</eq>"><a href="{:U('Meeting/index')}">拍卖会</a></li>
+            </if>
+            <neq name="isbc" value="1">
+            <!-- B2C运营情况下隐藏优质好店 -->
+            <li class="qc <if condition="(ACTION_NAME eq 'haodian') and (CONTROLLER_NAME neq 'Shop')">navcur</if>"><a href="{:U('Shop/haodian')}">优质好店</a></li>
+            </neq>
+            <!-- <li><menu menupos="1" maxsize="5"/></li> -->
+        </ul>
+        <if condition="!$isbc or ($isbc and $myidentity)">
+            <div class="nav-extra">
+            <a style="" href="{:U('Seller/index')}">
+                <i class="am-icon-user-secret am-icon-md nav-user"></i><b></b>卖家中心
+                <i class="am-icon-angle-right" style="padding-left: 10px;"></i>
+                </a>
+            </div>
+        </if>
+    </div>
+</div>
+<b class="line"></b>

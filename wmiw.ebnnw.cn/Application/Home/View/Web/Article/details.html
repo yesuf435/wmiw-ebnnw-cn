@@ -1,0 +1,47 @@
+<include file="Common:meta" />
+<title>{$data.title}[{$data.name}]-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<link href="__CSS__/demo.css" rel="stylesheet" type="text/css" />
+<include file="Common:linkuser" />
+<link href="__CSS__/vipstyle.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+<!--文章 -->
+<div class="am-g bloglist">
+  <div class="am-u-md-9">
+    <article class="blog-main">
+      <h3 class="am-article-title blog-title">{$data.title}</h3>
+      <h4 class="am-article-meta blog-meta">{$data.published|date="Y-m-d H:i",###}</h4>
+      <div class="blog-content">{$data.content}</div>
+    </article>
+  </div>
+  <div class="am-u-md-3 blog-sidebar">
+    <div class="am-panel-group">
+      <section class="am-panel am-panel-default">
+        <div class="am-panel-hd">相关文章</div>
+        <ul class="am-list blog-list">
+            <foreach name="list" item="v">
+                <li><a href="{:U('Article/details',array('id'=>$v['id']))}"><p>{$v.title}</p></a></li>  
+            </foreach>     
+        </ul>
+      </section>
+    </div>
+  </div>
+</div>
+<include file="Common:footer"/>
+<script src="--PUBLIC--/ueditor/ueditor.parse.js"></script>
+<script>
+setTimeout(function(){uParse('.blog-main',
+{
+ 'highlightJsUrl':'--PUBLIC--/ueditor/third-party/SyntaxHighlighter/shCore.js',
+ 'highlightCssUrl':'--PUBLIC--/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css'})
+},300);
+</script>
+    </body>
+
+</html>
+
+

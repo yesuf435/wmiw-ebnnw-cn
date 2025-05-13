@@ -1,0 +1,338 @@
+<include file="Common:meta" />
+<title>我的拍卖-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/gdstyle.css" rel="stylesheet" type="text/css">
+<js href="__WEBSOCKET__/js/swfobject.js"/>
+<js href="__WEBSOCKET__/js/web_socket.js"/>
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+        <div class="center">
+            <div class="col-main">
+                <div class="main-wrap">
+                    <div class="main-wrap-box">
+                        <div class="user-goods">
+                            <!--标题 -->
+                            <div class="am-cf on-user-title">
+                                <div class="am-fl am-cf">
+                                    <eq name="ACTION_NAME" value="auction_list">
+                                        <strong class="am-text-danger am-text-lg">拍卖列表</strong> / <small>Auction list</small>
+                                    </eq>
+                                    <eq name="ACTION_NAME" value="auction_search">
+                                        <strong class="am-text-danger am-text-lg">搜索结果</strong> / <small>Search result</small>
+                                    </eq>
+                                </div>
+                            </div>
+                            <div class="searchbox am-cf">
+                                <form class="am-form am-form-inline am-cf" action="{:U('Seller/auction_search')}" method='get'>
+                                    <label for="">关键字：</label>
+                                    <input type="text" value="{$keys.keyword}" name="keyword" class="input" placeholder="搜索标题的关键字" />
+                                    <label for="">模式：</label>
+                                    <select name="type">
+                                        <option value="">所有模式</option>
+                                        <option value="0" <eq name="keys.type" value="0">selected="selected"</eq>>竞拍</option>
+                                        <option value="1" <eq name="keys.type" value="1">selected="selected"</eq>>竞标</option>
+                                    </select>
+                                    <label for="">频道/分类：</label>
+                                    <select id="Js-channel" class="catesel" name="pid">
+                                            <option value="">所有频道</option>
+                                            <volist name="channel" id="vo">
+                                                <if condition="$vo[cid] eq $keys[pid]">
+                                                    <option value="{$vo.cid}" selected="selected">{$vo.name}</option>
+                                                    <else/>
+                                                    <option value="{$vo.cid}">{$vo.name}</option>
+                                                </if>
+                                            </volist>
+                                        </select>
+                                        <span id="Js-cateSelectBox"></span>
+                                        <button class="am-btn am-btn-danger">筛选</button>
+                                </form>
+                            </div>
+                            <eq name="ACTION_NAME" value="auction_search">
+                                <div class="searchmsg">
+                                    在<span class="keyword">{$keys.chname}</span>频道的<span class="keyword">{$keys.catname}</span>分类下找到<span class="keyword">{$keys.count}</span>个<if condition="$keys['keyword'] != ''">与<span class="keyword">{$keys.keyword}</span>相关的</if><span class="keyword">{$keys.tname}</span>拍品！
+                                </div>
+                            </eq>
+                            
+                            <div class="am-tabs am-tabs-d2">
+                                <eq name="ACTION_NAME" value="auction_list">
+                                    <ul class="am-avg-sm-4 am-tabs-nav am-nav am-nav-tabs">
+                                        <li <eq name="saytyp.get" value="">class="am-active"</eq>><a  href="{:U('auction_list')}">全部拍卖</a></li>
+                                        <li <eq name="saytyp.get" value="biding">class="am-active"</eq>><a  href="{:U('auction_list',array('typ'=>'biding'))}">正在拍卖</a></li>
+                                        <li <eq name="saytyp.get" value="future">class="am-active"</eq>><a href="{:U('auction_list',array('typ'=>'future'))}">未开拍</a></li>
+                                        <li <eq name="saytyp.get" value="bidend">class="am-active"</eq>><a href="{:U('auction_list',array('typ'=>'bidend'))}">已结束</a></li>
+                                    </ul>
+                                </eq>
+                                <div class="am-tabs-bd">
+                                    <empty name="list">
+                                        哎哟！这里空空如也！
+                                    <else/>
+                                        <div class="am-tab-panel am-fade am-in am-active">
+                                            <div class="goodslist">
+                                                <div class="order-top">
+                                                    <div class="th th-item">
+                                                        <td class="td-inner">拍品</td>
+                                                    </div>
+                                                    <div class="th th-orderprice th-price">
+                                                        <td class="td-inner">当前价</td>
+                                                    </div>
+                                                    <div class="th th-changeprice th-price">
+                                                        <td class="td-inner">频道/分类</td>
+                                                    </div>
+                                                    <div class="th th-status th-moneystatus">
+                                                        <td class="td-inner">状态</td>
+                                                    </div>
+                                                    <div class="th th-change th-changebuttom">
+                                                        <td class="td-inner">操作</td>
+                                                    </div>
+                                                </div>
+                                                <div class="order-main">
+                                                    <div class="order-list">
+                                                        <volist name="list" id="vo">
+                                                            <div class="order-status5 Js-trbox">
+                                                                <div class="order-title">
+                                                                    <div class="dd-num">开拍时间：{$vo.starttime|date="Y-m-d H:i:s",###}</div>
+                                                                    <span>结束时间：{$vo.endtime|date="Y-m-d H:i:s",###}</span>
+                                                                    <!--    <em>店铺：小桔灯</em>-->
+                                                                </div>
+                                                                <div class="order-content">
+                                                                    <div class="order-left">
+                                                                        <ul class="item-list">
+                                                                            <li class="td td-item">
+                                                                                <div class="item-pic">
+                                                                                    <a class="link" href="{:U('Auction/details',array('pid'=>$vo['pid']))}"><img src="{$upWholeUrl}{$vo.pictures||getPicUrl=###,3,0}" class="itempic J_ItemImg"></a>
+                                                                                </div>
+                                                                                <div class="item-info">
+                                                                                    <div class="item-basic-info">
+                                                                                        <p>
+                                                                                            <neq name="vo.sid" value="0"><a href="{:U('Special/speul',array('sid'=>$vo['sid']))}">【专场】</a></neq>
+                                                                                            <neq name="vo.mid" value="0"><a href="{:U('Meeting/meetul',array('mid'=>$vo['mid']))}">【拍卖会】</a></neq>
+                                                                                            <a class="link" href="{:U('Auction/details',array('pid'=>$vo['pid']))}">{$vo.pname}</a>
+                                                                                        </p>
+                                                                                        <p class="info-little">起拍价：{$vo.onset}<br/>
+                                                                                        保证金：{:pledgeShow($vo['pattern'],$vo['pledge_type'],$vo['onset'],$vo['pledge'],$vo['spledge'],$vo['mpledge'])}</p>
+                                                                                        <p class="filtrate-box am-cf">
+                                                                                            <foreach name="vo.filtrate" item="fv">
+                                                                                                <span>{$fv}</span>
+                                                                                            </foreach>
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <ul class="td-changeorder">
+                                                                                <li class="td td-orderprice">
+                                                                                    <div class="item-orderprice">
+                                                                                        <span>&nbsp;&nbsp;当前价：</span>{$vo.nowprice}
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li class="td td-changeprice">
+                                                                                    <div class="item-changeprice">
+                                                                                        <span>频道/分类：</span>{$vo.pidName}/{$vo.cidName}
+                                                                                    </div>
+                                                                                </li>
+                                                                            </ul>
+                                                                            <div class="clear"></div>
+                                                                        </ul>
+                                                                        <div class="change move-right">
+                                                                            <li class="td td-moneystatus td-status">
+                                                                                <div class="item-status">
+                                                                                    <p class="Mystatus">{$vo.st}</p>
+                                                                                </div>
+                                                                            </li>
+                                                                        </div>
+                                                                        <li class="td td-change td-changebutton">
+                                                                            <if condition="$vo['sten'] eq 'bidend'">
+                                                                                <eq name="vo.endst" value="chengjiao">
+                                                                                    <a class="am-btn am-btn-warning anniu" href="{:U('Member/order_details',array('order_no'=>$vo['order_no']))}">查看订单 </a>
+                                                                                </eq>
+                                                                                <eq name="vo.repai" value="0">
+                                                                                    <a class="am-btn am-btn-danger anniu" href="{:U('Seller/auction_add',array('gid'=>$vo['gid']))}">再次拍卖 </a>
+                                                                                </eq>
+                                                                            </if>
+                                                                            <if condition="($vo['sten'] eq 'future') or (($vo['sten'] eq 'bidend') and ($vo['endst'] eq 'wurenliupai'))">
+                                                                                <a class="am-btn am-btn-secondary anniu" href="__URL__/auction_edit?pid={$vo.pid}">编辑</a>
+                                                                                <a pid="{$vo.pid}" href="javascript:void(0)" name="{$vo.pname}" class="am-btn am-btn-primary anniu Js-del">删除 </a>
+                                                                            </if>
+                                                                            <eq name="vo.sten" value="biding">
+                                                                                <a pid="{$vo.pid}" href="javascript:void(0)" name="{$vo.pname}" class="am-btn am-btn-secondary anniu Js-cancelpai">撤拍 </a>
+                                                                            </eq>
+                                                                            <a class="am-btn am-btn-default anniu link" href="{:U('Seller/auction_info',array('pid'=>$vo['pid']))}">详情</a>
+                                                                        </li>
+                                                                        <div class="clear"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            </volist> 
+                                                        {$page}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </empty>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--底部-->
+                <include file="Common:footer"/>
+            </div>
+            <include file="Seller:menu"/>
+            
+        </div>
+        <script type="text/javascript">
+            var ws_rom_pre = "{:C('BID_PRE')}";
+            // 拍品删除提交地址
+            var delLink = "{:U('del_auction')}";
+            // 拍品撤拍提交地址
+            var cancelLink = "{:U('cancelPai')}";
+            
+            // 通过频道获取分类【
+            var cid = "{$keys.cid|default=0}";
+            var getCateUrl ="{:U('Seller/getcate')}";
+            getCateHtml($('#Js-channel').val(),cid);
+            $('#Js-channel').on("change",function(){
+                var chePid = $(this).children('option:selected').attr('value');
+                cid = 0;
+                getCateHtml(chePid,cid);
+            });
+            // 获取分类select的html
+            function getCateHtml(chePid){
+               $.post(getCateUrl,{'pid':chePid,'cid':cid,'required':0},function(data){      //ajax后台
+                $('#Js-cateSelectBox').html('');
+                if (data.status) {
+                        $('#Js-cateSelectBox').html(data.htm);
+                        $('#Js-cate').focus();
+                    }
+                },'json');
+            }
+            // 通过频道获取分类】
+
+            $(function(){
+                // 撤拍
+                $(".Js-cancelpai").click(function(){
+                    var canceltrbox = $(this).parents('.Js-trbox');
+                    var cancelpid = $(this).attr('pid');
+                    AMUI.dialog.confirm({ title: '温馨提示', content: '你真的打算将【<b>'+$(this).attr("name")+'</b>】撤拍吗?<br/>撤拍将立即结束拍卖，解冻您和买家的保证金。', onConfirm: function() { 
+                        $.post(cancelLink,{'pid':cancelpid},function(data){      //ajax后台
+                            if (data.status) {
+                                    AMUI.dialog.alert({ title: '', content: data.msg}); 
+                                    // 循环发送消息【
+                                    $.each(data.result,function(drk,drv){
+                                        ws.send(JSON.stringify({"type":"drive","pre":ws_rom_pre,"data":drv}));
+                                    });
+                                    // 循环发送消息】
+                                    canceltrbox.remove();
+                                    setTimeout(function(){
+                                        window.top.location.reload();
+                                    },2000);
+                                    
+                                } else {
+                                    alert(data.msg);
+                                }
+                            },'json');
+                    }, onCancel: function() { console.log('onCancel') } }); 
+                });
+                // 删除
+                $(".Js-del").click(function(){
+                    var deltr = $(this).parents('.Js-trbox');
+                    var delpid = $(this).attr('pid');
+                    AMUI.dialog.confirm({ title: '温馨提示', content: '你真的打算将【<b>'+$(this).attr("name")+'</b>】删除吗?', onConfirm: function() { 
+                        $.post(delLink,{'pid':delpid},function(data){      //ajax后台
+                            if (data.status) {
+                                    // popup.success(data.msg);
+                                    ws.send(JSON.stringify({"type":"drive","pre":ws_rom_pre,"data":data.result}));
+                                    deltr.remove();
+                                    setTimeout(function(){
+                                        window.top.location.reload();
+                                    },2000);
+                                } else {
+                                    AMUI.dialog.alert({ title: '', content: data.msg}); 
+                                }
+                            },'json');
+                    }, onCancel: function() { console.log('onCancel') } }); 
+                });
+            });
+// web_socket【
+var $loading = AMUI.dialog.loading({ title: '建立链接...'}); 
+var linkerr_alert = 0;
+var ws_login = 0;
+var ws_room_id = 'admin';
+var ws_my_name = 'adminer';
+var domain = "{$site.WEB_ROOT}";
+
+if (typeof console == "undefined") {    this.console = { log: function (msg) {  } };}
+    WEB_SOCKET_SWF_LOCATION = "__WEBSOCKET__/swf/WebSocketMain.swf";
+    WEB_SOCKET_DEBUG = true;
+    var ws, client_list={};
+
+    // 连接服务端
+    function connect() {
+        // 创建websocket
+        ws = new WebSocket("ws://"+document.domain+":7272");
+        // 当socket连接打开时，输入用户名
+        ws.onopen = onopen;
+
+        // 当有消息时根据消息类型显示不同信息
+        ws.onmessage = onmessage; 
+        ws.onclose = function() {
+          console.log("连接关闭，定时重连");
+          ws_login = 0;
+          connect();
+        };
+        ws.onerror = function() {
+            ws_login = 0;
+            $loading.modal('close');
+            if (linkerr_alert == 0) {
+                AMUI.dialog.alert({ title: '建立链接失败', content: '请刷新页面重试！', onConfirm: function() { window.location.href=window.location.href; } }); 
+                linkerr_alert = 1;
+            };
+            console.log("出现错误");
+        };
+    }
+
+    // 连接建立时发送登录信息
+    function onopen(){
+        // 登录
+        if (ws_login == 0) {
+            ws_login = 1;
+            $loading.modal('close');
+            var login_data = '{"type":"login","client_name":"'+ws_my_name+'","room_id":'+ws_room_id+'}';
+            console.log("websocket握手成功，发送登录数据:"+login_data);
+            ws.send(login_data);
+        };
+    }
+    // 服务端发来消息时
+    function onmessage(e){
+        console.log(e.data);
+        var data = eval("("+e.data+")");
+        switch(data['type']){
+            // 服务端ping客户端
+            case 'ping':
+                ws.send('{"type":"pong","domain":'+domain+'}');
+                break;
+            // 登录 更新用户列表
+            case 'login':
+                //{"type":"login","client_id":xxx,"client_name":"xxx","client_list":"[...]","time":"xxx"}
+                console.log(data['client_name']+"登录成功");
+                break;
+            // 出价
+            case 'drive':
+                // bidChange(data.thisS);
+                alert('drive');
+                break;
+            // 用户退出 更新用户列表
+            case 'logout':
+                //{"type":"logout","client_id":xxx,"time":"xxx"}
+                delete client_list[data['from_client_id']];
+        }
+    }
+    // 撤拍
+    connect();
+// web_socket】
+        </script>
+    </body>
+</html>

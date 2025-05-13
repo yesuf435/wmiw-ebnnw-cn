@@ -1,0 +1,37 @@
+<!--顶部导航条 -->
+<div class="am-container header am-cf">
+    <ul class="message-l">
+        <div class="topMessage">
+            <div class="menu-hd">
+                <span class="menu-hd-summary" >{$site.SITE_INFO.summary}</span>
+                <if condition="$login">
+                    您好，尊敬的<strong> <empty name="usinfo.nickname">{$usinfo.account}<else/>{$usinfo.nickname}</empty></strong>,欢迎来到{$site.SITE_INFO.name}！
+                <else />
+                    您好，欢迎来到{$site.SITE_INFO.name}！
+                    <a href="{:U('Login/index')}" target="_top" class="h" title="请登录">请登录</a>
+                    <a href="{:U('Login/register')}" target="_top">免费注册</a>
+                </if>
+            </div>
+        </div>
+    </ul>
+    <ul class="message-r">
+        <div class="topMessage home">
+            <div class="menu-hd"><a href="#" target="_top" class="h link">首页</a></div>
+        </div>
+        <if condition="$login">
+            <div class="topMessage my-shangcheng">
+                <div class="menu-hd MyShangcheng"><a class="link" href="{:U('Member/index')}" target="_top"><i class="am-icon-user am-icon-fw"></i>个人中心</a></div>
+            </div>
+            <div class="topMessage my-shangcheng">
+                <div class="menu-hd MyShangcheng"><a class="link" href="{:U('Login/loginOut')}" target="_top"><i class="am-icon-sign-out am-icon-fw"></i>退出</a></div>
+            </div>
+        </if>
+        
+        <div class="topMessage mini-cart">
+            <div class="menu-hd"><a class="link" id="mc-menu-hd" href="{:U('Member/mysucc')}" target="_top"><i class="am-icon-trophy  am-icon-fw"></i><span>拍到的</span><strong id="J_MiniCartNum" class="h">0</strong></a></div>
+        </div>
+        <div class="topMessage favorite">
+            <div class="menu-hd"><a class="link" href="{:U('Article/help')}" target="_top"><i class="am-icon-question am-icon-fw"></i><span>帮助</span></a></div>
+        </div>
+    </ul>
+</div>

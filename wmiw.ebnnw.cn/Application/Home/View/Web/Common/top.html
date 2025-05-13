@@ -1,0 +1,22 @@
+<div class="top_fl fl">
+    {$site.SITE_INFO.summary}
+    
+    <if condition="$login">
+        您好，尊敬的<strong>{$usinfo.nickname}</strong>,欢迎来到{$site.SITE_INFO.name}！
+    <else />
+        您好，欢迎来到{$site.SITE_INFO.name}！
+        <a href="{:U('Login/index')}" title="请登录">请登录</a>
+        <a href="{:U('Login/register')}">免费注册</a>
+    </if>
+</div>
+<ul class="top_fr fr">
+    <if condition="$login">
+        <li><a href="{:U('Member/index')}">我的{$site.SITE_INFO.name}</a></li>
+        <li><a href="{:U('Login/loginOut')}">退出</a></li>
+    </if>
+    
+    <li><a href="{:U('Article/help')}">帮助中心</a></li>
+    <li>
+        <div class="serviceTel">客服热线：<span class="tel_no">{$site.SITE_INFO.tel}</span></div>
+    </li>
+</ul>

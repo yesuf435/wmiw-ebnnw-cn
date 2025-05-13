@@ -1,0 +1,1 @@
+<?php	return array ( 'FIELDS_DESCRIBE' => '', 'info' => array ( 'eid' => '', ), );?>

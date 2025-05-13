@@ -1,0 +1,524 @@
+<include file="Common:meta" />
+<title>{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<link href="__CSS__/demo.css" rel="stylesheet" type="text/css" />
+<link href="__CSS__/filtstyle.css" rel="stylesheet" type="text/css">
+<link href="__CSS__/hmstyle.css" rel="stylesheet" type="text/css">
+<js href="__JS__/script.js"/>
+<body>
+    <div class="hmtop">
+        <include file="Common:header_topnav" />
+        <include file="Common:header_search" />
+    </div>
+    <!--轮播【 -->
+    <div class="banner">
+        <div class="am-slider am-slider-default scoll" data-am-flexslider id="demo-slider-0">
+            <ul class="am-slides">{:showAdvPosition('banner','li')}</ul>
+        </div>
+        <script type="text/javascript">
+            (function() {
+                $('.am-slider').flexslider();
+            });
+        </script>
+        <div class="clear"></div>   
+    </div>
+
+    <!--轮播【 -->
+    <div class="shopNav">
+        <include file="Common:navigation" />
+        <div class="slideall">
+            <!--小导航 -->
+            <ul class="am-avg-sm-{$sm_avg} smallnav">
+                <li>
+                    <a href="{:U('Index/cate')}"><img src="__IMG__/navsmall.jpg" />
+                        <div class="title">拍品分类</div>
+                    </a>
+                </li>
+                <if condition="C('Auction.sort_time') eq 1">
+                    <li>
+                        <a href="{:U('Auction/index',array('sort'=>'time'))}"><img src="__IMG__/time.jpg" />
+                            <div class="title">最新拍品</div>
+                        </a>
+                    </li>
+                </if>
+                <if condition="C('Auction.jianlou') eq 1">
+                    <li>
+                        <a href="{:U('Auction/index',array('screen'=>'jianlou'))}"><img src="__IMG__/jianlou.jpg" />
+                            <div class="title">0元捡漏</div>
+                        </a>
+                    </li>
+                </if>
+                <if condition="C('Auction.yikoujia') eq 1">
+                    <li>
+                        <a href="{:U('Auction/index',array('screen'=>'jscj'))}"><img src="__IMG__/yikoujia.jpg" />
+                            <div class="title">一口价</div>
+                        </a>
+                    </li>
+                </if>
+                <if condition="C('Auction.special_page') eq 1">
+                    <li>
+                        <a href="{:U('Special/index')}"><img src="__IMG__/zhuanchang.jpg" />
+                            <div class="title">拍卖专场</div>
+                        </a>
+                    </li>
+                </if>
+                <if condition="C('Auction.meeting_page') eq 1">
+                    <li>
+                        <a href="{:U('Meeting/index')}"><img src="__IMG__/paimaihui.jpg" />
+                            <div class="title">拍卖会</div>
+                        </a>
+                    </li>
+                </if>
+                <li>
+                    <a href="{:U('Member/index')}"><img src="__IMG__/mansmall.jpg" />
+                        <div class="title">个人中心</div>
+                    </a>
+                </li>
+            </ul>
+            <!--走马灯 -->
+            <div class="marqueen">
+                <span class="marqueen-title">{$newtop.cname}</span>
+                <div class="demo">
+                    <ul>
+                        <volist name="newtop.list" id="nlv" offset="0" length='2'>
+                            <li><a target="_blank" href="{:U('Article/details',array('id'=>$nlv['id']))}"><span>[{$nlv.name}]</span>{$nlv.title}</a></li>
+                        </volist>
+                        <div class="mod-vip">
+
+                            <div class="m-baseinfo">
+                                <a href="{:U('Member/index')}">
+                                    <empty name="usinfo.avatar">
+                                        <img src="__IMG__/getAvatar.do.jpg">
+                                    <else/>
+                                        <img src="{$usinfo.avatar}">
+                                    </empty>
+                                </a>
+                                <em>
+                                    Hi,<span class="s-name"> <empty name="usinfo.nickname">游客<else/>{$usinfo.nickname}</empty></span>
+                                    <!-- <a href="#"><p>点击更多优惠活动</p></a> -->                                 
+                                </em>
+                            </div>
+                            <if condition="$login">
+                                <div class="member-login">
+                                    <a href="{:U('Member/mysucc',array('st'=>0))}"><strong>{$ocount.fukuai|default=0}</strong>待付款</a>
+                                    <a href="{:U('Member/mysucc',array('st'=>1))}"><strong>{$ocount.fahuo|default=0}</strong>待发货</a>
+                                    <a href="{:U('Member/mysucc',array('st'=>2))}"><strong>{$ocount.shouhuo|default=0}</strong>待收货</a>
+                                    <a href="{:U('Member/mysucc',array('st'=>3))}"><strong>{$ocount.pingjia|default=0}</strong>待评价</a>
+                                </div>
+                            <else />
+                                <div class="member-logout">
+                                    <a class="am-btn-warning btn" href="{:U('Login/index')}">登录</a>
+                                    <a class="am-btn-warning btn" href="{:U('Login/register')}">注册</a>
+                                </div>
+                            </if>
+                            <div class="clear"></div>   
+                        </div>                                                                      
+                        <volist name="newtop.list" id="nlv" offset="2" length='6'>
+                            <li><a target="_blank" href="{:U('Article/details',array('id'=>$nlv['id']))}"><span>[{$nlv.name}]</span>{$nlv.title}</a></li>
+                        </volist>
+                    </ul>
+                    <div class="advTip">{:showAdvPosition('headlines','span')}</div>
+                </div>
+                <script type="text/javascript">
+                    if ($(window).width() < 640) {
+                        function autoScroll(obj) {
+                            $(obj).find("ul").animate({
+                                marginTop: "-39px"
+                            }, 500, function() {
+                                $(this).css({
+                                    marginTop: "0px"
+                                }).find("li:first").appendTo(this);
+                            })
+                        }
+                        $(function() {
+                            setInterval('autoScroll(".demo")', 3000);
+                        })
+                    }
+                </script>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+        <!-- 列表开始 -->
+<!-- Notification Banner -->
+<div class="notification-banner">
+    <i class="am-icon-volume-up"></i>
+    <div class="notification-content">
+        <span>[成交消息] 恭喜 **** 成交一件 清康熙 五彩人物故事紋棒槌瓶</span>
+        <span>[系统公告] 网站将于今晚进行系统维护...</span>
+        <!-- Add more notifications here -->
+    </div>
+</div>
+
+<!-- News Tabs -->
+<div class="news-tabs">
+    <ul class="tabs-nav">
+        <li class="active"><a href="#tab-headlines">本站头条</a></li>
+        <li><a href="#tab-global">全球资讯</a></li>
+        <li><a href="#tab-about">关于我们</a></li>
+        <!-- Add more tabs if needed -->
+    </ul>
+    <div class="tabs-content">
+        <div id="tab-headlines" class="tab-pane active">
+            <!-- Headlines content goes here -->
+            <p>本站头条内容...</p>
+        </div>
+        <div id="tab-global" class="tab-pane">
+            <!-- Global news content goes here -->
+            <p>全球资讯内容...</p>
+        </div>
+        <div id="tab-about" class="tab-pane">
+            <!-- About us content goes here -->
+            <p>关于我们内容...</p>
+        </div>
+        <!-- Add more tab content panes if needed -->
+    </div>
+</div>
+
+        <div class="shopMainbg">
+            <div class="shopMain" id="shopmain">
+                <eq name="login" value="1">
+                    <!-- 足迹 -->
+                    <notempty name="footprint">
+                        <div class="footprint am-container">
+                            <div class="tit am-cf">
+                                <a class="am-fl" href="{:U('Member/footprint')}"><i class="am-icon-paw"></i> 我的足迹</a>
+                                <a class="mor am-fr" href="{:U('Member/footprint')}"><i class="am-icon-chevron-right"></i></a>
+                            </div>
+                            <div class="am-slider am-slider-default am-slider-carousel" data-am-flexslider="{itemWidth:110,itemMargin: 5, slideshow: false}">
+                                <ul class="am-slides">
+                                    <foreach name="footprint" item="ftv">
+                                        <li>
+                                           <a target="_blank" href="{:U('Auction/details',array('pid'=>$ftv['pid']))}"><img class="am-thumbnail" src="{$upWholeUrl}{$ftv.pictures||getPicUrl=###,3,0}" /></a>
+                                           <strong class="price">￥{$ftv.nowprice}</strong>
+                                        </li>
+                                    </foreach>
+                                </ul>
+                            </div>
+                        </div>
+                    </notempty>
+                </eq>
+                <if condition="C('Auction.meeting_page') eq 1">
+                    <notempty name="mlist">
+                        <!--拍卖会 -->
+                        <div class="am-g-fixed recommendation">
+                            <div class="clock am-u-sm-3">
+                                {:showAdvPosition('mittingtitle','span')}
+                                <p>拍卖会</p>
+                            </div>
+                            <ul class="am-u-sm-12 am-u-lg-9 am-avg-sm-1 am-avg-md-3">
+                                <foreach name="mlist" item="mv">
+                                    <li>
+                                        <div class="on-licon">
+                                            <div class="recommendationMain ">
+                                                <a href="{:U('Meeting/meetul',array('mid'=>$mv['mid']))}">
+                                                    <img alt="{$mv.mname}" src="{$upWholeUrl}{$mv.mpicture}"></img>
+                                                </a>
+                                            </div>
+                                            <div class="info ">
+                                                <a href="{:U('Meeting/index')}"><h3>{$mv.mname}</h3></a>
+                                            </div>
+                                        </div> 
+                                    </li>
+                                </foreach>
+                            </ul>
+                        </div>
+                        <div class="clear "></div>
+                        </notempty>
+                    </if>
+                    <notempty name="slist">
+                        <!--专场拍卖【 -->
+                        <div class="am-container activity ">
+                            <div class="shopTitle ">
+                                <a href="{:U('Special/index')}"><h4>专场拍卖</h4></a>
+                                <h3>专场拍不停，满足你的小任性！</h3>
+                                <span class="more ">
+                                  <a class="more-link " href="{:U('Special/index')}">全部专场</a>
+                                </span>
+                            </div>
+                            <ul class="am-avg-sm-1 am-avg-md-3">
+                                <foreach name="slist" item="slv">
+                                    <li>
+                                        <div class="on-licon">
+                                            <div class="icon-sale one "></div>  
+                                            <h4>专场</h4>                         
+                                            <div class="activityMain ">
+                                                <a href="{:U('Special/speul',array('sid'=>$slv['sid']))}"><img src="{$upWholeUrl}{$slv.spicture}"></img></a>
+                                            </div>
+                                            <div class="info am-text-truncate"><a href="{:U('Special/speul',array('sid'=>$slv['sid']))}"><h3>{$slv.sname}</h3></a></div> 
+                                        </div>                                                     
+                                    </li>        
+                                </foreach>
+                            </ul>
+                        </div>
+                        <div class="clear "></div>
+                        <!-- 专场拍卖 -->
+                    </notempty>
+                    <!-- 频道输出【 -->
+                    <foreach name="channel" item="cv">
+                        <notempty name="cv.list">
+                            <div class="am-container ">
+                                <div class="shopTitle ">
+                                    <a href="{:U('Auction/index',array('gt'=>$cv['cid']))}"><h4>{$cv.name}</h4></a>
+                                    <h3>{$cv.remark}</h3>
+                                    <div class="today-brands ">
+                                        <foreach name="cv.hotcate" item="htv">
+                                            <a href="{:U('Auction/index',array('gt'=>$htv['cid']))}">{$htv.name}</a>
+                                        </foreach>
+                                    </div>
+                                    <span class="more "><a class="more-link " href="{:U('Auction/index',array('gt'=>$cv['cid']))}">进入频道</a></span>
+                                </div>
+                            </div>
+
+                            <eq name="cv.modelno" value="1">
+                            <!-- 显示效果一【 -->
+                                <div class="am-g am-g-fixed floodOne ">
+                                    <div class="am-u-sm-5 am-u-md-3 am-u-lg-4 text-one ">
+                                        <a href="{:U('Auction/details',array('pid'=>$cv['list'][0]['pid']))}">
+                                            <div class="outer-con ">
+                                                <div class="title ">{$cv.list.0.pname}</div>                  
+                                                <div class="sub-title ">￥<span class="price">{$cv.list.0.nowprice|wipezero=###}</span></div>
+                                            </div>
+                                            <img alt="{$cv.list.0.pname}" src="{$upWholeUrl}{$cv.list.0.pictures|getPicUrl=###,2,0}" />                             
+                                        </a>
+                                    </div>
+                                    <div class="am-u-sm-7 am-u-md-5 am-u-lg-4">
+                                        <div class="text-two">
+                                            <div class="outer-con ">
+                                                <div class="title ">{$cv.list.1.pname}</div>                                  
+                                                <div class="sub-title ">￥<span class="price">{$cv.list.1.nowprice|wipezero=###}</span></div>
+                                            </div>
+                                            <a href="{:U('Auction/details',array('pid'=>$cv['list'][1]['pid']))}"><img src="{$upWholeUrl}{$cv.list.1.pictures|getPicUrl=###,2,0}" /></a>
+                                        </div>
+                                        <div class="text-two last">
+                                            <div class="outer-con ">
+                                                <div class="title ">{$cv.list.2.pname}</div>
+                                                <div class="sub-title ">￥<span class="price">{$cv.list.2.nowprice|wipezero=###}</span></div>
+                                            </div>
+                                            <a href="{:U('Auction/details',array('pid'=>$cv['list'][2]['pid']))}"><img src="{$upWholeUrl}{$cv.list.2.pictures|getPicUrl=###,2,0}" /></a>
+                                        </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-4 ">
+                                        <div class="am-u-sm-3 am-u-md-6 text-three">
+                                            <div class="outer-con ">
+                                                <div class="title am-text-truncate">{$cv.list.3.pname}</div>
+                                                <div class="sub-title">￥<span class="price">{$cv.list.3.nowprice|wipezero=###}</span></div>
+                                            </div>
+                                            <a href="{:U('Auction/details',array('pid'=>$cv['list'][3]['pid']))}"><img src="{$upWholeUrl}{$cv.list.3.pictures|getPicUrl=###,2,0}" /></a>
+                                        </div>
+
+                                        <div class="am-u-sm-3 am-u-md-6 text-three">
+                                            <div class="outer-con ">
+                                                <div class="title am-text-truncate">{$cv.list.4.pname}</div>
+                                                <div class="sub-title ">￥<span class="price">{$cv.list.4.nowprice|wipezero=###}</span></div>
+                                            </div>
+                                            <a href="{:U('Auction/details',array('pid'=>$cv['list'][4]['pid']))}"><img src="{$upWholeUrl}{$cv.list.4.pictures|getPicUrl=###,2,0}" /></a>
+                                        </div>
+
+                                        <div class="am-u-sm-3 am-u-md-6 text-three">
+                                            <div class="outer-con ">
+                                                <div class="title am-text-truncate">{$cv.list.5.pname}</div>
+                                                <div class="sub-title ">￥<span class="price">{$cv.list.5.nowprice|wipezero=###}</span></div>
+                                            </div>
+                                            <a href="{:U('Auction/details',array('pid'=>$cv['list'][5]['pid']))}"><img src="{$upWholeUrl}{$cv.list.5.pictures|getPicUrl=###,2,0}" /></a>
+                                        </div>
+
+                                        <div class="am-u-sm-3 am-u-md-6 text-three last ">
+                                            <div class="outer-con ">
+                                                <div class="title am-text-truncate">{$cv.list.6.pname}</div>
+                                                <div class="sub-title ">￥<span class="price">{$cv.list.6.nowprice|wipezero=###}</span></div>
+                                            </div>
+                                            <a href="{:U('Auction/details',array('pid'=>$cv['list'][6]['pid']))}"><img src="{$upWholeUrl}{$cv.list.6.pictures|getPicUrl=###,2,0}" /></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clear "></div>
+                            </eq>
+                            <!-- 显示效果一】 -->
+                            <eq name="cv.modelno" value="2">
+                            <!-- 显示效果二【 -->
+                                <div class="am-g am-g-fixed floodTwo ">
+                                    <div class="am-u-sm-5 am-u-md-4 text-one ">
+                                        <a href="{:U('Auction/details',array('pid'=>$cv['list'][0]['pid']))}">
+                                            <img src="{$upWholeUrl}{$cv.list.0.pictures|getPicUrl=###,2,0}" />
+                                            <div class="outer-con ">
+                                                <div class="title ">{$cv.list.0.pname}</div>
+                                                <div class="sub-title ">￥<span class="price">{$cv.list.0.nowprice|wipezero=###}</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="am-u-sm-7 am-u-md-4 am-u-lg-2 text-two">
+                                        <div class="outer-con ">
+                                            <div class="title am-text-truncate">{$cv.list.1.pname}</div>
+                                            <div class="sub-title ">￥<span class="price">{$cv.list.1.nowprice|wipezero=###}</span></div>
+                                        </div>
+                                        <a href="{:U('Auction/details',array('pid'=>$cv['list'][1]['pid']))}"><img src="{$upWholeUrl}{$cv.list.1.pictures|getPicUrl=###,2,0}" /></a>                    
+                                    </div>
+                                    
+                                    <div class="am-u-md-4 am-u-lg-2 text-three">
+                                        <div class="outer-con ">
+                                            <div class="title am-text-truncate">{$cv.list.2.pname}</div>
+                                            <div class="sub-title ">￥<span class="price">{$cv.list.2.nowprice|wipezero=###}</span></div>
+                                        </div>
+                                        <a href="{:U('Auction/details',array('pid'=>$cv['list'][2]['pid']))}"><img src="{$upWholeUrl}{$cv.list.2.pictures|getPicUrl=###,2,0}" /></a> 
+                                    </div>
+                                    <div class="am-u-md-4 am-u-lg-2 text-three">
+                                        <div class="outer-con ">
+                                            <div class="title am-text-truncate">{$cv.list.3.pname}</div>
+                                            <div class="sub-title ">￥<span class="price">{$cv.list.3.nowprice|wipezero=###}</span></div>
+                                        </div>
+                                        <a href="{:U('Auction/details',array('pid'=>$cv['list'][3]['pid']))}"><img src="{$upWholeUrl}{$cv.list.3.pictures|getPicUrl=###,2,0}" /></a>
+                                    </div>
+                                    <div class="am-u-sm-6 am-u-md-4 am-u-lg-2 text-two ">
+                                        <div class="outer-con ">
+                                            <div class="title am-text-truncate">{$cv.list.4.pname}</div>
+                                            <div class="sub-title ">￥<span class="price">{$cv.list.4.nowprice|wipezero=###}</span></div>
+                                        </div>
+                                        <a href="{:U('Auction/details',array('pid'=>$cv['list'][4]['pid']))}"><img src="{$upWholeUrl}{$cv.list.4.pictures|getPicUrl=###,2,0}" /></a>                
+                                    </div>                      
+                                    <div class="am-u-sm-6 am-u-md-3 am-u-lg-2 text-four ">
+                                        <div class="outer-con ">
+                                            <div class="title am-text-truncate">{$cv.list.5.pname}</div>
+                                            <div class="sub-title ">￥<span class="price">{$cv.list.5.nowprice|wipezero=###}</span></div>
+                                        </div>
+                                        <a href="{:U('Auction/details',array('pid'=>$cv['list'][5]['pid']))}"><img src="{$upWholeUrl}{$cv.list.5.pictures|getPicUrl=###,2,0}" /></a>                  
+                                    </div>              
+                                    <div class="am-u-sm-4 am-u-md-3 am-u-lg-4 text-five">
+                                        <div class="outer-con ">
+                                            <div class="title">{$cv.list.6.pname}</div>
+                                            <div class="sub-title ">￥<span class="price">{$cv.list.6.nowprice|wipezero=###}</span></div>
+                                        </div>
+                                        <a href="{:U('Auction/details',array('pid'=>$cv['list'][6]['pid']))}"><img src="{$upWholeUrl}{$cv.list.6.pictures|getPicUrl=###,2,0}" /></a>
+                                    </div>  
+                                    <div class="am-u-sm-4 am-u-md-3 am-u-lg-2 text-six">
+                                        <div class="outer-con ">
+                                            <div class="title am-text-truncate">{$cv.list.7.pname}</div>
+                                            <div class="sub-title ">￥<span class="price">{$cv.list.7.nowprice|wipezero=###}</span></div>
+                                        </div>
+                                        <a href="{:U('Auction/details',array('pid'=>$cv['list'][7]['pid']))}"><img src="{$upWholeUrl}{$cv.list.7.pictures|getPicUrl=###,2,0}" /></a>
+                                    </div>  
+                                    <div class="am-u-sm-4 am-u-md-3 am-u-lg-4 text-five">
+                                        <div class="outer-con ">
+                                            <div class="title">{$cv.list.8.pname}</div>
+                                            <div class="sub-title ">￥<span class="price">{$cv.list.8.nowprice|wipezero=###}</span></div>
+                                        </div>
+                                        <a href="{:U('Auction/details',array('pid'=>$cv['list'][8]['pid']))}"><img src="{$upWholeUrl}{$cv.list.8.pictures|getPicUrl=###,2,0}" /></a>
+                                    </div>                          
+                                </div>
+                                <div class="clear "></div>
+                            <!-- 显示效果二】 -->
+                            </eq>
+                            <eq name="cv.modelno" value="0">
+                            <!-- 默认显示效果【 -->
+                                <div class="am-g am-g-fixed flood method3 ">
+                                    <ul class="am-thumbnails">
+                                        <foreach name="cv.list" item="clv">
+                                            <li>
+                                                <div class="list ">
+                                                    <a href="{:U('Auction/details',array('pid'=>$clv['pid']))}">
+                                                        <img src="{$upWholeUrl}{$clv.pictures|getPicUrl=###,2,0}" />
+                                                        <div class="pro-title am-text-truncate">{$clv.pname}</div>
+                                                        <div class="e-price ">当前：￥<span class="price">{$clv.nowprice|wipezero=###}</span></div>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </foreach>
+                                    </ul>
+                                </div>
+                            <!-- 默认显示效果】 -->
+                            </eq>
+                        </notempty>
+                    </foreach>
+                    <!-- 频道输出】 -->
+                    <!-- 即将开拍【 -->
+                    <notempty name="fulist">
+                        <div class="am-container ">
+                            <div class="shopTitle ">
+                                <a href="{:U('Auction/index',array('stage'=>'future'))}"><h4>即将开拍</h4></a>
+                                <h3>期待已久的好货！</h3>
+                                <span class="more "><a class="more-link " href="{:U('Index/search',array('type'=>'future'))}">更多待拍</a></span>
+                            </div>
+                        </div>
+                        <div class="am-g am-g-fixed flood method3 ">
+                            <ul class="am-thumbnails ">
+                                <foreach name="fulist" item="fuv">
+                                    <li>
+                                        <div class="list ">
+                                            <a href="{:U('Auction/details',array('pid'=>$fuv['pid']))}">
+                                                <img src="{$upWholeUrl}{$fuv.pictures|getPicUrl=###,2,0}" />
+                                                <div class="pro-title am-text-truncate">{$fuv.pname}</div>
+                                                <div class="e-price ">起拍价：￥<span class="price">{$fuv.onset|wipezero=###}</span></div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </foreach>
+                            </ul>
+                        </div>
+                    </notempty>
+                    <!-- 即将开拍】 -->
+                    <!-- 最近成交【 -->
+                    <notempty name="edlist">
+                        <div class="am-container ">
+                            <div class="shopTitle ">
+                                <a href="{:U('Index/search',array('type'=>'bidend','cj'=>1))}"><h4>最近成交</h4></a>
+                                <h3>看看有没有错过的好货！</h3>
+                                <span class="more "><a class="more-link " href="{:U('Index/search',array('type'=>'bidend','cj'=>1))}">更多成交</a></span>
+                            </div>
+                        </div>
+                        <div class="am-g am-g-fixed flood method3 ">
+                            <ul class="am-thumbnails ">
+                                <foreach name="edlist" item="edv">
+                                    <li>
+                                        <div class="list ">
+                                            <a href="{:U('Auction/details',array('pid'=>$edv['pid']))}">
+                                                <img src="{$upWholeUrl}{$edv.pictures|getPicUrl=###,2,0}" />
+                                                <div class="pro-title am-text-truncate">{$edv.pname}</div>
+                                                <div class="e-price ">成交价：￥<span class="price">{$edv.nowprice|wipezero=###}</span></div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </foreach>
+                            </ul>
+                        </div>
+                    </notempty>
+                    <!-- 最近成交】 -->
+                    <notempty name="lklist">
+                        <div class="link-box">
+                            <!-- 友情链接【 -->
+                            <div class="am-container link-title">
+                                <h4>友情链接</h4>
+                            </div>
+                            <notempty name="lklist.txt">
+                                <!-- 文字链接 -->
+                                <ul class="am-g am-g-fixed link-txt-list">
+                                    <foreach name="lklist.txt" item="ltv">
+                                        <li><a href="{$ltv.url}">{$ltv.name}</a></li>
+                                    </foreach>
+                                </ul>
+                            </notempty>
+                            <notempty name="lklist.pic">
+                                <!-- 图片链接 -->
+                                <ul class="am-g am-g-fixed link-pic-list">
+                                    <foreach name="lklist.pic" item="lpv">
+                                        <li><a href="{$lpv.url}"><img alt="{$lpv.name}" src="{$upWholeUrl}{$lpv.ico}"></a></li>
+                                    </foreach>
+                                </ul>
+                            </notempty>
+                            <!-- 友情链接】 -->
+                        </div>
+                    </notempty>
+                    <include file="Common:footer"/>
+                </div>
+            </div>
+            
+<include file="Common:query_links"/>
+<script type="text/javascript">
+$(function() {
+});
+</script>
+
+</body>
+</html>

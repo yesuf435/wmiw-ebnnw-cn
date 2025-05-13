@@ -1,0 +1,118 @@
+<include file="Common:meta" />
+<title>商品属性管理-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">商品属性管理</div>
+                            </div>
+                            <div class="widget-body">
+                                <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                                    <div class="am-form-group">
+                                        <div class="am-btn-toolbar">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <a href="{:U('Goods/filtrate_add')}" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 添加属性</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="am-u-sm-12">
+                                    <table width="100%" id="example-r" class="am-table am-table-compact tpl-table-black " >
+                                        <thead>
+                                            <tr>
+                                                <td>FID</td>
+                                                <td>属性结构 <b title="单击属性隐藏/显示该属性下在子类">[i]</b></td>
+                                                <td>排序</td>
+                                                <td>操作</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <volist name="list" id="tree">
+                                                <tr pid="{$tree.pid}" id="{$tree.fid}">
+                                                    <td>{$tree.fid}<input type="hidden" name="fid" value="{$tree.fid}"/></td>
+                                                    <td class="tree" style="cursor: pointer;">{$tree.fullname}</td>
+                                                    <td>
+                                                        <div class="ajax_order">
+                                                            <a class="rising" href="javascript:void(0)"><i title="加" class="am-icon-plus"></i></a>
+                                                            <div class="input-box">
+                                                                <div class="input" odid="{$tree.fid}">{$tree.sort}</div>
+                                                            </div>
+                                                            <a class="drop" href="javascript:void(0)"><i title="减" class="am-icon-minus"></i></a>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="tpl-table-black-operation">
+                                                            <a href="{:U('Goods/filtrate_edit',array('fid'=>$tree['fid']))}"><i class="am-icon-pencil"></i>编辑</a>
+                                                            <a fid="{$tree.fid}" href="javascript:void(0)" name="{$tree.name}" class="tpl-table-black-operation-del Js-del"><i class="am-icon-trash-o"></i>删除</a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </volist>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<style type="text/css">
+    .ico-null{border: 1px solid #c2cad8;height: 26px;text-align: center;width: 26px;}
+</style>
+<include file="Common:footer_link" />
+<script type="text/javascript">
+    // 异步排序地址
+    var odUrl = "{:U('Goods/order_filtrate')}";
+    // 删除属性
+    var delLink = "{:U('Goods/filtrate_del')}";
+    // 删除属性【
+    $(".Js-del").click(function(){
+        var fid = $(this).attr("fid");
+        var name = $(this).attr("name");
+        AMUI.dialog.confirm({ content: '是否删除<strong>“'+name+'”</strong>这个属性？', 
+            onConfirm: function() {
+                delPost(fid,0);
+            }, 
+            onCancel: function() {}
+         }); 
+
+        return false;
+    });
+    function delPost(fid,yn){
+        $.post(delLink,{'fid':fid,'yn':yn},function(data){      //ajax后台
+            if (data.status==1) {
+                AMUI.dialog.alert({ title: data.title, content: data.info});
+                if (data.url) {
+                    top.window.location.href=data.url;
+                };
+            }if (data.status==2) {
+                AMUI.dialog.confirm({title: data.title,content: data.info, 
+                    onConfirm: function() {
+                        delPost(fid,1);
+                    }, 
+                    onCancel: function() {}
+                 }); 
+            }else {
+                // 提示框
+                AMUI.dialog.alert({ title: data.title, content: data.info});
+            }
+
+        },'json'); 
+    }
+    // 删除属性】
+</script>
+</body>
+</html>

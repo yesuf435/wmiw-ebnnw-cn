@@ -1,0 +1,113 @@
+<include file="Common:meta" />
+<title>添加/编辑扩展字段-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">添加/编辑扩展字段</div>
+                            </div>
+                            <div class="widget-body am-fr">
+                                <form id="fieldsForm" class="am-form tpl-form-border-form tpl-form-border-br">
+                                    <div class="am-form-group">
+                                        <label for="name" class="am-u-sm-3 am-form-label">字段名</label>
+                                        <div class="am-u-sm-9" style="position: relative;">
+                                            <input type="text" class="tpl-form-input" id="prefix" name="info[name]" value="{$info.name}" placeholder="请输入文章标题" required>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="status" class="am-u-sm-3 am-form-label">是否启用</label>
+                                        <div class="am-u-sm-9 am-cf">
+                                            <label class="am-checkbox am-secondary am-margin-right-sm am-fl">
+                                                <input type="radio" name="info[status]" value="0" data-am-ucheck <if condition="$info.status eq 0"> checked</if> /> 不启用
+                                            </label>
+                                            <label class="am-checkbox am-secondary am-fl">
+                                                <input type="radio" name="info[status]" value="1" data-am-ucheck <if condition="$info.status eq 1"> checked</if> /> 启用
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="rank" class="am-u-sm-3 am-form-label">排序</label>
+                                        <div class="am-u-sm-9" style="position: relative;">
+                                            <input type="number" class="tpl-form-input" id="prefix" name="info[rank]" value="{$info.rank|default=0}" placeholder="请输入文章标题" required>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="default" class="am-u-sm-3 am-form-label">文章内容</label>
+                                        <div class="am-u-sm-9">
+                                            <textarea class="" rows="3" id="default" name="info[default]" placeholder="请输入文章内容">{$info.default}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <input type="hidden" name="info[eid]" value="{$info.eid}" />
+                                            <input type="submit" name="" value="提交" class="am-btn am-btn-primary tpl-btn-bg-color-success submitBtn">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<js href="--PUBLIC--/ueditor/ueditor.config.js,--PUBLIC--/ueditor/ueditor.all.js,--PUBLIC--/ueditor/lang/zh-cn/zh-cn.js"/>
+<js href="--PUBLIC--/assets/js/jquery.form.js"/>
+<script type="text/javascript">
+    var newsId = "{$info.id}";
+    $(function(){
+        // 百度编辑器【
+        window.UEDITOR_CONFIG.imageUrl = "{:U('Upload/editorUpload')}";
+        window.UEDITOR_CONFIG.wordImageUrl = "{:U('Upload/editorUpload')}";
+        window.UEDITOR_CONFIG.imagePath = '{$upWholeUrl}';
+        window.UEDITOR_CONFIG.savePath = ['{$upWholeUrl}'];
+        UE.getEditor('default');
+        // 百度编辑器】
+    });
+    // 表单提交
+        var $form = $('#fieldsForm');
+        var $subbtn = $(".submitBtn");
+        $form.validator({
+            submit: function() {
+                var formValidity = this.isFormValid();
+                if (formValidity) {
+                    // 验证成功的逻辑
+                    $subbtn.button('loading');
+                    // 验证成功的逻辑
+                    $form.ajaxSubmit({url:document.URL,data:'',type:"POST",
+                        success:function(data, st) {
+                            // 提示框
+                            AMUI.dialog.alert({ title: data.title, content: data.info});
+                            if(data.status==1){
+                                setTimeout(function(){
+                                    top.window.location.href = data.url;
+                                },1000);
+                            }else{
+                                $subbtn.button('reset');
+                            }
+                            return false;
+                        }
+                    });
+                } else {
+                    $subbtn.button('reset');
+                // 验证失败的逻辑
+                }
+            //阻止原生form提交
+            return false;
+            }
+        });
+</script>
+</body>
+</html>

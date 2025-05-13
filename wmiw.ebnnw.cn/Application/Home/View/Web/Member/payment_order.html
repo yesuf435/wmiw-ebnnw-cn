@@ -1,0 +1,395 @@
+<include file="Common:meta" />
+<title>订单支付-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<link href="__CSS__/demo.css" rel="stylesheet" type="text/css" />
+<link href="__CSS__/cartstyle.css" rel="stylesheet" type="text/css" />
+<link href="__CSS__/jsstyle.css" rel="stylesheet" type="text/css">
+<js href="--PUBLIC--/assets/js/jquery.form.js"/>
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+<div class="concent">
+    <form id="paymentForm" action="{:U('Payment/index')}" name="payment" method="post">
+    <div class="paycont">
+
+        <div class="address">
+            <h3>确认收货地址 </h3>
+            <div class="control">
+                <a href="{:U('Member/deliver_address',array('type'=>'add','order_no'=>$oinfo['order_no']))}" class="tc-btn am-btn am-btn-danger">添加新地址</a>
+            </div>
+            <div class="clear"></div>
+            <ul>
+                <foreach name="address" item="av">
+                    <div class="per-border"></div>
+                    <li adid="{$av.adid}" class="user-addresslist <eq name='av.default' value='1'>defaultAddr setdefaultAddr</eq> ">
+                        <div class="address-left">
+                            <div class="user DefaultAddr">
+                                <span>   
+                                    <span class="buy-user">{$av.truename} </span>
+                                    <span class="buy-phone">{$av.mobile}</span>
+                                </span>
+                            </div>
+                            <div class="default-address DefaultAddr">
+                                <span class="buy-line-title buy-line-title-type">收货地址：</span>
+                                <span class="buy-detail">
+                                    {$av.prov} {$av.city} {$av.district} {$av.address}
+                                </span>
+
+                                </span>
+                            </div>
+                            <ins class="deftip">默认地址</ins>
+                        </div>
+                        <div class="address-right">
+                            <a href="{:U('Member/deliver_address')}">
+                                <span class="am-icon-angle-right am-icon-lg"></span></a>
+                        </div>
+                        <div class="clear"></div>
+
+                        <div class="new-addr-btn">
+                            <a href="javascript:void(0)" adid="{$av.adid}" class="Js-note setdefault">设为默认</a>
+                            <span class="new-addr-bar hidden">|</span>
+                            <a href="{:U('Member/deliver_address',array('type'=>'edit','adid'=>$av['adid']))}">编辑</a>
+                            <span class="new-addr-bar">|</span>
+                            <a class="Js-del" href="javascript:void(0);">删除</a>
+                        </div>
+
+                    </li>
+                </foreach>
+                <input name="data[adid]" type="hidden" value=""/>
+            </ul>
+            <div class="clear"></div>
+        </div>
+        <eq name="onlypledge" value="0">
+            <!--支付方式-->
+            <div class="logistics">
+                <h3>选择支付方式</h3>
+                <div class="Js-yuetips yue-tips"></div>
+                <ul class="pay-list am-avg-sm-4 am-avg-md-5 am-avg-lg-7">
+                    <li channel="yue" tips="使用<span>账户余额</span>支付（总余额：<span>{$uLimit.wallet_pledge}</span>；已冻结：<span>{$uLimit.wallet_pledge_freeze}</span>；可用：<span>{$uLimit.usable}</span>）" satisfy="{$uLimit.satisfy}" class="pay <eq name='uLimit.satisfy' value='1'>selected</eq>">
+                        <div class="avg-libox">
+                            <img title="账户余额" src="--PUBLIC--/Img/Payico/yue.png" /><span></span>
+                        </div>
+                    </li>
+                    <foreach name="channel" item="v">
+                        <li channel="{$v.value}" tips="使用<span>{$v.chname}</span>支付" class="pay <if condition="($uLimit['satisfy'] eq 0) and ($key eq 0)">selected</if>">
+                            <div class="avg-libox">
+                                <img title="{$v.chname}" src="{$v.img}" /><span></span>
+                            </div>
+                        </li>
+                    </foreach>
+                    <input type="hidden" name="data[channel]" value="">
+                </ul>
+                
+            </div>
+        </eq>
+        <div class="clear"></div>
+        <!--订单 -->
+        <div class="concent">
+            <div id="payTable">
+                <h3>确认订单信息</h3>
+                <div class="cart-table-th">
+                    <div class="wp">
+
+                        <div class="th th-item">
+                            <div class="td-inner">拍品信息</div>
+                        </div>
+                        <div class="th th-price">
+                            <div class="td-inner">单价</div>
+                        </div>
+                        <div class="th th-amount">
+                            <div class="td-inner">{:C('Auction.broker_buy_name')}</div>
+                        </div>
+                        
+                        <div class="th th-oplist">
+                            <div class="td-inner">配送费</div>
+                        </div>
+                        <div class="th th-sum">
+                            <div class="td-inner">金额</div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="clear"></div>
+
+                <tr class="item-list">
+                    <div class="bundle  bundle-last">
+                        <div class="bundle-main">
+                            <ul class="item-content clearfix">
+                                <div class="pay-phone">
+                                    <li class="td td-item">
+                                        <div class="item-pic">
+                                            <a href="{:U('Auction/details',array('pid'=>$oinfo['gid']))}" class="J_MakePoint">
+                                                <img src="{$upWholeUrl}{$oinfo.pictures||getPicUrl=###,3,0}" class="itempic J_ItemImg"></a>
+                                        </div>
+                                        <div class="item-info">
+                                            <div class="item-basic-info">
+                                                <a href="{:U('Auction/details',array('pid'=>$oinfo['gid']))}" class="item-title J_MakePoint" data-point="tbcart.8.11">{$oinfo.pname}</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="td td-info">
+                                        <div class="item-props">
+                                            <span class="sku-line">成交价：{$oinfo.nowprice|wipezero=###}元</span>
+                                            <span class="sku-line">保证金：{:pledgeShow($oinfo['pattern'],$oinfo['pledge_type'],$oinfo['onset'],$oinfo['pledge'],$oinfo['spledge'],$oinfo['mpledge'])}</span>
+                                        </div>
+                                    </li>
+                                    <li class="td td-price">
+                                        <div class="item-price price-promo-promo">
+                                            <div class="price-content">
+                                                <em class="J_Price price-now">{$oinfo.price|wipezero=###}</em>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </div>
+                                <li class="td td-amount">
+                                    <div class="amount-wrapper ">
+                                        <div class="item-amount ">
+                                            <span class="phone-title">{:C('Auction.broker_buy_name')}</span>
+                                            <div class="sl">
+                                                {$oinfo.broker_buy|wipezero=###}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="td td-oplist">
+                                    <div class="td-inner">
+                                        <span class="phone-title">配送费</span>
+                                        <div class="pay-logis">
+                                            <b class="sys_item_freprice">{$oinfo.freight|wipezero=###}</b>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="td td-sum">
+                                    <div class="td-inner">
+                                        <em tabindex="0" class="J_ItemSum number">{$oinfo.total|wipezero=###}</em>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </tr>
+                <div class="clear"></div>
+                <div class="pay-total">
+            <!--留言-->
+                <div class="order-extra">
+                    <div class="order-user-info">
+                        <div id="holyshit257" class="memo">
+                            <label>买家留言：</label>
+                            <input type="text" title="选填,对本次交易的说明（建议填写已经和卖家达成一致的说明）" placeholder="选填,建议填写和卖家达成一致的说明" name="data[buyer_msg]" class="memo-input J_MakePoint c2c-text-default memo-close">
+                            <div class="msg hidden J-msg">
+                                <p class="error">最多输入500个字符</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--抵货款 -->
+                <div class="buy-agio">
+                    <li class="td td-coupon">
+                        <span class="coupon-title">保证金抵货款</span>
+                        <select name="data[bpy]" data-am-selected>
+                            <option value="1" selected>
+                                <div class="c-price">
+                                    <strong>¥{$frezze.pledge}</strong>
+                                </div>
+                                <div class="c-limit">
+                                    【保证金抵货款】
+                                </div>
+                            </option>
+                            <eq name="onlypledge" value="0">
+                                <option value="0">
+                                    <div class="c-limit">
+                                        不使用保证金（支付后退还）
+                                    </div>
+                                </option>
+                            </eq>
+                        </select>
+                    </li>
+                </div>
+                <div class="clear"></div>
+                </div>
+
+                <!--信息 -->
+                <div class="order-go clearfix">
+                    <div class="pay-confirm clearfix">
+                        <div class="box">
+                            <div tabindex="0" id="holyshit267" class="realPay"><em class="t">（含运费、{:C('Auction.broker_buy_name')}）合计：</em>
+                                <span class="price g_price ">
+                                    <span>¥</span> <em class="style-large-bold-red " id="J_ActualFee">{$oinfo.total}</em>
+                                </span>
+                            </div>
+                            <div class="pay-address Js-linkage-address">
+                                <p class="buy-footer-address">
+                                    <span class="buy-line-title buy-line-title-type">寄送至：</span>
+                                    <span class="buy-detail"></span>
+                                </p>
+                                <p class="buy-footer-address">
+                                    <span class="buy-line-title">收货人：</span>
+                                    <span>   
+                                        <span class="buy-user">艾迪 </span>
+                                    <span class="buy-phone">15871145629</span>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div id="holyshit269" class="submitOrder">
+                            <div class="go-btn-wrap">
+                                <input type="hidden" name="data[money]" class="input" value="{$oinfo.total}">
+                                <input type="hidden" name="data[payType]" class="input" value="auction">
+                                <input type="hidden" name="data[order_no]" class="input" value="{$oinfo.order_no}">
+                                <input type="submit" name="" value="确认支付" class="btn-go">
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clear"></div>
+        </div>
+    </div>
+    </form>
+</div>
+<style type="text/css">
+    .navCir{ display: none;}
+</style>
+<include file="Common:footer"/>
+<script type="text/javascript">
+// 需要支付总额
+var total = "{$oinfo.total}";
+// 账户余额
+var wallet = "{$uLimit.wallet_pledge}";
+// 冻结金额
+var freeze = "{$uLimit.wallet_pledge_freeze}";
+// 可用余额
+var usable = "{$uLimit.usable}";
+// 缴纳的保证金
+var pledge = "{$frezze.pledge}";
+// 余额是否足够支付订单
+var satisfy = "{$uLimit.satisfy}";
+// 余额框金额
+var yfmn = "{$uLimit.yfmn}";
+// 余额框最高金额
+var newyfmn = 0;
+// 在线支付价格
+var actual = 0;
+// 保证金直接抵货款
+var onlypledge = "{$onlypledge}";
+// 提交地址
+var payment_url = "{:U('payment')}";
+
+var setDefaultUrl = "{:U('Member/default_deliver_address')}";
+var delLink = "{:U('Member/del_deliver_address')}";
+$(document).ready(function(){
+    
+// 兼容IE浏览器
+if (!document.getElementsByClassName) {
+    document.getElementsByClassName = function (cls) {
+        var ret = [];
+        var els = document.getElementsByTagName('*');
+        for (var i = 0, len = els.length; i < len; i++) {
+
+            if (els[i].className.indexOf(cls + ' ') >=0 || els[i].className.indexOf(' ' + cls + ' ') >=0 || els[i].className.indexOf(' ' + cls) >=0) {
+                ret.push(els[i]);
+            }
+        }
+        return ret;
+    }
+}
+$(function() {
+
+    $(".add").click(function(){
+        var t=$(this).parent().find('input[class*=text_box]');
+        t.val(parseInt(t.val())+1)
+    })
+  $(".min").click(function(){
+        var t=$(this).parent().find('input[class*=text_box]');
+        t.val(parseInt(t.val())-1)
+        if(parseInt(t.val())<0){
+            t.val(0);
+        }
+    })
+
+    // 设默认【
+    $('.Js-note').click(function(){
+        var thisObj = $(this);
+        $.post(setDefaultUrl,{'adid':thisObj.attr('adid')},function(data){      //ajax后台
+            if (data.status) {
+                thisObj.parents('.user-addresslist').addClass("setdefaultAddr").siblings().removeClass("setdefaultAddr");
+            } else {
+                AMUI.dialog.alert({ title: data.title, content: data.info});
+            }
+        },'json'); 
+
+        
+    });
+    // 设默认】
+    // 删除地址【
+    $(".Js-del").click(function(){
+        var delobj = $(this).parents('.user-addresslist');
+        var adid = delobj.attr("adid");
+        AMUI.dialog.confirm({ title: '提示', content: '是否删除这个地址？', 
+            onConfirm: function() {
+                $.post(delLink,{'adid':adid},function(data){      //ajax后台
+                    if (data.status) {
+                        delobj.remove();
+                    } else {
+                        // 提示框
+                        AMUI.dialog.alert({ title: data.title, content: data.info});
+                    }
+                },'json'); 
+            }, 
+            onCancel: function() {}
+         }); 
+
+        return false;
+    });
+    // 删除地址】
+    // 地址选择初始化
+    $("input[name='data[adid]']").val($(".user-addresslist.defaultAddr").attr('adid'));
+    
+    $(".Js-linkage-address .buy-detail").html($(".user-addresslist.defaultAddr .buy-detail").html());
+    $(".Js-linkage-address .buy-user").html($(".user-addresslist.defaultAddr .buy-user").html());
+    $(".Js-linkage-address .buy-phone").html($(".user-addresslist.defaultAddr .buy-phone").html());
+    // 选择地址
+    $(".user-addresslist").click(function() {
+        $(this).addClass("defaultAddr").siblings().removeClass("defaultAddr");
+        $("input[name='data[adid]']").val($(this).attr('adid'));
+        $(".Js-linkage-address .buy-detail").html($(this).find(".buy-detail").html());
+        $(".Js-linkage-address .buy-user").html($(this).find(".buy-user").html());
+        $(".Js-linkage-address .buy-phone").html($(this).find(".buy-phone").html());
+    });
+    // 支付方式初始化
+    $('.Js-yuetips').html($(".logistics .pay.selected").attr('tips'));
+    $("input[name='data[channel]']").val($(".logistics .pay.selected").attr('channel'));
+    // 支付方式选择
+    $(".logistics").each(function() {
+        var i = $(this);
+        var p = i.find("ul>li");
+        p.click(function() {
+            if (!!$(this).hasClass("selected")) {
+                $(this).removeClass("selected");
+            } else {
+                if($(this).attr('satisfy')==0){
+                    AMUI.dialog.alert({ title: '余额不足', content: '您的账户可用余额为：'+usable+',不足以支付该订单！<br/>请选择其他支付方式！'});
+                }else{
+                    $('.Js-yuetips').html($(this).attr('tips'));
+                    $(this).addClass("selected").siblings("li").removeClass("selected");
+                    $("input[name='data[channel]']").val($(this).attr('channel'));
+                } 
+            }
+        })
+    })
+});
+ 
+ 
+ 
+ 
+})
+</script>
+    </body>
+</html>

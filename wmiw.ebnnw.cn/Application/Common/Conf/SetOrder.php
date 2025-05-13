@@ -1,0 +1,1 @@
+<?php	return array ( 'Order' => array ( 'losetime1' => '1', 'losetime2' => '7', 'losetime3' => '1', 'losetime4' => '1', 'losetime10' => '1', 'liquidated' => '10', 'losetime6' => '7', 'losemediate' => '7', 'losetime8' => '7', 'losetime9' => '7', 'cause' => '收到商品破损,商品错发/漏发,商品需要维修,发票问题,收到商品与描述不符,我不想要了,商品质量问题,未按约定时间发货,假冒品牌', ), );?>

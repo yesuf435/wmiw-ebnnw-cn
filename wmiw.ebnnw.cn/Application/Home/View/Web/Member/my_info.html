@@ -1,0 +1,286 @@
+<include file="Common:meta" />
+<title>个人信息-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/infstyle.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+<div class="center">
+    <div class="col-main">
+        <div class="main-wrap">
+            <div class="main-wrap-box">
+                <div class="user-info">
+                    <!--标题 -->
+                    <div class="am-cf on-user-title">
+                        <div class="am-fl am-cf"><span class="am-text-danger am-text-lg">个人资料</span> / <small>Personal&nbsp;information</small></div>
+                    </div>
+                    <!--头像 -->
+                    <div class="user-infoPic">
+                        <div class="filePic">
+                            <input id="upInput" type="file" class="inputPic" allowexts="gif,jpeg,jpg,png,bmp" accept="image/*">
+                            <img id="avatar" class="am-circle am-img-thumbnail" src="<empty name='info.avatar'>__IMG__/getAvatar.do.jpg<else/>{$info.uid|getUserpic=###,1}</empty>" />
+                        </div>
+                        <p class="am-form-help">头像</p>
+                        <div class="info-m">
+                            <div><b>用户名：<i>{$info.account}</i></b></div>
+                            <div class="grade">
+                                  <span>买家等级：</span><img alt="{$info.scorebuy}" src="{$info.scorebuy|getlevel=###}">
+                            </div>
+                        </div>
+                    </div>
+                    <!--个人信息 -->
+                    <div class="info-main">
+                        <form id="informationForm" class="am-form am-form-horizontal">
+                            <div class="am-form-group">
+                                <label for="nickname" class="am-form-label">昵称</label>
+                                <div class="am-form-content">
+                                    <input type="text" id="nickname" placeholder="昵称" name="data[nickname]" value="{$info.nickname}" minlength="2" maxlength="6" required>
+                                    <small>昵称长度不能少于2个多余6个汉字</small>
+                                </div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="sex" class="am-form-label">性别</label>
+                                <div class="am-form-content sex">
+                                    <label class="am-radio-inline">
+                                        <input id="sex" type="radio" name="data[sex]" value="1" data-am-ucheck <eq name="info.sex" value="1">checked</eq>> 男
+                                    </label>
+                                    <label class="am-radio-inline">
+                                        <input id="sex" type="radio" name="data[sex]" value="0" data-am-ucheck <eq name="info.sex" value="0">checked</eq>> 女
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="am-form-group">
+                                <label for="birthday" class="am-form-label">生日</label>
+                                <div class="am-form-content">
+                                    <input id="birthday" type="text" name="data[birthday]" placeholder="生日" value="{$info.birthday}">
+                                </div>
+                            </div>
+                            <include file="Common:location"/>
+                            <div class="am-form-group">
+                                <label for="address" class="am-form-label">详细地址</label>
+                                <div class="am-form-content">
+                                    <input type="text" id="intr" name="data[address]" placeholder="输入详细地址" value="{$info.address}" minlength="3" maxlength="50">
+                                    <small>50字以内写出你的详细地址...</small>
+                                </div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="intr" class="am-form-label">个性签名</label>
+                                <div class="am-form-content">
+                                    <input type="text" id="intr" name="data[intr]" placeholder="个性签名" value="<empty name='info.avatar'>我很懒，什么也不想写！<else/>{$info.intr}</empty>" minlength="3" maxlength="50">
+                                    <small>个性签名长度不能少于2个多余50个汉字</small>
+                                </div>
+                            </div>
+                            <div class="am-form-group address">
+                                <label for="user-address" class="am-form-label">收货地址</label>
+                                <div class="am-form-content address">
+                                    <a class="link" href="{:U('Member/deliver_address')}">
+                                        <p class="new-mu_l2cw am-text-truncate">
+                                            <empty name="address">
+                                                设置默认地址
+                                            <else />
+                                                <span class="province">{$address.prov}</span>省
+                                                <span class="city">{$address.city}</span>市
+                                                <span class="dist">{$address.district}</span>区
+                                                <span class="street">{$address.address}</span>
+                                            </empty>
+                                            <span class="am-icon-angle-right"></span>
+                                        </p>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="am-form-group safety">
+                                <label for="user-safety" class="am-form-label">账号安全</label>
+                                <div class="am-form-content safety">
+                                    <a class="link" href="{:U('Member/safety')}">
+                                        <eq name="info.verify_mobile" value="1">手机已认证&nbsp;&nbsp;</eq>
+                                        <eq name="info.verify_email" value="1">邮箱已认证&nbsp;&nbsp;</eq>
+                                        <eq name="info.idcard_check" value="2">身份已认证&nbsp;&nbsp;</eq>
+                                        <notempty name="info.paypwd">已设支付密码&nbsp;&nbsp;</notempty>
+                                        <notempty name="info.question">已设安全问题&nbsp;&nbsp;</notempty>
+                                        <span class="am-icon-angle-right"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="am-form-group tixing">
+                                <label for="user-tixing" class="am-form-label">提醒方式</label>
+                                <div class="am-form-content tixing">
+                                    <a class="link" href="{:U('Member/settixing')}">
+                                        <if condition="in_array('email',$info['alerttype'])">邮件提醒&nbsp;&nbsp;</if>
+                                        <if condition="in_array('mobile',$info['alerttype'])">短信提醒&nbsp;&nbsp;</if>
+                                        <if condition="in_array('weixin',$info['alerttype'])">微信提醒&nbsp;&nbsp;</if>
+                                        <span class="am-icon-angle-right"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="info-btn">
+                                <input type="hidden" name="data[uid]" value="{$info.uid}">
+                                <input type="submit" name="" value="保存修改" class="am-btn am-btn-danger am-btn-sm submitBtn">
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <!--底部-->
+        <include file="Common:footer"/>
+    </div>
+    <include file="Member:menu"/>
+</div>
+<!-- 图像处理【 -->
+<div class="upPrompt">
+    <div class="am-modal am-modal-prompt" tabindex="-1" id="my-prompt">
+      <div class="am-modal-dialog">
+        <div class="am-modal-hd">头像上传<a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a></div>
+        <div class="am-modal-bd">
+          <div id="clipArea"></div>
+        </div>
+        <div class="am-modal-footer">
+          <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+          <span id="clipBtn" class="am-modal-btn" data-am-modal-confirm>提交</span>
+        </div>
+      </div>
+    </div>
+</div>
+<div id="on-upimg-modal-loading" class="am-modal am-modal-loading am-modal-no-btn" tabindex="-1">
+    <div class="am-modal-dialog">
+        <div id="on-loading-no" class="am-modal-hd">正在载入...</div>
+        <div class="am-modal-bd">
+            <span class="am-icon-spinner am-icon-spin"></span>
+        </div>
+    </div>
+</div>
+<!-- 图像处理】 -->
+
+<js href="--PUBLIC--/assets/js/jquery.form.js"/>
+<!-- 上传剪切插件【 -->
+<js href="--PUBLIC--/PhotoClipJs/iscroll-zoom.js"/>
+<js href="--PUBLIC--/PhotoClipJs/hammer.min.js"/>
+<js href="--PUBLIC--/PhotoClipJs/lrz.all.bundle.js"/>
+<js href="--PUBLIC--/PhotoClipJs/PhotoClip.js"/>
+<!-- 上传剪切插件】 -->
+<script type="text/javascript">
+var uid="{$info.uid}";
+    $(function(){
+        // 生日
+        $('#birthday').datepicker({language:'zh-CN',format: 'yyyy-mm-dd'});
+        
+        // 头像上传
+        var uplode_url = '{:U("Upload/upUserPic")}';//PHP处理脚本地址
+        var windowHeight = $(window).height();
+        var windowWidth = $(window).width();
+        var clipArea = $('#clipArea');
+        var size = 250;
+        // $('.upPrompt .am-modal-footer').height();
+        clipArea.height(size+50);
+        clipArea.width(size+50);
+        var pc = new PhotoClip('#clipArea', {
+            size: size,
+            outputSize: 640,
+            //adaptive: ['60%', '80%'],
+            file: '#upInput',
+            view: clipArea,
+            ok: '#clipBtn',
+            loadStart: function() {
+                console.log('开始读取照片');
+            },
+            loadComplete: function() {
+                $('#my-prompt').modal({width:size+70});
+                console.log('照片读取完成');
+            },
+            done: function(dataURL) {
+                lrz(dataURL, { width: 500, quality: 1}).then(function(rst) {
+                    var $upingLoading = $('#on-upimg-modal-loading').modal();
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', uplode_url);
+                    xhr.onload = function () {
+                        var data = JSON.parse(xhr.response);
+                        if (xhr.status === 200) {
+                            $upingLoading.modal('close');
+                            $('#avatar').attr('src',data.showurl);
+                            // 上传成功
+                        } else {
+                            AMUI.dialog.alert({ title: '', content: data.msg});
+                            this.value = null;
+                            // 处理其他情况
+                        }
+                    };
+                    xhr.onerror = function () {
+                        AMUI.dialog.alert({ title: '', content: '未知错误:' + JSON.stringify(err, null, 2)});
+                        $("#" + ranNub).remove();
+                        this.value = null;
+                    };
+                    if (xhr.upload) {
+                        try {
+                            xhr.upload.addEventListener('progress', function (e) {
+                                if (!e.lengthComputable) return false;
+                                // 上传进度
+                                load = parseInt(((e.loaded / e.total) || 0) * 100);
+                                $("#on-loading-no").html(load + "%");
+                            });
+                        } catch (err) {
+                            console.error('进度展示出错了,似乎不支持此特性?', err);
+                        }
+                    }
+                    // 添加参数
+                    // rst.formData.append('fileLen', rst.fileLen);
+                    rst.formData.append('uid', uid);
+                    // 触发上传
+                    xhr.send(rst.formData);
+                    return rst;
+                }).catch(function (err) {
+                    // 万一出错了，这里可以捕捉到错误信息
+                    // 而且以上的then都不会执行
+                    AMUI.dialog.alert({ title: '', content: err});
+                }).always(function () {
+                    // 不管是成功失败，这里都会执行
+                });
+                console.log(dataURL);
+            },
+            fail: function(msg) {
+                AMUI.dialog.alert({ title: '', content: msg});
+            }
+        });
+        // // 加载的图片必须要与本程序同源，否则无法截图
+        // pc.load('img/mm.jpg');
+        // 表单提交
+        var $form = $('#informationForm');
+        var $subbtn = $(".submitBtn");
+        $form.validator({
+            submit: function() {
+                var formValidity = this.isFormValid();
+                if (formValidity) {
+                    // 验证成功的逻辑
+                    $subbtn.button('loading');
+                    // 验证成功的逻辑
+                    $form.ajaxSubmit({url:document.URL,data:'',type:"POST",
+                        success:function(data, st) {
+                            // 提示框
+                            AMUI.dialog.alert({ title: data.title, content: data.info});
+                            if(data.status==1){
+                                setTimeout(function(){
+                                    top.window.location.href = data.url;
+                                },1000);
+                            }else{
+                                $subbtn.button('reset');
+                            }
+                            return false;
+                        }
+                    });
+                } else {
+                    $subbtn.button('reset');
+                // 验证失败的逻辑
+                }
+            //阻止原生form提交
+            return false;
+            }
+        });
+    });
+</script>
+</body>
+</html>

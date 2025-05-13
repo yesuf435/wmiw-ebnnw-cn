@@ -1,0 +1,131 @@
+<include file="Common:meta" />
+<title>消息详情-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/newstyle.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+		<div class="center">
+			<div class="col-main">
+				<div class="main-wrap">
+					<div class="main-wrap-box">
+						<!--标题 -->
+						<div class="am-cf on-user-title">
+							<div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">消息详情</strong> / <small>Sms&nbsp;for&nbsp;default</small></div>
+						</div>
+						<div class="comment-list">
+							<neq name="info.pid" value="0">
+								<div class="othdef-aside">
+									<div class="othdef-item-pic">
+										<a href="#" class="J_MakePoint">
+											<img src="{$upWholeUrl}{$auction.pictures|getPicUrl=###,2,0}" class="itempic">
+										</a>
+									</div>
+									<div class="othdef-cont">
+										<div class="othdef-item-title">
+											<div class="othdef-item-name">
+												<a href="{:U('Auction/details',array('pid'=>$auction['pid']))}">
+													<p class="othdef-item-basic-info">{$auction.pname}</p>
+												</a>
+											</div>
+										</div>
+										<div class="othdef-item-info">
+											<div class="othdef-item-ordernumber">
+												<span class="info-title">当前价格：</span><strong><b>￥</b>{$auction.nowprice|wipezero=###}</strong>
+											</div>
+											<div class="othdef-item-time">
+												<span class="info-title">结束时间：</span><span class="time">{$auction.endtime|date='Y-m-d H:i',###}</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</neq>
+							<div class="othdef-main">
+								<ul class="am-comments-list am-comments-list-flip">
+									<foreach name="list" item="lv">
+										<li class="am-comment <eq name='lv.sendid' value="$myinfo['uid']">am-comment-flip</eq>">
+									        <a href="javascript: void(0);">
+									            <img src="{$lv.sendid|getUserpic=###,1}" class="am-comment-avatar" width="48" height="48"></a>
+									        <div class="am-comment-main">
+									            <header class="am-comment-hd">
+									                <div class="am-comment-meta">
+														<eq name="lv.sendid" value="$myinfo['uid']"><span class="atme">我</span><else/><a href="javascript: void(0);" class="athe">{$guest.nickname}</a></eq>
+							                            @
+							                            <eq name="lv.uid" value="$myinfo['uid']"><span class="atme">我</span><else/><a href="javascript: void(0);" class="athe">{$guest.nickname}</a></eq>
+														于
+									                    <time>{$lv.time||date='Y-m-d H:i',###}</time></div>
+									            </header>
+									            <div class="am-comment-bd">
+									                <p>
+									                    {$lv.content}
+									                </p>
+									            </div>
+									        </div>
+									    </li>
+								    </foreach>
+								</ul>
+							</div>
+							<if condition="($info['sendid'] neq 0) and ($info['sendid'] neq $myinfo['uid'])">
+								<a class="rebtn-type" id="send-prompt-toggle" sid="{$info.sid}" href="javascript: void(0);">回复</a>
+								<div class="am-modal am-modal-prompt" tabindex="-1" id="send-prompt">
+								  <div class="am-modal-dialog">
+								    <div class="am-modal-hd">回复消息</div>
+								    <div class="am-modal-bd">
+								      	<textarea class="am-modal-prompt-input"></textarea>
+								    </div>
+								    <div class="am-modal-footer">
+								      <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+								      <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+								    </div>
+								  </div>
+								</div>
+							</if>
+						</div>
+						<div class="clear"></div>
+
+					</div>
+					
+				</div>
+
+				<!--底部-->
+                <include file="Common:footer"/>
+            </div>
+            <include file="Member:menu"/>
+        </div>
+<script type="text/javascript">
+var replyLink = "{:U('Member/mysms_reply')}";
+$(function(){
+    // 回复消息【
+	$('#send-prompt-toggle').on('click', function() {
+		sendprompt($(this).attr("sid"));
+	});
+	function sendprompt(sid){
+		$('#send-prompt').modal({
+			relatedTarget: this,
+			onConfirm: function(e) {
+				if (e.data!='') {
+					$.post(replyLink,{'sid':sid,'content':e.data},function(data){      //ajax后台
+	                    if (data.status) {
+	                        if (data.url) {
+	                            top.window.location.href=data.url;
+	                        };
+	                    } else {
+	                        // 提示框
+	                        AMUI.dialog.alert({ title: data.title, content: data.info});
+	                    }
+	                },'json'); 
+				}else{
+					AMUI.dialog.alert({ title: '错误提示', content: '发送内容不能为空！', onConfirm: function() { sendprompt(sid); } }); 
+				}
+			},
+			onCancel: function(e) {}
+		});
+	}
+    // 回复消息】
+});
+</script>
+    </body>
+</html>

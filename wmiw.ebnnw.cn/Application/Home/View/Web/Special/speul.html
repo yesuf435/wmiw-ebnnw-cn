@@ -1,0 +1,172 @@
+<include file="Common:meta" />
+<title>{$info.sname}-专场拍卖-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<link href="__CSS__/demo.css" rel="stylesheet" type="text/css" />
+<link href="__CSS__/auctionlist.css" rel="stylesheet" type="text/css">
+<link href="__CSS__/style.css" rel="stylesheet" type="text/css">
+<eq name="iswei" value="1">
+  <script type="text/javascript">
+    var imgUrl = "{$shimg}";
+    var descContent = "{$sinfo.description}";
+    var shareTitle = "{$share_title}";
+  </script>
+</eq>
+<body>
+<include file="Common:search_none" />
+<include file="Common:header_topnav" />
+<include file="Common:header_search" />
+<include file="Common:navigation" />
+    <div class="group_banner <eq name="info.status" value="biding">biding</eq><eq name="info.status" value="future">future</eq><eq name="info.status" value="bidend">bidend</eq>">
+        <!-- <div class="group_banner_img" ><notempty name="info.spicture"><img src="{$upWholeUrl}{$info.spicture}"></notempty></div> -->
+        <div class="group_banner_box">
+            <div class="groupInfobox">
+                <div class="group_timebox">
+                    <eq name="info.status" value="bidend">
+                        <div class="endtis">本场已结束</div>
+                        <else />
+                        <div class="th" id="bidTimeStatus">
+                            <eq name="info.status" value="biding">距离结束</eq>
+                            <eq name="info.status" value="future">距离开始</eq>
+                        </div>
+                        <div class="onBidtime{$info.sid}" id="onBidtime">
+                            <span class="day">-</span>
+                            <span class="dw">天</span>
+                            <span class="hour">-</span>
+                            <span class="dw">时</span>
+                            <span class="minute">-</span>
+                            <span class="dw">分</span>
+                            <span class="second">-</span>
+                            <span class="dw">秒</span>
+                            <span class="msec">-</span>
+                        </div>
+                    </eq>
+                    
+                    <eq name="info.status" value="biding">
+                        <script type="text/javascript">
+                            $(function(){
+                                specialCountDown("cke","{$info.sid}","{$info.endtime}","{$nowtime}",".onBidtime{$info.sid}",".onBidtime{$info.sid} .day",".onBidtime{$info.sid} .hour",".onBidtime{$info.sid} .minute",".onBidtime{$info.sid} .second",".onBidtime{$info.sid} .msec");
+                            });
+                        </script>
+                    </eq>
+                    <eq name="info.status" value="future">
+                        <script type="text/javascript">
+                            $(function(){
+                                specialCountDown("cks","{$info.sid}","{$info.starttime}","{$nowtime}",".onBidtime{$info.sid}",".onBidtime{$info.sid} .day",".onBidtime{$info.sid} .hour",".onBidtime{$info.sid} .minute",".onBidtime{$info.sid} .second",".onBidtime{$info.sid} .msec");
+                            });
+                        </script>
+                    </eq>
+                </div>
+                <!-- 结束和未结束 -->
+                <div class="group-info-body">
+                    <h2>{$info.sname}</h2>
+                    <eq name="info.status" value="bidend">
+                        <div class="gp-info-countprc">成交总金额：<span><strong>￥{$info.countprc|default="0"}</strong> </span></div>
+                    <else />
+                        <ul class="gp-info-list am-avg-sm-2">
+                            <li>拍品：<strong>{$info.count}</strong> 件</li>
+                            <li>围观：<strong>{$info.clcount}</strong>次</li>
+                            <li>保证金：<strong>
+                                <eq name="info.special_pledge_type" value="0">
+                                    {$info.spledge|default="0"}元
+                                </eq>
+                                <eq name="info.special_pledge_type" value="1">
+                                    分别收取
+                                </eq></strong>
+                            </li>
+                            <li>出价：<strong>{$info.bidcount}</strong>次</li>
+                        </ul>
+                    </eq>
+                    <div class="gp-info-description">{$info.description}</div>
+                </div>
+            </div>
+        </div>
+        <div class="group_banner_img" <notempty name="info.sbanner">style="background:url({$upWholeUrl}{$info.sbanner}) no-repeat center 0;"</notempty>></div>
+    </div>
+    <div class="auction">
+        <div class="auction-list">
+            <!-- 排序】 -->
+            <div class="sort am-avg-sm-3">
+                <li <eq name="info.pd" value="">class="first"</eq> ><a href="{:U('Special/speul',array('sid'=>$info['sid']))}">默认排序</a></li>
+                <neq name="info.status" value="future">
+                    <li <eq name='info.pd' value='po'>class="first"</eq>>
+                        <a href="{:U('Special/speul',array('sid'=>$info['sid'],'po'=>$info['po']))}">出价次数 
+                        <span class="icontxt_pai"><eq name="info.po" value="0">▼</eq><eq name="info.po" value="1">▲</eq></span>
+                        </a>
+                    </li>
+                </neq>
+                <li <eq name='info.pd' value='bc'>class="first"</eq>>
+                        <a href="{:U('Special/speul',array('sid'=>$info['sid'],'bc'=>$info['bc']))}">价格
+                        <span class="icontxt_pai"><eq name="info.bc" value="0">▼</eq><eq name="info.bc" value="1">▲</eq></span>
+                    </a>
+                </li>
+            </div>
+            <!-- 排序】 -->
+            <div class="am-g am-g-fixed">
+                    <div class="am-u-sm-12 am-u-md-12">
+                    <div class="auction-content">
+                        <div class="clear"></div>
+                        <ul class="am-avg-sm-2 am-avg-md-3 am-avg-lg-4 boxes">
+                            <include file="Auction:bidbox"/>
+                        </ul>
+                    </div>
+                    <!--分页 -->
+                    <div class="am-fr">{$page}</div>
+                    
+                </div>
+            </div>
+        </div>
+        <include file="Common:footer"/>
+    </div>
+<script type="text/javascript">
+var ajaxGetSpecialTime = "{:U('Special/ajaxspecialgettime')}";
+var ajaxCheckSpecialSucc = "{:U('Special/checkspecialsucc')}";
+var endDowntimer = [];
+// 结束倒计时
+function specialCountDown(ck,sid,etime,ntime,boxobj,day_elem,hour_elem,minute_elem,second_elem,msec_elem){
+    var now_time = new Date(ntime*1000);
+    var end_time = new Date(etime*1000);
+    var native_time = new Date().getTime(); //本地时间
+    var now_cha = now_time - native_time; //服务器和本地时间差
+    var native_end_time = end_time - now_cha; //本地结束时间
+    var sys_second = 0;
+    endDowntimer[sid] = setInterval(function(){
+        // 检查本地时间是否更改
+        if(Math.abs(native_time - new Date().getTime())>1000){
+            clearInterval(endDowntimer[sid]);
+            $.post(ajaxGetSpecialTime, {'ck':ck,'sid':sid},function(data){
+                specialCountDown(ck,sid,data.cktime,data.nowtime,boxobj,day_elem,hour_elem,minute_elem,second_elem,msec_elem);
+            });
+        }
+        sys_second = (native_end_time - new Date().getTime())/100; //本地结束剩余时间
+        if (sys_second > 0) {
+            sys_second -= 1;
+            var day = Math.floor((sys_second / 36000) / 24);
+            var hour = Math.floor((sys_second / 36000) % 24);
+            var minute = Math.floor((sys_second / 600) % 60);
+            var second = Math.floor((sys_second/10) % 60);
+            var msec = Math.floor(sys_second % 10); //毫秒
+            day_elem && $(day_elem).text(day);//计算天
+            $(hour_elem).text(hour<10?"0"+hour:hour);//计算小时
+            $(minute_elem).text(minute<10?"0"+minute:minute);//计算分
+            $(second_elem).text(second<10?"0"+second:second);// 计算秒
+            $(msec_elem).text(msec);// 计算秒的1/10
+            native_time = new Date().getTime();
+        } else { 
+            clearInterval(endDowntimer[sid]);
+            // 本地时间结束提交服务器验证是否结束
+            $.post(ajaxCheckSpecialSucc, {'ck':ck,'sid':sid},function(cdata){
+                if(cdata.status==0){
+                    specialCountDown(ck,sid,cdata.cktime,cdata.nowtime,boxobj,day_elem,hour_elem,minute_elem,second_elem,msec_elem);
+                }else{
+                    window.top.location.reload();
+                }
+            });
+        }
+    }, 100);
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<include file="Common:meta" />
+<title><eq name="ACTION_NAME" value="search">友情链接列表<else/>友情链接搜索</eq>-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl"><eq name="ACTION_NAME" value="search">友情链接列表<else/>友情链接搜索</eq></div>
+                            </div>
+                            <div class="widget-body am-cf">
+                                <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                                    <div class="am-form-group">
+                                        <div class="am-btn-toolbar">
+                                            <div class="am-btn-group am-btn-group-xs">
+                                                <a href="{:U('Link/add')}" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 添加友情链接</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form id="searchForm" action="{:U('Link/search')}" method='get' class="am-form tpl-form-border-form tpl-form-border-br  am-u-sm-12 am-u-md-12 am-u-lg-5 am-fr am-cf">
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-5">
+                                        <div class="am-form-group am-input-group-sm">
+                                            <input type="text" class="am-form-field " value="{$keys.keyword}" name="keyword" placeholder="友情链接名称"/>
+                                         </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-5">
+                                        <div class="am-form-group am-input-group-sm">
+                                            <select name="rec" data-am-selected="{btnSize: 'sm'}">
+                                                <option value="" <eq name='keys.rec' value=''>selected="selected"</eq>>全部广告</option>
+                                                <option value="1" <eq name='keys.rec' value='1'>selected="selected"</eq>>图标显示的</option>
+                                                <option value="0" <eq name='keys.rec' value='0'>selected="selected"</eq>>图标不显示的</option>
+                                            </select>
+                                         </div>
+                                    </div>
+                                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-2">
+                                        <div class="am-btn-group am-btn-group-xs" style="width: 100%;">
+                                            <input style="line-height: 21px;" type="submit" value="筛选" act="0" class="am-btn tpl-table-list-field am-u-sm-12 am-u-md-12 am-u-lg-12 am-btn-success">
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="am-u-sm-12">
+                                    <empty name="list">
+                                    <div class="on-none">未查询到数据</div>
+                                    <else/>
+                                        <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black ">
+                                            <thead>
+                                                <tr>
+                                                    <td>ID</td>
+                                                    <td>图标</td>
+                                                    <td>名称</td>
+                                                    <td>链接</td>
+                                                    <td>图标显示</td>
+                                                    <td>排序</td>
+                                                    <td>操作</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <volist name="list" id="vo">
+                                                    <tr id="{$vo.id}">
+                                                        <td>{$vo.id}</td>
+                                                        <td>
+                                                            <empty name="vo.ico">
+                                                                无
+                                                                <else/>
+                                                                <img src="{$upWholeUrl}{$vo.ico}" width="{:C('LINK_ICO_WIDTH')}" height="{:C('LINK_ICO_HEIGHT')}">
+                                                            </empty>
+                                                        </td>
+                                                        <td>{$vo.name}</td>
+                                                        <td>{$vo.url}</td>
+                                                        <td>
+                                                            <eq name="vo.rec" value="0">不显示</eq>
+                                                            <eq name="vo.rec" value="1">显示</eq>
+                                                        </td>
+                                                        <td>
+                                                            <div class="ajax_order">
+                                                                <a class="rising" href="javascript:void(0)"><i title="加" class="am-icon-plus"></i></a>
+                                                                <div class="input-box">
+                                                                    <div class="input" odid="{$vo.id}">{$vo.sort}</div>
+                                                                </div>
+                                                                <a class="drop" href="javascript:void(0)"><i title="减" class="am-icon-minus"></i></a>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="tpl-table-black-operation">
+                                                                <a href="{:U('Link/edit',array('id'=>$vo['id']))}"><i class="am-icon-pencil"></i>编辑</a>
+                                                                <notin name="vo.id" value="$lock_id[art_sun]">
+                                                                    <a link="{:U('Link/del',array('id'=>$vo['id']))}" href="javascript:void(0)" name="{$vo.name}" class="tpl-table-black-operation-del del"><i class="am-icon-trash-o"></i>删除</a>
+                                                                </notin>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </volist>
+                                            </tbody>
+                                        </table>
+                                        <div class="am-u-lg-12 am-cf">
+                                            <div class="am-fr">
+                                                <div class="am-pagination tpl-pagination">
+                                                    {$page}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </empty>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<script type="text/javascript">
+    var odUrl = "{:U('Link/sort')}"; //排序提交地址
+    $(function(){
+        $(".del").click(function(){
+            var delLink=$(this).attr("link");
+            AMUI.dialog.confirm({ title: '温馨提示', content:'你真的打算删除【<b>'+$(this).attr("name")+'</b>】吗?', onConfirm: function() {
+                top.window.location.href=delLink;
+            }, onCancel: function() { console.log('onCancel') } });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

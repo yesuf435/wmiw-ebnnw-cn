@@ -1,0 +1,100 @@
+<include file="Common:meta" />
+<title>账单列表-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/wallet.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+		<div class="center">
+			<div class="col-main">
+				<div class="main-wrap">
+					<div class="main-wrap-box">
+						<div class="am-cf on-user-title">
+							<div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">账单列表</strong> / <small>List&nbsp;bill</small></div>
+						</div>
+						<div class="finance">
+							<div class="financeText">
+								<p>余额共计:<span>{$wallet.total}</span></p>
+								<p>可用余额:<span>{$wallet.usable}</span></p>
+								<p>冻结金额:<span>{$wallet.freeze}</span></p>
+								<a href="{:U('Member/safety')}">安全中心：保护账户资产安全</a>
+							</div>
+						</div>
+
+						<!--交易时间	-->
+
+<!-- 						<div class="order-time">
+							<label class="form-label">交易时间：</label>
+							<div class="show-input">
+								<select class="am-selected" data-am-selected>
+									<option value="today">今天</option>
+									<option value="sevenDays" selected="">最近一周</option>
+									<option value="oneMonth">最近一个月</option>
+									<option value="threeMonths">最近三个月</option>
+									<option class="date-trigger">自定义时间</option>
+								</select>
+							</div>
+							<div class="clear"></div>
+						</div> -->
+
+						<div class="walletList">
+
+							<div class="walletTitle">
+								<li class="time">创建时间</th>
+								<li class="name">事项</th>
+								<li class="amount">金额</th>
+								<li class="balance">余额</th>
+								<li class="wusable">可用</th>
+							</div>
+							<div class="clear"></div>
+							<div class="walletCont">
+                           
+	                            <volist name="bill" id="bv">
+									<li class="am-cf <neq name='bv.expend' value='0'>cost</neq>" >
+										<div class="time">
+											<p>{$bv.time|date='Y-m-d H:i',###}</p>
+										</div>
+										<div class="title name">
+											<p class="content"><a href="{:U('Member/walletdetails',array('option'=>$option,'order_no'=>$bv['order_no']))}">{$bv.changetype|changetype=###}</a></p>
+										</div>
+										<neq name="bv.expend" value="0">
+											<div class="amount">
+												<span class="amount-pay">-{$bv.expend}</span>
+											</div>
+										</neq>
+										<neq name="bv.income" value="0">
+											<div class="amount">
+												<span class="amount-pay">+{$bv.income}</span>
+											</div>
+										</neq>
+										<div class="balance am-fl">
+											<span>余额：</span><em>{$bv.balance}</em>
+										</div>
+										<div class="wusable">
+											<span>可用：</span><em>{$bv.usable}</em>
+										</div>
+										
+									</li>
+								</volist>
+							</div>
+							<!--分页-->
+							{$page}
+						</div>
+
+					</div>
+				</div>
+				<!--底部-->
+                <include file="Common:footer"/>
+            </div>
+            <include file="Member:menu"/>
+        </div>
+<script type="text/javascript">
+    $(function(){
+
+    });
+</script>
+	</body>
+</html>

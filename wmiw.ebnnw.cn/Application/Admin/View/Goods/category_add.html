@@ -1,0 +1,168 @@
+<include file="Common:meta" />
+<title>添加/编辑分类-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">添加/编辑分类</div>
+                            </div>
+
+                            <div class="widget-body am-fr">
+                                <form id="categoryForm" class="am-form tpl-form-border-form tpl-form-border-br">
+                                    <div class="am-form-group">
+                                        <label for="pid" class="am-u-sm-3 am-form-label">选择父类</label>
+                                        <div class="am-u-sm-9">
+
+                                            <select class="cateSelect" name="data[pid]">
+                                                <option value="0">选择父类</option>
+                                                <volist name="list" id="vo">
+                                                    <neq name="vo.cid" value="$info['cid']">
+                                                    <option value="{$vo.cid}" <if condition="$vo[cid] eq $info[pid]">selected="selected"</if>>{$vo.fullname}</option>
+                                                    </neq>
+                                                </volist>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="name" class="am-u-sm-3 am-form-label">分类名称</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="name" name="data[name]" value="{$info.name}" placeholder="请输入分类名称" required>
+                                            <eq name="ACTION_NAME" value="category_add">
+                                            <small>小技巧：如果添加多个分类用英文状态下的逗号“,”隔开</small>
+                                            </eq>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="remark" class="am-u-sm-3 am-form-label">描述</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="remark" name="data[remark]" value="{$info.remark}" placeholder="请输入排序">
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="rec" class="am-u-sm-3 am-form-label">图标</label>
+                                        <div class="am-u-sm-9">
+                                            <div class="uploadePic-box am-margin-bottom-0 am-cf">
+                                                <ul  data-am-widget="gallery" data-am-gallery="{pureview:{target: 'a.showurl'}}">
+                                                    <notempty name="info.ico">
+                                                        <li class="img-box">
+                                                            <div class="upImg-list-box am-gallery-item">
+                                                                <a class="showurl" href="{$info.ico}" ><img src="{$upWholeUrl}{$info.ico}"><input type="hidden" name="data[ico]" value="{$info.ico}" /></a>
+                                                            </div>
+                                                        </li>
+                                                    </notempty>
+                                                    <li class="upImg-lighthouse">
+                                                        <div class="upImg-list-box">
+                                                            <div class="filePic">
+                                                                <i class="am-icon-cloud-upload"></i><div class="txt">上传图片</div>
+                                                                <input type="file" pname="data[ico]" link="{:U('Upload/upCateIco')}" class="upInput" value="选择凭证图片" name="file" max="5" maxsize="5120" allowexts="gif,jpeg,jpg,png,bmp" accept="image/*" multiple>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <small>图片尺寸：宽{:C('CATE_ICO_WIDTH')}px；高{:C('CATE_ICO_HEIGHT')}px</small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="hot" class="am-u-sm-3 am-form-label">推荐</label>
+                                        <div class="am-u-sm-9">
+                                            <label class="am-secondary am-margin-right-sm am-checkbox-inline">
+                                                <input type="radio" value="1" name="data[hot]" data-am-ucheck <eq name="info.hot" value="1">checked</eq> /> 是
+                                            </label>
+                                            <label class="am-secondary am-checkbox-inline">
+                                                <input type="radio" value="0" name="data[hot]" data-am-ucheck <eq name="info.hot" value="0">checked</eq> /> 否
+                                            </label>
+                                        </div>
+                                        <small>注意：如果为顶级分类（频道）会显示在主导航上，如果为子分类则显示在首页推荐板块的频道标题右侧。</small>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="modelno" class="am-u-sm-3 am-form-label">显示效果</label>
+                                        <div class="am-u-sm-9">
+                                                <label class="am-secondary am-margin-right-sm am-checkbox-inline">
+                                                    <input type="radio" name="data[modelno]" value="0" data-am-ucheck <if condition="$info.modelno eq 0"> checked</if> /> 默认效果（商品最低无限制）
+                                                </label>
+                                                <label class="am-secondary am-checkbox-inline">
+                                                    <input type="radio" name="data[modelno]" value="1" data-am-ucheck <if condition="$info.modelno eq 1"> checked</if> /> 效果一（商品最低7个有效）
+                                                </label>
+                                                <label class="am-secondary am-checkbox-inline">
+                                                    <input type="radio" name="data[modelno]" value="2" data-am-ucheck <if condition="$info.modelno eq 2"> checked</if> /> 效果二（商品最低9个有效）
+                                                </label>
+                                            
+                                        </div>
+                                        <small>注意：分类必须为顶级分类（频道）且【推荐】为是且符合显示效果商品数量要求，才会有效否则使用默认效果</small>
+                                    </div>
+
+                                    <div class="am-form-group">
+                                        <label for="sort" class="am-u-sm-3 am-form-label">排序</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="number" class="tpl-form-input" id="sort" name="data[sort]" value="{$info.sort}" placeholder="请输入排序" required>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <input type="hidden" name="act" value="{$info.act}" />
+                                            <input type="hidden" name="data[cid]" value="{$info.cid}" />
+                                            <input type="submit" name="" value="提交" class="am-btn am-btn-primary tpl-btn-bg-color-success submitBtn">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<js href="--PUBLIC--/ueditor/ueditor.config.js,--PUBLIC--/ueditor/ueditor.all.js,--PUBLIC--/ueditor/lang/zh-cn/zh-cn.js"/>
+<js href="--PUBLIC--/assets/js/jquery.form.js"/>
+<js href="--PUBLIC--/PhotoClipJs/lrz.all.bundle.js"/>
+<script type="text/javascript">
+    
+    // 表单提交
+        var $form = $('#categoryForm');
+        var $subbtn = $(".submitBtn");
+        $form.validator({
+            submit: function() {
+                var formValidity = this.isFormValid();
+                if (formValidity) {
+                    // 验证成功的逻辑
+                    $subbtn.button('loading');
+                    // 验证成功的逻辑
+                    $form.ajaxSubmit({url:document.URL,data:'',type:"POST",
+                        success:function(data, st) {
+                            // 提示框
+                            AMUI.dialog.alert({ title: data.title, content: data.info});
+                            if(data.status==1){
+                                setTimeout(function(){
+                                    top.window.location.href = data.url;
+                                },1000);
+                            }else{
+                                $subbtn.button('reset');
+                            }
+                            return false;
+                        }
+                    });
+                } else {
+                    $subbtn.button('reset');
+                // 验证失败的逻辑
+                }
+            //阻止原生form提交
+            return false;
+            }
+        });
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<include file="Common:meta" />
+<title>{$info.title}-{$site.SITE_INFO.title}</title>
+<meta name="description" content="{$info.keyword}">
+<meta name="keywords" content="{$info.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+<div class="help am-cf">
+
+    <div class="help-main <notempty name="id">art</notempty>"> 
+        <div class="help-main-wrap editbox">
+            {$info.content}
+        </div>
+    </div>
+    <div class="help-menu <notempty name="id">art</notempty>">
+        <ul>
+            <li class="help-li active">
+                <a href="{:U('Seller/index')}"><i class="am-icon-question"></i>帮助中心</a>
+            </li>
+            <foreach name="list" item="lv">
+                <li class="help-li">
+                    <p>{$lv.name}</p>
+                    <ul>
+                        <foreach name="lv.notice" item="lnv">
+                            <li <eq name="lnv.id" value="$info['id']">class="on"</eq>> <a class="am-text-truncate" href="{:U('Article/help',array('id'=>$lnv['id']))}">{$lnv.title}</a></li>
+                        </foreach>
+                    </ul>
+                </li>
+            </foreach>
+            
+        </ul>
+    </div>
+</div>
+<!--底部-->
+<include file="Common:footer"/>
+<script src="--PUBLIC--/ueditor/ueditor.parse.js"></script>
+<script>
+setTimeout(function(){uParse('.editbox',
+{
+ 'highlightJsUrl':'--PUBLIC--/ueditor/third-party/SyntaxHighlighter/shCore.js',
+ 'highlightCssUrl':'--PUBLIC--/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css'})
+},300);
+</script>
+</body>
+</html>

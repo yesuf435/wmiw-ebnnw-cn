@@ -1,0 +1,46 @@
+<include file="Common:meta" />
+<title>账户余额不足-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+        <div class="center">
+            <div class="col-main">
+                <div class="main-wrap">
+                    <div class="main-wrap-box">
+                        <div class="user-news">
+                            <!--标题 -->
+                            <div class="am-cf on-user-title">
+                                <div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">账户余额不足</strong> / <small>Insufficient account balance</small></div>
+                            </div>
+                            <div class="am-alert am-alert-danger" data-am-alert>
+                                <button type="button" class="am-close">&times;</button>
+                                <p>账户可用余额不足；请先充值账户余额后发布拍卖！</p>
+                            </div>
+                            <div style="padding: 20px;">
+                                <p>为了买家的权益，您需要缴纳保证金后才可以发布拍卖！</p>
+                                <p>{$uLimit.msg}</p>
+                                <p>流拍、撤拍、交易结束后保证金自动解冻并退回到您的账户余额内！</p>
+                                <p>{$uLimit.alert}</p>
+                                <neq name="uLimit.limsum" value="0" ><p>信用额度：<span class="am-text-warning">{$uLimit.limsum|wipezero=###}</span>可用</p></neq>
+                                <p>余额：<span class="am-text-warning">￥{$uLimit.pledge|wipezero=###}</span>可用</p>
+                            </div>
+                            <div class="am-text-center">
+                               <a href="{:U('Member/payment')}" class="am-btn am-btn-danger on-btn-danger submitBtn">充值</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!--底部-->
+                
+                <include file="Common:footer"/>
+            </div>
+            <include file="Seller:menu"/>
+        </div>
+    </body>
+</html>
+ -->

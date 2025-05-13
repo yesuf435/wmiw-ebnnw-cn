@@ -1,0 +1,271 @@
+<include file="Common:meta" />
+<title>发表评论-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/refstyle.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+<div class="center">
+    <div class="col-main">
+        <div class="main-wrap">
+            <div class="main-wrap-box" >
+                <div class="am-cf on-user-title">
+                    <div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">退换货申请</strong> / <small>Apply&nbsp;for&nbsp;returns</small></div>
+                </div>
+                <div class="comment-list">
+                <!--进度条-->
+                <div class="m-progress">
+                    <div class="m-progress-list">
+                        <span class="step-1 step">
+                            <em class="u-progress-stage-bg"></em>
+                            <i class="u-stage-icon-inner">1<em class="bg"></em></i>
+                            <p class="stage-name">买家申请退款</p>
+                        </span>
+                        <span class="step-2 step">
+                            <em class="u-progress-stage-bg"></em>
+                            <i class="u-stage-icon-inner">2<em class="bg"></em></i>
+                            <p class="stage-name">商家处理退款申请</p>
+                        </span>
+                        <span class="step-3 step">
+                            <em class="u-progress-stage-bg"></em>
+                            <i class="u-stage-icon-inner">3<em class="bg"></em></i>
+                            <p class="stage-name">款项成功退回</p>
+                        </span>                            
+                        <span class="u-progress-placeholder"></span>
+                    </div>
+                    <div class="u-progress-bar total-steps-2">
+                        <div class="u-progress-bar-inner"></div>
+                    </div>
+                </div>
+                    <div class="refund-aside">
+                        <div class="item-pic">
+                            <a class="link" href="{:U('Auction/details',array('pid'=>$oinfo['pid']))}" class="J_MakePoint">
+                                <img src="{$upWholeUrl}{$oinfo.pictures||getPicUrl=###,3,0}" class="itempic">
+                            </a>
+                        </div>
+                        <div class="item-title">
+                            <div class="item-name">
+                                <a class="link" href="{:U('Auction/details',array('pid'=>$oinfo['pid']))}">
+                                    <p class="item-basic-info">{$oinfo.pname}</p>
+                                </a>
+                            </div>
+                            <!-- <div class="info-little">
+                                <span>拍品编号：{$oinfo.bidnb}</span>
+                            </div> -->
+                        </div>
+                        <div class="item-info">
+                            <div class="item-ordernumber">
+                                <span class="info-title">订单号：</span><a>{$oinfo.order_no}</a>
+                            </div>
+                            <div class="item-price">
+                                <span class="info-title">价格：</span><span class="price">{$oinfo.price}元</span>
+                                <!-- <span class="number">×1</span><span class="item-title">(数量)</span> -->
+                            </div>
+                            <div class="item-amount">
+                                <span class="info-title">{:C('Auction.broker_buy_name')}：</span><span class="amount">{$oinfo.broker_buy}元</span>
+                            </div>
+                            <div class="item-pay-logis">
+                                <span class="info-title">运费：</span><span class="price">{$oinfo.freight}元</span>
+                            </div>
+                            <div class="item-amountall">
+                                <span class="info-title">总计：</span><span class="amountall">{$oinfo.total}元</span>
+                            </div>
+                            <div class="item-time">
+                                <span class="info-title">成交时间：</span><span class="time">{$oinfo.time|date='Y-m-d H:i',###}</span>
+                            </div>
+
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="refund-main">
+                        <form id="orderReturnForm" class="am-form am-form-horizontal">
+                            <div class="item-comment">
+                                <!-- <div class="am-form-group">
+                                    <label for="refund-type" class="am-form-label">退款类型</label>
+                                    <div class="am-form-content">
+                                        <select data-am-selected="">
+                                            <option value="a" selected>仅退款</option>
+                                            <option value="b">退款/退货</option>
+                                        </select>
+                                    </div>
+                                </div> -->
+                                <div class="am-form-group">
+                                    <label for="refund-cause" class="am-form-label">退款原因</label>
+                                    <div class="am-form-content">
+                                        <select id="refund-cause" name="data[cause]" required>
+                                            <option value="">请选择退款原因</option>
+                                            <foreach name="cause" item="cv">
+                                                <option <eq name="info.cause" value="$cv">selected="selected"</eq> value="{$cv}">{$cv}</option>
+                                            </foreach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="refund-money" class="am-form-label">退款金额<span>（不可修改）</span></label>
+                                    <div class="am-form-content">
+                                        <input id="refund-money" class="input" type="text" readonly="readonly" placeholder="{$oinfo.rmoney|floatval=###}">
+                                        <small style="font-size: 12px; color: #999;">{$oinfo.rmntxt}</small>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="refund-info" class="am-form-label">退款说明<span>（可不填）</span></label>
+                                    <div class="am-form-content">
+                                        <textarea id="refund-explain" class="input" placeholder="请输入退款说明" name="data[explain]" minlength="3" maxlength="200" required>{$oinfo.explain}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="refund-tip">
+                                <div class="uploadePic-box">
+                                    <ul  data-am-widget="gallery" class="am-avg-sm-3 am-avg-md-6" data-am-gallery="{pureview:{target: 'a.showurl'}}">
+                                        <li class="upImg-lighthouse">
+                                            <div class="upImg-list-box">
+                                                <div class="filePic">
+                                                    <i class="am-icon-cloud-upload"></i><div class="txt">晒照片(<span class="picCount">0</span>/5)</div>
+                                                    <input type="file" class="upInput" value="选择凭证图片" name="file" max="5" maxsize="5120" allowexts="gif,jpeg,jpg,png,bmp" accept="image/*" multiple>
+                                                </div>
+                                                
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="info-btn">
+                                <input type="hidden" value="{$oinfo.order_no}" name="data[order_no]">
+                                <input type="submit" name="" value="提交申请" class="am-btn am-btn-danger am-btn-sm submitBtn">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+
+        <!--底部-->
+    <include file="Common:footer"/>
+    </div>
+    <include file="Member:menu"/>
+</div>
+<js href="--PUBLIC--/assets/js/jquery.form.js"/>
+<js href="--PUBLIC--/PhotoClipJs/lrz.all.bundle.js"/>
+<script type="text/javascript">
+// 表单提交
+var $form = $('#orderReturnForm');
+var $subbtn = $(".submitBtn");
+$form.validator({
+    submit: function() {
+        var formValidity = this.isFormValid();
+        if (formValidity) {
+            // 验证成功的逻辑
+            $subbtn.button('loading');
+            // 验证成功的逻辑
+            $form.ajaxSubmit({url:document.URL,data:'',type:"POST",
+                success:function(data, st) {
+                    // 提示框
+                    AMUI.dialog.alert({ title: data.title, content: data.info});
+                    if(data.status==1){
+                        setTimeout(function(){
+                            top.window.location.href = data.url;
+                        },1000);
+                    }else{
+                        $subbtn.button('reset');
+                    }
+                    return false;
+                }
+            });
+        } else {
+            $subbtn.button('reset');
+        // 验证失败的逻辑
+        }
+    //阻止原生form提交
+    return false;
+    }
+});
+// 上传操作【 
+var delPicUrl = '{:U("Member/del_evaluate_pic")}';
+var uplode_url = '{:U("Upload/upEvidencePic")}';//PHP处理脚本地址
+var picSize = 5;
+var picSizeEd = 0;
+$(document).on('change','.upInput',function(){
+    if (this.files.length) {
+        if (this.files.length>picSize||picSizeEd+this.files.length>picSize) {
+            AMUI.dialog.alert({ title: '', content: "最多上传"+picSize+"张图片！还可以上传"+(picSize-picSizeEd)+"张图片！<br/>请重新选择"});
+        }else if (this.files.length==picSize||picSizeEd+this.files.length==picSize) {
+            AMUI.dialog.alert({ title: '', content: "最多上传"+picSize+"张图片！已上传"+picSize+"张图片！"});
+        }else{
+            for (var i = 0; i < this.files.length; i++) {
+                lrz(this.files[i], { width: 1000, quality: 0.5 }).then(function(rst) {
+                    console.log(rst.base64);
+                    var ranNub = parseInt(Math.random()*100);
+                    var load = 0;
+                    var newli = '<li id="'+ranNub+'"><div class="upImg-list-box up-progress"><div class="am-progress am-progress-striped am-progress-xs"><div class="am-progress-bar" style="width: 0%"></div></div></div></li>';
+                    $('.upImg-lighthouse').before(newli);
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', uplode_url);
+                    xhr.onload = function () {
+                        var data = JSON.parse(xhr.response);
+                        if (xhr.status === 200) {
+                            var newimg ='<div class="upImg-list-box am-gallery-item"><a class="am-icon-close delImg Js-delImg" savepath="'+data.savepath+'" savename="'+data.savename+'" href="javascript:void(0);"></a><a class="showurl" href="'+data.showurl+'"><img src="'+data.thumb+'"><input type="hidden" name="pic[]" value="'+data.savepath+data.savename+'" /></a></div>';
+                            $("#" + ranNub).html(newimg);
+                            picSizeEd +=1; 
+                            $('.picCount').html(picSizeEd);
+                            // 上传成功
+                        } else {
+                            alert(data.msg);
+                            $("#" + ranNub).remove();
+                            this.value = null;
+                            // 处理其他情况
+                        }
+                    };
+                    xhr.onerror = function () {
+                        AMUI.dialog.alert({ title: '', content: '未知错误:' + JSON.stringify(err, null, 2)});
+                        $("#" + ranNub).remove();
+                        this.value = null;
+                    };
+                    if (xhr.upload) {
+                        try {
+                            xhr.upload.addEventListener('progress', function (e) {
+                                if (!e.lengthComputable) return false;
+                                // 上传进度
+                                load = parseInt(((e.loaded / e.total) || 0) * 100);
+                                $("#" + ranNub).find('.am-progress-bar').css({"width": load + "%"});
+                            });
+                        } catch (err) {
+                            console.error('进度展示出错了,似乎不支持此特性?', err);
+                        }
+                    }
+                    // 添加参数
+                    // rst.formData.append('fileLen', rst.fileLen);
+                    // 触发上传
+                    xhr.send(rst.formData);
+                    return rst;
+                }).catch(function (err) {
+                    // 万一出错了，这里可以捕捉到错误信息
+                    // 而且以上的then都不会执行
+                    alert(err);
+                }).always(function () {
+                    // 不管是成功失败，这里都会执行
+                });
+            }
+        }
+    }
+});
+// 上传操作】
+// 图片删除
+    $('.uploadePic-box').on("click",'.Js-delImg',function(){
+        var savepath = $(this).attr('savepath');
+        var savename = $(this).attr('savename');
+        var delDiv = $(this);
+        $.post(delPicUrl,{'savepath':savepath,'savename':savename},function(){
+            picSizeEd -=1;
+            $('.picCount').html(picSizeEd);
+            delDiv.parents('li').remove();
+        },'json');        
+    });
+// 图片删除_end
+</script>
+</body>
+</html>

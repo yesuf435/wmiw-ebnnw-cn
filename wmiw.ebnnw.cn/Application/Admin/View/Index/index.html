@@ -1,0 +1,263 @@
+<include file="Common:meta" />
+<title>首页-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="index">
+    <div class="am-g tpl-g">
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="container-fluid am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                        <div class="page-header-heading"><span class="am-icon-clock-o page-header-heading-icon"></span> 计划任务 <small>Planning tasks</small></div>
+                        <p class="page-header-description"><strong class="am-text-danger">{$scheduled}</strong>&nbsp;&nbsp;&nbsp;&nbsp;此处未配置会导致过期和违约订单无法自动处理、开拍和结拍无法提醒。</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row-content am-cf">
+                <div class="row  am-cf">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-4">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">本月交易额</div>
+                                <a href="{:U('Order/index')}" class="widget-fluctuation-tpl-btn am-fr"><i class="am-icon-calendar"></i> 更多月份</a>
+                            </div>
+                            <div class="widget-body am-fr">
+                                <div class="am-fl">
+                                    <div class="widget-fluctuation-description-amount am-text-danger" am-cf>
+                                        ￥{$walletsum.total_predict|default=0}
+                                    </div>
+                                    <div class="widget-fluctuation-description-text am-text-right">
+                                        已支付订单金额
+                                    </div>
+                                </div>
+                                <div class="am-fr am-cf">
+                                    <div class="widget-fluctuation-description-amount am-text-primary" am-cf>
+                                        ￥{$walletsum.total_predict|default=0}
+                                    </div>
+                                    <div class="widget-fluctuation-description-text am-text-right">
+                                        待支付订单金额
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-4">
+                        <div class="widget widget-primary am-cf">
+                            <div class="widget-statistic-header">
+                                本月收入（买家{$bidcof.broker_buy_name|default='手续费'}）
+                            </div>
+                            <div class="widget-statistic-body">
+                                <div class="widget-statistic-value">
+                                    ￥{$walletsum.broker_buy|default=0}
+                                </div>
+                                <div class="widget-statistic-description">
+                                    待收 <strong>￥{$walletsum.broker_buy_predict|default=0}</strong> 
+                                </div>
+                                <span class="widget-statistic-icon am-icon-credit-card-alt"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-4">
+                        <div class="widget widget-purple am-cf">
+                            <div class="widget-statistic-header">
+                                本月收入（卖家{$bidcof.broker_name|default='佣金'}）
+                            </div>
+                            <div class="widget-statistic-body">
+                                <div class="widget-statistic-value">
+                                    ￥{$walletsum.broker|default=0}
+                                </div>
+                                <div class="widget-statistic-description">
+                                    待收 <strong>￥{$walletsum.broker_predict|default=0}</strong>
+                                </div>
+                                <span class="widget-statistic-icon am-icon-support"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row am-cf">
+                    <div class="am-u-sm-12 am-u-md-8">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">在线充值动态</div>
+                                <div class="widget-function am-fr">
+                                    <a href="{:U('Member/walletbill',array('changetype'=>'pay_deposit'))}" class="am-icon-list"></a>
+                                </div>
+                            </div>
+                            <div class="widget-body-md widget-body tpl-amendment-echarts am-fr" id="tpl-echarts">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-4">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">运行环境</div>
+                            </div>
+                            <div class="widget-body widget-body-md am-fr">
+                                <volist name="server_info" id="vo" key="k">
+                                    <div class="am-progress-title am-margin-bottom-0">{$key}<span class="am-fr am-progress-title-more am-text-truncate" style="width: 60%;">{$vo}</span></div>
+                                </volist>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row am-cf">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-6 widget-margin-bottom-lg ">
+                        <div class="widget am-cf widget-body-lg">
+                            <div class="widget-body  am-fr">
+                                <div class="am-scrollable-horizontal ">
+                                    <empty name="clist">
+                                        <div class="on-none">没有收到用户的意见反馈</div>
+                                    <else/>
+                                        <table width="100%" class="am-table am-table-compact am-text-nowrap tpl-table-black " id="example-r">
+                                            <thead>
+                                                <tr>
+                                                    <th>反馈内容</th>
+                                                    <th>用户账号</th>
+                                                    <th>时间</th>
+                                                    <th>操作 
+                                                        <div class="widget-function am-fr">
+                                                            <a href="{:U('Index/consultation')}" class="am-icon-list"></a>
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                
+                                                    <foreach name="clist" item="clv">
+                                                        <tr class="gradeX">
+                                                            <td style="max-width: 200px;"><div class="am-text-truncate">{$clv.content}</div></td>
+                                                            <td>{$clv.account}</td>
+                                                            <td>{$clv.time|date='Y-m-d H:i',###}</td>
+                                                            <td>
+                                                                <div class="tpl-table-black-operation">
+                                                                    <eq name="clv.status" value="0"><a href="{:U('Index/consultation_edit',array('id'=>$clv['id']))}"><i class="am-icon-pencil"></i>回复</a></eq>
+                                                                    <a href="{:U('Index/consultation_del',array('id'=>$clv['id']))}" class="tpl-table-black-operation-del del"><i class="am-icon-trash-o"></i>删除</a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </foreach>
+                                            </tbody>
+                                        </table>
+                                    </empty>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-6 widget-margin-bottom-lg">
+
+                        <div class="widget am-cf widget-body-lg">
+                            <div class="widget-body  am-fr">
+                                <div class="am-scrollable-horizontal ">
+                                    <table width="100%" class="am-table am-table-compact am-text-nowrap tpl-table-black " id="example-r">
+                                        <thead>
+                                            <tr>
+                                                <th>文章标题</th>
+                                                <th>作者</th>
+                                                <th>时间</th>
+                                                <th>操作
+                                                    <div class="widget-function am-fr">
+                                                        <a href="{:U('News/index')}" class="am-icon-list"></a>
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <foreach name="nlist" item="nlv">
+                                                <tr class="gradeX">
+                                                    <td style="max-width: 200px;"><div class="am-text-truncate">{$nlv.title}</div></td>
+                                                    <td>{$nlv.aidName}</td>
+                                                    <td>{$nlv.published|date='Y-m-d H:i',###}</td>
+                                                    <td>
+                                                        <div class="tpl-table-black-operation">
+                                                            <a href="{:U('News/edit',array('id'=>$nlv['id']))}"><i class="am-icon-pencil"></i>编辑</a>
+                                                            <notin name="nlv.id" value="$lock_id[art_sun]">
+                                                                <a href="{:U('News/del',array('id'=>$nlv['id']))}" class="tpl-table-black-operation-del del"><i class="am-icon-trash-o"></i>删除</a>
+                                                            </notin>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </foreach>
+                                            
+
+                                            <!-- more data -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+<include file="Common:footer_link" />
+<script type="text/javascript">
+    $(function(){
+
+        var echartsA = echarts.init(document.getElementById('tpl-echarts'));
+        option = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            grid: {
+                top: '3%',
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: [{
+                type: 'category',
+                boundaryGap: false,
+                data: [{$datestr}]
+            }],
+            yAxis: [{
+                type: 'value'
+            }],
+            textStyle: {
+                color: '#838FA1'
+            },
+            series: [{
+                name: '在线充值',
+                type: 'line',
+                stack: '总计',
+                areaStyle: { normal: {} },
+                data: [{$moneystr}],
+                itemStyle: {
+                    normal: {
+                        color: '#1cabdb',
+                        borderColor: '#1cabdb',
+                        borderWidth: '2',
+                        borderType: 'solid',
+                        opacity: '1'
+                    },
+                    emphasis: {
+
+                    }
+                }
+            }]
+        };
+
+        echartsA.setOption(option);
+
+
+
+        $.post("{:U('SysData/backup')}", { systemBackup: 1 },function(json){
+            if(json.status==1){
+                popup.success(json.info,"系统定期备份成功提醒");
+            }
+        });
+    });
+</script>
+</body>
+
+</html>

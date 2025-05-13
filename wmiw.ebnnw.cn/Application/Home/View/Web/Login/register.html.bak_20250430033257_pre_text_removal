@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>注册 - 拍卖平台</title>
+  <link rel="stylesheet" href="/Public/css/login.css">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+  <div class="login-wrap">
+    <div>
+      <h1 class="login-title">用户注册</h1      <!-- 标签页结构 -->
+      <ul class="tabMenuLink am-nav am-nav-tabs am-nav-justify">
+        <li class="register-tab" data-tab="account"><a href="javascript:void(0);">账号注册</a></li>
+        <li class="register-tab on-mli" data-tab="mobile"><a href="javascript:void(0);">手机注册</a></li>
+        <li><a href="{:U(\'Login/index\')}">登录</a></li>
+      </ul>
+
+      <!-- 账号注册表单 -->
+      <form id="registerFormAccount" method="post" action="{:U(\'Login/register\')}" class="am-form register-form-panel" data-tab-content="account" style="display:none;">
+        <input type="hidden" name="registerType" value="account">
+        <div class="am-form-group">
+          <label for="register-username">用户名:</label>
+          <input type="text" id="register-username" name="account" placeholder="请输入用户名 (4-20位字母/数字/下划线)" required>
+        </div>
+
+        <div class="am-form-group">
+          <label for="register-password-account">密码:</label>
+          <input type="password" id="register-password-account" name="pwd" placeholder="请输入密码" required>
+        </div>
+        
+        <div class="am-form-group">
+          <label for="register-password-confirm-account">确认密码:</label>
+          <input type="password" id="register-password-confirm-account" name="pwded" placeholder="请再次输入密码" required>
+        </div>
+
+        <div class="am-form-group verification">
+          <label for="register-code-account">验证码:</label>
+          <div class="am-u-sm-9">
+            <input type="text" id="register-code-account" name="verify_code" placeholder="请输入图形验证码" class="input" required>
+            <img class="verifyImg" src="{:U(\'Login/verify_code\')}" onclick="this.src=\'{:U(\'Login/verify_code\')}?rand=\'+Math.random();" alt="验证码" title="点击刷新验证码">
+          </div>
+        </div>
+
+        <div class="am-form-group am-checkbox">
+          <label>
+            <input type="checkbox" name="isAgree" value="1" checked required>
+            我已阅读并接受《服务协议》
+          </label>
+        </div>
+
+        <input type="hidden" name="auto_login" value="1">
+        <div class="form-error-msg" style="display: none;"></div>
+
+        <div class="am-form-group">
+          <button type="submit" class="am-btn am-btn-primary">注 册</button>
+        </div>
+      </form>
+
+      <!-- 手机注册表单 -->
+      <form id="registerFormMobile" method="post" action="{:U(\'Login/register\')}" class="am-form register-form-panel" data-tab-content="mobile">
+        <input type="hidden" name="registerType" value="mobile">
+        <div class="am-form-group">
+          <label for="register-mobile">手机号:</label>
+          <input type="tel" id="register-mobile" name="mobile" placeholder="请输入手机号" required>
+        </div>
+
+        <div class="am-form-group verification">
+          <label for="register-mobile-verify">短信验证码:</label>
+          <div class="am-u-sm-9">
+            <input type="text" id="register-mobile-verify" name="mobile_verify" placeholder="请输入短信验证码" class="input" required>
+            <button type="button" class="am-btn am-btn-default" id="sendMobileVerify">发送验证码</button>
+          </div>
+        </div>
+
+        <div class="am-form-group">
+          <label for="register-password-mobile">设置密码:</label>
+          <input type="password" id="register-password-mobile" name="pwd" placeholder="请输入密码" required>
+        </div>
+        
+        <div class="am-form-group">
+          <label for="register-password-confirm-mobile">确认密码:</label>
+          <input type="password" id="register-password-confirm-mobile" name="pwded" placeholder="请再次输入密码" required>
+        </div>
+
+        <div class="am-form-group am-checkbox">
+          <label>
+            <input type="checkbox" name="isAgree" value="1" checked required>
+            我已阅读并接受《服务协议》
+          </label>
+        </div>
+
+        <input type="hidden" name="auto_login" value="1">
+        <div class="form-error-msg" style="display: none;"></div>
+
+        <div class="am-form-group">
+          <button type="submit" class="am-btn am-btn-primary">注 册</button>
+        </div>
+      </form>
+
+      <!-- 分隔线和社交登录 -->
+      <div class="social-login-divider">
+        <span class="divider-text">或</span>
+      </div>
+      <div class="social-login-options">
+         <button type="button" class="am-btn wechat-login-btn" id="wechatLoginBtn">
+           <img src="/Public/images/wechat_icon.png" alt="WeChat" class="wechat-icon"> 微信授权登录
+         </button>
+      </div>
+
+      <div class="am-text-center">
+        <p>已有账号？ <a href="{:U(\'Login/index\')}">立即登录</a></p>
+      </div>    </div>
+  </div>
+  
+  <script>
+    $(document).ready(function() {
+      // Tab switching logic
+      $('.register-tab a').on('click', function(e) {
+        e.preventDefault();
+        var $tab = $(this).parent();
+        var tabName = $tab.data('tab');
+
+        if (!$tab.hasClass('on-mli')) {
+          $('.register-tab').removeClass('on-mli');
+          $tab.addClass('on-mli');
+          $('.register-form-panel').hide();
+          $('.register-form-panel[data-tab-content="' + tabName + '"]').show();
+          // Clear error messages when switching tabs
+          $('.form-error-msg').hide().text('');
+        }
+      });
+
+      // Function to handle form submission via AJAX
+      function handleFormSubmit(formId, formData) {
+        var $form = $('#' + formId);
+        var $submitButton = $form.find('.am-btn-primary');
+        var $errorMsg = $form.find('.form-error-msg');
+
+        // Show loading state
+        $submitButton.prop('disabled', true).text('注册中...');
+        $errorMsg.hide();
+
+        $.ajax({
+          url: '{:U("Login/register")}',
+          type: 'POST',
+          data: formData,
+          dataType: 'json',
+          timeout: 15000, // Increased timeout
+          success: function(response) {
+            if (response.status === 1) {
+              // Registration successful
+              $errorMsg.hide();
+              var successMsg = $('<div>', {
+                class: 'form-success-msg',
+                text: '注册成功！即将跳转...', // Simplified message
+                css: { /* Styles omitted for brevity, same as before */ }
+              });
+              $errorMsg.after(successMsg);
+              setTimeout(function() {
+                window.location.href = response.url || '{:U("Member/index")}';
+              }, 1500);
+            } else {
+              // Registration failed
+              $errorMsg.text(response.info || '注册失败，请检查输入信息').show();
+              $submitButton.prop('disabled', false).text('注 册');
+              // Refresh verification code if it exists in this form
+              var $verifyImg = $form.find('.verifyImg');
+              if ($verifyImg.length) {
+                  $verifyImg.attr('src', '{:U("Login/verify_code")}?rand=' + Math.random());
+              }
+            }
+          },
+          error: function(xhr, textStatus, errorThrown) {
+            var errorMessage = '网络连接出现问题，请稍后重试';
+            if (textStatus === 'timeout') {
+              errorMessage = '请求超时，请检查网络连接后重试';
+            }
+            $errorMsg.text(errorMessage).show();
+            $submitButton.prop('disabled', false).text('注 册');
+             // Refresh verification code if it exists in this form
+              var $verifyImg = $form.find('.verifyImg');
+              if ($verifyImg.length) {
+                  $verifyImg.attr('src', '{:U("Login/verify_code")}?rand=' + Math.random());
+              }
+          }
+        });
+      }
+
+      // Account registration form submission
+      $('#registerFormAccount').on('submit', function(e) {
+        e.preventDefault();
+        var pwd = $('#register-password-account').val();
+        var pwded = $('#register-password-confirm-account').val();
+        if (pwd !== pwded) {
+          $(this).find('.form-error-msg').text('两次输入的密码不一致').show();
+          return;
+        }
+        handleFormSubmit('registerFormAccount', $(this).serialize());
+      });
+
+      // Mobile registration form submission
+      $('#registerFormMobile').on('submit', function(e) {
+        e.preventDefault();
+        var pwd = $('#register-password-mobile').val();
+        var pwded = $('#register-password-confirm-mobile').val();
+        if (pwd !== pwded) {
+          $(this).find('.form-error-msg').text('两次输入的密码不一致').show();
+          return;
+        }
+        handleFormSubmit('registerFormMobile', $(this).serialize());
+      });
+
+      // Send mobile verification code logic
+      $('#sendMobileVerify').on('click', function() {
+        var $button = $(this);
+        var $mobileInput = $('#register-mobile');
+        var mobile = $mobileInput.val();
+        var $errorMsg = $('#registerFormMobile').find('.form-error-msg');
+
+        // Basic mobile number validation
+        if (!/^1\d{10}$/.test(mobile)) {
+          $errorMsg.text('请输入有效的手机号码').show();
+          $mobileInput.focus();
+          return;
+        }
+
+        $errorMsg.hide();
+        $button.prop('disabled', true).text('发送中...');
+
+        // AJAX request to send SMS code
+        $.ajax({
+          url: '{:U("Login/sendMobileVerify")}', // Backend endpoint for sending SMS
+          type: 'POST',
+          data: { mobile: mobile },
+          dataType: 'json',
+          success: function(response) {
+            if (response.status === 1) {
+              // Start countdown
+              var count = 60;
+              $button.text(count + 's后重发');
+              var timer = setInterval(function() {
+                count--;
+                if (count > 0) {
+                  $button.text(count + 's后重发');
+                } else {
+                  clearInterval(timer);
+                  $button.prop('disabled', false).text('发送验证码');
+                }
+              }, 1000);
+            } else {
+              $errorMsg.text(response.info || '发送失败，请稍后重试').show();
+              $button.prop('disabled', false).text('发送验证码');
+            }
+          },
+          error: function() {
+            $errorMsg.text('网络错误，发送失败').show();
+            $button.prop('disabled', false).text('发送验证码');
+          }
+        });
+      });
+      
+      // WeChat Login Button Click Handler
+      $('#wechatLoginBtn').on('click', function() {
+          // Redirect to the backend endpoint that initiates WeChat OAuth
+          // The backend should generate the WeChat authorization URL and redirect the user
+          window.location.href = '{:U("Login/wechatLogin")}'; // Example backend endpoint
+      });
+
+      // Graphic verification code refresh click (for account registration)
+      $('.verifyImg').on('click', function() {
+        $(this).attr('src', '{:U("Login/verify_code")}?rand=' + Math.random());
+      });
+
+      // Initialize: Show the default tab content (mobile)
+      $('.register-form-panel[data-tab-content="mobile"]').show();
+
+    });
+  </script>
+</body>
+</html>

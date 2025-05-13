@@ -1,0 +1,42 @@
+<include file="Common:meta" />
+<title>{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<link href="__CSS__/demo.css" rel="stylesheet" type="text/css" />
+<link href="__CSS__/filtstyle.css" rel="stylesheet" type="text/css">
+<link href="__CSS__/hmstyle.css" rel="stylesheet" type="text/css">
+<js href="__JS__/script.js"/>
+<body class="more-page">
+<ul>
+	<if condition="C('Auction.sort_time') eq 1">
+		<li><a href="{:U('Auction/index',array('sort'=>'time'))}"><img src="__IMG__/time.jpg"/><span>最新拍品</span></a></li>
+	</if>
+	<if condition="C('Auction.yikoujia') eq 1">
+		<li><a href="{:U('Auction/index',array('screen'=>'jscj'))}"><img src="__IMG__/yikoujia.jpg"/><span>限时一口价</span></a></li>
+	</if>
+	<if condition="C('Auction.jianlou') eq 1">
+		<li><a href="{:U('Auction/index',array('screen'=>'jianlou'))}"><img src="__IMG__/jianlou.jpg"/><span>0元捡漏</span></a></li>
+	</if>
+	<if condition="C('Auction.special_page') eq 1">
+    	<li><a href="{:U('Special/index')}"><img src="__IMG__/zhuanchang.jpg"/><span>专场拍卖</span></a></li>
+    </if>
+    <if condition="C('Auction.meeting_page') eq 1">
+    	<li><a href="{:U('Meeting/index')}"><img src="__IMG__/paimaihui.jpg"/><span>拍卖会</span></a></li>
+    </if>
+    <neq name="isbc" value="1">
+        <!-- B2C运营情况下隐藏优质好店 -->
+		<li><a href="{:U('Shop/haodian')}"><img src="__IMG__/haodian.jpg"/><span>好店</span></a></li>
+    </neq>
+</ul>
+<ul>
+    <li><a href="{:U('Article/help')}"><img src="__IMG__/bangzhu.jpg"><span>帮助中心</span></a></li>
+</ul>
+<include file="Common:footer"/>
+<script type="text/javascript">
+$(function() {
+});
+</script>
+
+</body>
+</html>

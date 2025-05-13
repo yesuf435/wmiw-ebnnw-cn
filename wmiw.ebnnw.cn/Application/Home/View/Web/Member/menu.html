@@ -1,0 +1,61 @@
+<aside class="menu">
+    <ul>
+        <li class="person active">
+            <a href="{:U('Member/index')}"><i class="am-icon-user"></i>个人中心</a>
+        </li>
+        <li class="person">
+            <p><i class="am-icon-newspaper-o"></i>个人资料</p>
+            <ul>
+                <li <eq name="ACTION_NAME" value="my_info">class="on"</eq>> <a href="{:U('Member/my_info')}">个人信息</a></li>
+                <li <eq name="ACTION_NAME" value="safety">class="on"</eq>> <a href="{:U('Member/safety')}">安全设置</a></li>
+                <li <eq name="ACTION_NAME" value="deliver_address">class="on"</eq>> <a href="{:U('Member/deliver_address')}">地址管理</a></li>
+                <li <eq name="ACTION_NAME" value="settixing">class="on"</eq>> <a href="{:U('Member/settixing')}">提醒方式</a></li>
+                <li <eq name="ACTION_NAME" value="generalize">class="on"</eq>> <a href="{:U('Member/generalize')}">我的推广</a></li>
+                <li <eq name="ACTION_NAME" value="mysms">class="on"</eq>> <a href="{:U('Member/mysms')}">我的消息 <neq name="smsc" value="0"><span class="num">{$smsc}</span></neq></a></li>
+            </ul>
+        </li>
+        <li class="person">
+            <p><i class="am-icon-shopping-basket"></i>我是买家</p>
+            <ul>
+                <li <if condition="(ACTION_NAME eq 'mysucc') and ($rstatus neq 1)">class="on"</if> ><a href="{:U('Member/mysucc')}">订单管理</a></li>
+                <li <if condition="(ACTION_NAME eq 'mysucc') and ($rstatus eq 1)">class="on"</if>> <a href="{:U('Member/mysucc',array('rstatus'=>1))}">退货管理</a></li>
+                <li <if condition="ACTION_NAME eq 'evaluate_list'">class="on"</if>> <a href="{:U('Member/evaluate_list')}">评价管理</a></li>
+            </ul>
+        </li>
+        <if condition="!$isbc or ($isbc and $myidentity)">
+            <li class="person">
+                <p><a href="{:U('Seller/index')}"><i class="am-icon-balance-scale"></i>我是卖家 <neq name="sel_count.sum" value="0"><span title="<neq name='sel_count.fahuo' value='0'>{$sel_count.fahuo}个待处理发货；</neq><neq name='sel_count.tuihuo' value='0'>{$sel_count.tuihuo}个待回复退货</neq>" class="num">{$sel_count.sum}</span></neq></a></p>
+            </li>
+        </if>
+        <li class="person">
+            <p><i class="am-icon-dollar"></i>我的资产</p>
+            <ul>
+                <li <if condition="ACTION_NAME eq 'payment'">class="on"</if> ><a href="{:U('Member/payment')}">充值余额</a></li>
+                <li <if condition="ACTION_NAME eq 'wallet' and $option eq 'cash'">class="on"</if> ><a href="{:U('Member/wallet',array('option'=>'cash'))}">余额管理</a></li>
+                <li <eq name="ACTION_NAME" value="wallettake">class="on"</eq> ><a href="{:U('Member/wallettake')}">余额提现</a></li>
+                <li <if condition="ACTION_NAME eq 'wallet' and $option eq 'limsum'">class="on"</if> ><a href="{:U('Member/wallet',array('option'=>'limsum'))}">信用额度</a></li>
+            </ul>
+        </li>
+
+        <li class="person">
+            <p><i class="am-icon-tags"></i>我的关注</p>
+            <ul>
+                <li <eq name="ACTION_NAME" value="footprint">class="on"</eq>> <a href="{:U('Member/footprint')}">我的足迹</a></li>
+                <neq name="isbc" value="1">
+                    <!-- C2C模式显示 -->
+                    <li <eq name="ACTION_NAME" value="attseller">class="on"</eq> ><a href="{:U('Member/attseller')}">关注的卖家</a></li>
+                    <li <eq name="ACTION_NAME" value="blacklist">class="on"</eq> ><a href="{:U('Member/blacklist')}">屏蔽的卖家</a></li>
+                </neq>
+                <li <eq name="ACTION_NAME" value="myatt">class="on"</eq> ><a href="{:U('Member/myatt',array('type'=>'pm'))}">关注的拍卖</a></li>
+                <li <eq name="ACTION_NAME" value="mybid">class="on"</eq> ><a href="{:U('Member/mybid')}">参与的拍卖</a></li>
+            </ul>
+        </li>
+
+        <li class="person">
+            <p><a href="{:U('Member/consultation')}"><i class="am-icon-qq"></i>意见反馈</a></p>
+        </li>
+    </ul>
+</aside>
+
+
+

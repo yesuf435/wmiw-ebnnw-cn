@@ -1,0 +1,213 @@
+<include file="Common:meta" />
+<title>回复退货-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/demo.css" rel="stylesheet" type="text/css" />
+<link href="__CSS__/cartstyle.css" rel="stylesheet" type="text/css" />
+<link href="__CSS__/jsstyle.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+        <div class="center">
+            <div class="col-main">
+                <div class="main-wrap">
+                    <div class="main-wrap-box">
+                        <div class="user-news">
+                            <!--标题 -->
+                            <div class="am-cf on-user-title">
+                                <div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">回复退货</strong> / <small>Opinion feedback</small></div>
+                            </div>
+                            <form id="returnreplyForm" name="sendMsg" class="am-form am-form-horizontal">
+                                <div class="am-form-group am-margin-top-sm">
+                                    <label for="status" class="am-form-label">回复</label>
+                                    <div class="am-form-content am-cf" >
+                                        <label class="am-radio-inline">
+                                            <input type="radio" id="status" value="7" name="data[status]" data-am-ucheck checked>同意退货
+                                        </label>
+                                        <label class="am-radio-inline">
+                                            <input type="radio" id="status1" value="6" name="data[status]" data-am-ucheck>拒绝退货
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="selcause" class="am-form-label Js-selcause">理由</label>
+                                    <div class="am-form-content" >
+                                        <textarea id="selcause" style="width: 100%;padding: 5px;" name="data[selcause]" placeholder="请填写留言或理由，小于200个字符" minlength="3" maxlength="200"  required>{$info.selcause}</textarea>
+                                    </div>
+                                </div>
+                                <div class="am-form-group address Js-address">
+                                    <label for="selcause" class="am-form-label">收货地址</label>
+                                    <ul  class="am-form-content">
+                                        <foreach name="address" item="av">
+                                            <div class="per-border"></div>
+                                            <li adid="{$av.adid}" class="user-addresslist <eq name='av.default' value='1'>defaultAddr setdefaultAddr</eq> ">
+                                                <div class="address-left">
+                                                    <div class="user DefaultAddr">
+                                                        <span>   
+                                                            <span class="buy-user">{$av.truename} </span>
+                                                            <span class="buy-phone">{$av.mobile}</span>
+                                                        </span>
+                                                    </div>
+                                                    <div class="default-address DefaultAddr">
+                                                        <span class="buy-line-title buy-line-title-type">收货地址：</span>
+                                                            <span class="buy-detail">
+                                                                {$av.prov} {$av.city} {$av.district} {$av.address}
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                    <ins class="deftip">默认地址</ins>
+                                                </div>
+                                                <div class="address-right">
+                                                    <a href="{:U('Member/deliver_address')}"><span class="am-icon-angle-right am-icon-lg"></span></a>
+                                                </div>
+                                                <div class="clear"></div>
+                                                <div class="new-addr-btn">
+                                                    <a href="javascript:void(0)" adid="{$av.adid}" class="Js-note setdefault">设为默认</a>
+                                                    <span class="new-addr-bar hidden">|</span>
+                                                    <a href="{:U('Member/deliver_address',array('type'=>'edit','adid'=>$av['adid']))}">编辑</a>
+                                                    <span class="new-addr-bar">|</span>
+                                                    <a class="Js-del" href="javascript:void(0);">删除</a>
+                                                </div>
+                                            </li>
+                                        </foreach>
+                                        <input name="data[adid]" type="hidden" value=""/>
+                                    </ul>
+                                    <div class="clear"></div>
+                                </div>
+                                <input type="hidden" value="{$oinfo.order_no}" name="data[order_no]">
+                                <ul class="user-frame am-avg-sm-1 am-text-center">
+                                     <li>
+                                        <button class="am-btn am-btn-danger on-btn-danger submitBtn">提交</button>
+                                     </li>
+                                </ul>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+                <!--底部-->
+                
+                <include file="Common:footer"/>
+            </div>
+            <eq name="how" value="sel"><include file="Seller:menu"/><else/><include file="Member:menu"/></eq>
+        </div>
+<js href="--PUBLIC--/assets/js/jquery.form.js"/>
+<script type="text/javascript">
+$(function(){
+    // 地址的演示隐藏【
+    adrs();
+    $(":radio[name='data[status]']").click(function(){
+        adrs();
+     });
+    function adrs(){
+        if ($("input[name='data[status]']:checked").val()==6) {
+            $('.Js-address').hide();
+            $('.Js-selcause').html('理由');
+        }else{
+            $('.Js-address').show();
+            $('.Js-selcause').html('留言');
+        }
+    }
+    // 地址的演示隐藏】
+
+
+
+    // 兼容IE浏览器
+        if (!document.getElementsByClassName) {
+            document.getElementsByClassName = function (cls) {
+                var ret = [];
+                var els = document.getElementsByTagName('*');
+                for (var i = 0, len = els.length; i < len; i++) {
+
+                    if (els[i].className.indexOf(cls + ' ') >=0 || els[i].className.indexOf(' ' + cls + ' ') >=0 || els[i].className.indexOf(' ' + cls) >=0) {
+                        ret.push(els[i]);
+                    }
+                }
+                return ret;
+            }
+        }
+        // 设默认【
+        $('.Js-note').click(function(){
+            var thisObj = $(this);
+            $.post(setDefaultUrl,{'adid':thisObj.attr('adid')},function(data){      //ajax后台
+                if (data.status) {
+                    thisObj.parents('.user-addresslist').addClass("setdefaultAddr").siblings().removeClass("setdefaultAddr");
+                } else {
+                    AMUI.dialog.alert({ title: data.title, content: data.info});
+                }
+            },'json'); 
+        });
+        // 设默认】
+        // 删除地址【
+        $(".Js-del").click(function(){
+            var delobj = $(this).parents('.user-addresslist');
+            var adid = delobj.attr("adid");
+            AMUI.dialog.confirm({ title: '提示', content: '是否删除这个地址？', 
+                onConfirm: function() {
+                    $.post(delLink,{'adid':adid},function(data){      //ajax后台
+                        if (data.status) {
+                            delobj.remove();
+                        } else {
+                            // 提示框
+                            AMUI.dialog.alert({ title: data.title, content: data.info});
+                        }
+                    },'json'); 
+                }, 
+                onCancel: function() {}
+             }); 
+
+            return false;
+        });
+        // 删除地址】
+        // 地址选择初始化
+        $("input[name='data[adid]']").val($(".user-addresslist.defaultAddr").attr('adid'));
+        
+        $(".Js-linkage-address .buy-detail").html($(".user-addresslist.defaultAddr .buy-detail").html());
+        $(".Js-linkage-address .buy-user").html($(".user-addresslist.defaultAddr .buy-user").html());
+        $(".Js-linkage-address .buy-phone").html($(".user-addresslist.defaultAddr .buy-phone").html());
+        // 选择地址
+        $(".user-addresslist").click(function() {
+            $(this).addClass("defaultAddr").siblings().removeClass("defaultAddr");
+            $("input[name='data[adid]']").val($(this).attr('adid'));
+            $(".Js-linkage-address .buy-detail").html($(this).find(".buy-detail").html());
+            $(".Js-linkage-address .buy-user").html($(this).find(".buy-user").html());
+            $(".Js-linkage-address .buy-phone").html($(this).find(".buy-phone").html());
+        });
+    // 表单提交
+    var $form = $('#returnreplyForm');
+    var $subbtn = $(".submitBtn");
+    $form.validator({
+        submit: function() {
+            var formValidity = this.isFormValid();
+            if (formValidity) {
+                // 验证成功的逻辑
+                $subbtn.button('loading');
+                // 验证成功的逻辑
+                $form.ajaxSubmit({url:document.URL,data:'',type:"POST",
+                    success:function(data, st) {
+                        // 提示框
+                        AMUI.dialog.alert({ title: data.title, content: data.info});
+                        if(data.status==1){
+                            setTimeout(function(){
+                                top.window.location.href = data.url;
+                            },1000);
+                        }else{
+                            $subbtn.button('reset');
+                        }
+                        return false;
+                    }
+                });
+            } else {
+                $subbtn.button('reset');
+            // 验证失败的逻辑
+            }
+        //阻止原生form提交
+        return false;
+        }
+    });
+});
+</script>
+    </body>
+</html>

@@ -1,0 +1,149 @@
+<include file="Common:meta" />
+<title>拍卖信息-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+<div class="center">
+    <div class="col-main">
+        <div class="main-wrap">
+            <div class="main-wrap-box" >
+                    <!--标题 -->
+                    <div class="am-cf on-user-title">
+                        <div class="am-fl am-cf">
+                            <strong class="am-text-danger am-text-lg">拍卖信息</strong> / <small>Info&nbsp;Auction</small>
+                        </div>
+                    </div>
+                    <div class="addgoods">
+                           
+                            <neq name="info.sid" value="0">
+                                <div class="am-form-group am-cf">
+                                    <label for="pname" class="am-form-label">专场</label>
+                                    <div class="am-form-content"><a href="{:U('Seller/special_info',array('sid'=>$info['sid']))}">{$info.sname}</a></div>
+                                </div>
+                            </neq>
+                            <neq name="info.mid" value="0">
+                                <div class="am-form-group am-cf">
+                                    <label for="pname" class="am-form-label">拍卖会</label>
+                                    <div class="am-form-content"><a href="{:U('Seller/meeting_info',array('mid'=>$info['mid']))}">{$info.mname}</a></div>
+                                </div>
+                            </neq>
+
+                            <notempty name="info.bidnb">
+                                <div class="am-form-group am-cf">
+                                    <label for="pname" class="am-form-label">拍品编号</label>
+                                    <div class="am-form-content">{$info.bidnb}</div>
+                                </div>
+                            </notempty>
+                            <div class="am-form-group">
+                                <label for="pname" class="am-form-label">拍卖标题</label>
+                                <div class="am-form-content">{$info.pname}</div>
+                            </div>
+                            <div id="Js-type-radiobox" class="am-form-group">
+                                <label for="pname" class="am-form-label">拍卖模式</label>
+                                <div class="am-form-content"><eq name="info.type" value="1">竞标<else/>竞拍</eq></div>
+                            </div>
+                            <if condition="($info['succtype'] eq 1) and ($info['type'] eq 0)">
+                                <div id="Js-succtype-radiobox" class="am-form-group">
+                                    <label for="succtype" class="am-form-label">即时成交价</label>
+                                    <div class="am-form-content">{$info.succprice}</div>
+                                </div> 
+                            </if>
+                           
+                            <!-- 单品拍下才可以设置开始结束时间 -->
+                            <eq name="info.to" value="js">
+                                <div class="am-form-group">
+                                    <label for="start_time" class="am-form-label">开始时间</label>
+                                    <div class="am-form-content">{$info.starttime|date='Y-m-d H:i',###}</div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="end_time" class="am-form-label">结束时间</label>
+                                    <div class="am-form-content">{$info.endtime|date='Y-m-d H:i',###}</div>
+                                </div>
+                            </eq>
+                            <!-- 单品拍下才可以设置开始结束时间——end -->
+
+                            <div class="am-form-group">
+                                <label for="end_time" class="am-form-label">当前价</label>
+                                <div class="am-form-content">{$info.nowprice}</div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="pname" class="am-form-label">起拍价</label>
+                                <div class="am-form-content">{$info.onset}</div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="pname" class="am-form-label">保留价</label>
+                                <div class="am-form-content">{$info.price}</div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="pname" class="am-form-label">运费</label>
+                                <div class="am-form-content">{$info.freight|default=0}</div>
+                            </div>
+
+                            <div id="Js-stepsize-radiobox" class="am-form-group">
+                                <label for="succtype" class="am-form-label">价格浮动</label>
+                                <div class="am-form-content">
+                                    <eq name="info.stepsize_type" value="0">
+                                        初始浮动额度为{$info.stepsize_ratio_r}；当前价大于等于{$info.stepsize_ratio_s}后，开始按照单位的百分之{$info.stepsize_ratio}规则实行浮动，浮动最高不超过{$info.stepsize_ratio_t}
+                                    <else/>
+                                        每次出价固定加价{$info.step_fixation}
+                                    </eq>
+                                </div>
+                            </div> 
+                            <div class="am-form-group">
+                                <label for="pname" class="am-form-label">时间延时</label>
+                                <div class="am-form-content">最后{$info.steptime}秒内出价，时间延时{$info.deferred}秒（60秒=1分钟）</div>
+                            </div>
+
+
+                            <div class="am-form-group">
+                                <label for="succtype" class="am-form-label">保证金</label>
+                                <div class="am-form-content"><eq name="info.pledge_type" value="ratio">起拍价百分之{$info.pledge}比例收取<else/>定额收取{$info.pledge}</eq></div>
+                            </div> 
+                    </div>
+            </div>
+        </div>
+        <!--底部-->
+    <include file="Common:footer"/>
+    </div>
+    <include file="Seller:menu" />
+</div>
+<div id="Js-stepratio-cach" style="display: none;">
+    
+</div>
+<div id="Js-stepfixation-cach" style="display: none;">
+    
+</div>
+<div id="specialfuture-cach" style="display: none;">
+    <notempty name="futureList">
+    <div class="am-form-group Js-special-futureList">
+        <label for="special" class="am-form-label">选择专场</label>
+        <div class="am-form-content">
+            <select id="special" name="data[sid]" required>
+                <volist name="futureList" id="fvo">
+                    <option value="{$fvo.sid}" spledge="{$fvo.special_pledge_type}" sttime="{$fvo.starttime|date='Y-m-d H:i',###}" edtime="{$fvo.endtime|date='Y-m-d H:i',###}" <eq name="data[sid]" value="fvo.sid">selected="selected"</eq> >{$fvo.sname}</option>
+                </volist>
+            </select>
+        </div>
+    </div>
+    </notempty>
+</div>
+<div id="specialbiding-cach" style="display: none;">
+    <notempty name="bidingList">
+        <div class="am-form-group Js-special-bidingList">
+            <label for="special" class="am-form-label">选择专场</label>
+            <div class="am-form-content">
+                    <select id="special" name="data[sid]" required>
+                        <volist name="bidingList" id="fvo">
+                            <option value="{$fvo.sid}" spledge="{$fvo.special_pledge_type}" sttime="{$fvo.starttime|date='Y-m-d H:i',###}" edtime="{$fvo.endtime|date='Y-m-d H:i',###}" <eq name="data[sid]" value="fvo.sid">selected="selected"</eq> >{$fvo.sname}</option>
+                        </volist>
+                    </select>
+            </div>
+        </div>
+    </notempty>
+</div>
+    </body>
+</html>

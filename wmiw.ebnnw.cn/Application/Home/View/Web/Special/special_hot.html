@@ -1,0 +1,26 @@
+<div class="hotls">
+    <div class="mc"> 
+        <ul> 
+            <div class="mt"><h2>专场热拍</h2></div>
+            <foreach name="hotbid" item="hvo">
+                <li <eq name="key" value="0">class="first"</eq>>
+                    <div class="p-img">                    
+                        <a target="_blank" class="img-wrap" href="{:U('Auction/details',array('pid'=>$hvo['pid']))}">
+                            <img alt="{$hvo.pname}" src="{$upWholeUrl}{$hvo.pictures|getPicUrl=###,2,0}">
+                        </a>
+                    </div>
+                    <div class="p-name">
+                        <a target="_blank" href="{:U('Auction/details',array('pid'=>$hvo['pid']))}">{$hvo.pname}</a>
+                    </div>
+                    <div class="p-price">
+                        <div><strong>￥{$hvo.nowprice}</strong><span>当前价</span></div>
+                        <div class="am-cf">
+                            <span class="hotls-count am-fl"><i title="{$hvo.clcount}次围观" class="am-icon-eye"></i>{$hvo.clcount}次</span>
+                            <span class="hotls-count am-fr"><i title="{$hvo.bidcount}次出价" class="am-icon-gavel"></i>{$hvo.bidcount}次</span>
+                        </div>
+                    </div>
+                </li>
+            </foreach>  
+         </ul>
+     </div>
+</div>

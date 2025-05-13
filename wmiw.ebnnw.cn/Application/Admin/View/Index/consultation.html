@@ -1,0 +1,92 @@
+<include file="Common:meta" />
+<title>意见反馈-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">意见反馈</div>
+                            </div>
+                            <div class="widget-body am-cf">
+                                <div class="am-u-sm-12">
+                                    <empty name="list">
+                                    <div class="on-none">未查询到数据</div>
+                                    <else/>
+                                        <table width="100%" id="example-r" class="am-table am-table-compact tpl-table-black " >
+                                            <thead>
+                                                <tr>
+                                                    <td>ID</td>
+                                                    <td>反馈详情</td>
+                                                    <td>回复详情</td>
+                                                    <td>操作</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <volist name="list" id="vo">
+                                                    <tr id="{$vo.id}">
+                                                        <td>{$vo.id}</td>
+                                                        <td style="width: 40%;overflow: hidden;">
+                                                            <div title="{$vo.content}" style="width: 300px;"  class="am-text-truncate">内容：{$vo.content}{$vo.content}{$vo.content}{$vo.content}{$vo.content}{$vo.content}</div>
+                                                            <div>用户：{$vo.account}</div>
+                                                            <div>时间：{$vo.time|date="Y-m-d H:i:s",###}</div>
+                                                        </td>
+                                                        <td style="width: 40%;overflow: hidden;">
+                                                            <empty name="vo.reply">
+                                                                未回复
+                                                            <else/>
+                                                                <div title="{$vo.reply}" style="width: 300px;"  class="am-text-truncate">内容：{$vo.reply}</div>
+                                                                <div>管理员：{$vo.sel_nickname}</div>
+                                                                <div>时间：{$vo.rtime|date="Y-m-d H:i:s",###}</div>
+                                                            </empty>
+                                                        </td>
+                                                        <td>
+                                                            <div class="tpl-table-black-operation">
+                                                                <a href="{:U('Index/consultation_edit',array('id'=>$vo['id']))}"><i class="am-icon-pencil"></i>
+                                                                    <empty name="vo.reply">回复<else/>编辑</empty>
+                                                                </a>
+                                                                <a link="{:U('Index/consultation_del',array('id'=>$vo['id']))}" href="javascript:void(0)" name="{$vo.account}提交的这条反馈么？" class="tpl-table-black-operation-del del"><i class="am-icon-trash-o"></i>删除</a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </volist>
+                                            </tbody>
+                                        </table>
+                                        <div class="am-u-lg-12 am-cf">
+                                            <div class="am-fr">
+                                                <div class="am-pagination tpl-pagination">
+                                                    {$page}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </empty>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<script type="text/javascript">
+    $(function(){
+        $(".del").click(function(){
+            var delLink=$(this).attr("link");
+            AMUI.dialog.confirm({ title: '温馨提示', content:'你真的打算删除【<b>'+$(this).attr("name")+'</b>】吗?', onConfirm: function() {
+                top.window.location.href=delLink;
+            }, onCancel: function() { console.log('onCancel') } });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

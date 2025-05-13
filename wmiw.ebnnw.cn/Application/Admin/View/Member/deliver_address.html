@@ -1,0 +1,70 @@
+<include file="Common:meta" />
+<title>{$info.account}的地址薄-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">{$info.account}的地址薄</div>
+                            </div>
+                            <div class="widget-body am-cf">
+                                <div class="am-u-sm-12">
+                                    <empty name="list">
+                                    <div class="on-none">没有设置地址薄</div>
+                                    <else/>
+                                        <table width="100%" id="example-r" class="am-table am-table-compact tpl-table-black " >
+                                            <thead>
+                                                <tr>
+                                                    <td>收货人</td>
+                                                    <td>所在地区</td>
+                                                    <td>详细地址</td>
+                                                    <td>邮编</td>
+                                                    <td>手机</td>
+                                                    <td>电话</td>
+                                                    <td>默认</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <volist name="list" id="vo">
+                                                    <tr>
+                                                        <td>{$vo.truename}</td>
+                                                        <td> {$vo.prov}-{$vo.city}-{$vo.district} </td>
+                                                        <td>{$vo.address}</td>
+                                                        <td>{$vo.postalcode}</td>
+                                                        <td>{$vo.mobile}</td>
+                                                        <td>{$vo.phone}</td>
+                                                        <td>
+                                                            <eq name="vo.default" value="1">是<else/>否</eq>
+                                                        </td>
+                                                    </tr>
+                                                </volist>
+                                            </tbody>
+                                        </table>
+                                        <div class="am-u-lg-12 am-cf">
+                                            <div class="am-fr">
+                                                <div class="am-pagination tpl-pagination">
+                                                    {$page}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </empty>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+</body>
+</html>

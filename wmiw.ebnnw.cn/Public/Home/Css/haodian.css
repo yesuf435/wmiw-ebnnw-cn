@@ -1,0 +1,44 @@
+body{background: #F5F8FA none repeat scroll 0% 0%;}
+.haodian{margin:60px auto 60px;}
+.haodian .hd-li{}
+.haodian .hd-con{    margin: 5px 0;
+    background-color: #fff;
+     padding: 5px 5px 0px 5px;}
+
+.hd-contp{ position: relative;}
+.hd-contp .hd-av{position: absolute;
+    border-radius: 20px;
+    width: 40px;}
+.hd-contp .jindian {
+    border: solid 1px #999;
+    border-radius: 2px;
+    padding: 0 10px;
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    color: #666;
+}
+.hd-contp .contp-con{padding-left: 45px;}
+.hd-contp .contp-con .hd-name{ color: #000;}
+.hd-contp .contp-con .hd-info{ color: #999;}
+.hd-contp .contp-con .hd-info img{ width: auto;}
+
+.hd-conbd li{float: left; width: 32.333%; }
+
+.hd-conbd li img{ width: 100%;}
+.hd-conbd .gd-a img{ border-radius: 5px 0 0 5px;}
+.hd-conbd .gd-b{margin: 0 1.5%;}
+.hd-conbd .gd-c img{border-radius: 0 5px 5px 0;}
+
+@media only screen and (min-width: 640px){
+    body{background: #fff none repeat scroll 0% 0%;}
+    .haodian .hd-con{background-color: #f1f1f1; margin: 5px;}
+    .haodian{margin:0px auto;}
+}
+
+@media only screen and (min-width:1025px) {
+    .haodian{max-width: 1000px; }
+}
+@media only screen and (min-width:1260px) {
+    .haodian{max-width: 1200px;}
+}   

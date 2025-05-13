@@ -1,0 +1,362 @@
+<include file="Common:meta" />
+<title>添加/编辑用户-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">添加/编辑用户</div>
+                            </div>
+
+                            <div class="widget-body am-fr">
+                                <form id="addeditForm" class="am-form tpl-form-border-form tpl-form-border-br">
+                                    <div class="widget-sun-head">基本信息</div>
+                                    <div class="am-form-group">
+                                        <label for="account" class="am-u-sm-3 am-form-label">登录账号</label>
+                                        <div class="am-u-sm-9" style="position: relative;">
+                                            <input type="text" class="tpl-form-input" id="account" name="data[account]" value="{$info.account}" style="padding-right: 120px;" placeholder="请输入登录账号" minlength="3" maxlength="20" required><a href="javascript:void(0)" id="checkUserAccount" style="position: absolute; right: 22px; top: 3px;">检测是否重复</a>
+                                            <small>字母、数字、下划线，最多20个字符</small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="pwd" class="am-u-sm-3 am-form-label">密码</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="password" class="tpl-form-input" id="pwd" name="data[pwd]" value=""  placeholder="请输入登录密码">
+                                            <small>不修改留空</small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="paypwd" class="am-u-sm-3 am-form-label">支付密码</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="password" class="tpl-form-input" id="paypwd" name="data[paypwd]" value=""  placeholder="请输入支付密码">
+                                            <small>不修改留空</small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="nickname" class="am-u-sm-3 am-form-label">昵称</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="nickname" name="data[nickname]" value="{$info.nickname}"  placeholder="请输入昵称" minlength="3" maxlength="6" required>
+                                            <small>3至6个字符</small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="rec" class="am-u-sm-3 am-form-label">用户头像</label>
+                                        <div class="am-u-sm-9">
+                                            <div class="uploadePic-box am-margin-bottom-0 am-cf">
+                                                <ul  data-am-widget="gallery" data-am-gallery="{pureview:{target: 'a.showurl'}}">
+                                                    <notempty name="info.avatar">
+                                                        <li class="img-box">
+                                                            <div class="upImg-list-box am-gallery-item">
+                                                                <a class="showurl" href="{:C('UPLOADS_PICPATH')}{$info.avatar|picRep=###,0,'user'}" ><img src="{:C('UPLOADS_PICPATH')}{$info.avatar|picRep=###,0,'user'}"><input type="hidden" name="data[avatar]" value="{$info.avatar}" /></a>
+                                                            </div>
+                                                        </li>
+                                                    </notempty>
+                                                    <li class="upImg-lighthouse">
+                                                        <div class="upImg-list-box">
+                                                            <div class="filePic">
+                                                                <i class="am-icon-cloud-upload"></i><div class="txt">上传图片</div>
+                                                                <input type="file" pname="data[avatar]" link="{:U('Upload/upUserPic')}" class="upInput" value="选择凭证图片" name="file" max="5" maxsize="5120" allowexts="jpeg,jpg,bmp" accept="image/bmp,image/jpg,image/jpeg" multiple>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <small>图片尺寸：正方形图片</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="am-form-group">
+                                        <label for="scorebuy" class="am-u-sm-3 am-form-label">买家得分</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="number" class="tpl-form-input" id="scorebuy" name="data[scorebuy]" value="{$info.scorebuy}"  placeholder="请输入买家得分">
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="intr" class="am-u-sm-3 am-form-label">个性签名</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="intr" name="data[intr]" value="{$info.intr}"  placeholder="请输入个性签名">
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="sex" class="am-u-sm-3 am-form-label">性别</label>
+                                        <div class="am-u-sm-9 am-cf">
+                                            <label class="am-checkbox am-secondary am-margin-right-sm am-fl">
+                                                <input type="radio" name="data[sex]" value="1" data-am-ucheck <if condition="$info['sex'] eq 1"> checked</if> /> 男
+                                            </label>
+                                            <label class="am-checkbox am-secondary am-fl">
+                                                <input type="radio" name="data[sex]" value="0" data-am-ucheck <if condition="$info['sex'] eq 0"> checked</if> /> 女
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="birthday" class="am-u-sm-3 am-form-label">生日</label>
+                                        <div class="am-u-sm-9">
+                                            <input id="birthday" type="text" name="data[birthday]" placeholder="生日" value="{$info.birthday}">
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="email" class="am-u-sm-3 am-form-label">邮箱</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="email" class="tpl-form-input" id="email" name="data[email]" value="{$info.email}"  placeholder="请输入邮箱">
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="verify_email" class="am-u-sm-3 am-form-label">邮箱认证</label>
+                                        <div class="am-u-sm-9">
+                                            <label class="am-checkbox am-secondary am-margin-right-sm am-fl">
+                                                <input type="radio" name="data[verify_email]" value="1" data-am-ucheck <if condition="$info['verify_email'] eq 1"> checked</if> /> 已认证
+                                            </label>
+                                            <label class="am-checkbox am-secondary am-fl">
+                                                <input type="radio" name="data[verify_email]" value="0" data-am-ucheck <if condition="$info['verify_email'] eq 0"> checked</if> /> 未认证
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="mobile" class="am-u-sm-3 am-form-label">手机号</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="mobile" name="data[mobile]" value="{$info.mobile}"  placeholder="请输入手机号" minlength="11">
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="email" class="am-u-sm-3 am-form-label">手机号认证</label>
+                                        <div class="am-u-sm-9">
+                                            <label class="am-checkbox am-secondary am-margin-right-sm am-fl">
+                                                <input type="radio" name="data[verify_mobile]" value="1" data-am-ucheck <if condition="$info['verify_mobile'] eq 1"> checked</if> /> 已认证
+                                            </label>
+                                            <label class="am-checkbox am-secondary am-fl">
+                                                <input type="radio" name="data[verify_mobile]" value="0" data-am-ucheck <if condition="$info['verify_mobile'] eq 0"> checked</if> /> 未认证
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="am-form-group">
+                                        <label for="qq" class="am-u-sm-3 am-form-label">QQ</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="qq" name="data[qq]" value="{$info.qq}"  placeholder="请输入QQ">
+                                        </div>
+                                    </div> -->
+                                    <div class="am-form-group">
+                                        <label for="phone" class="am-u-sm-3 am-form-label">固定电话</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="phone" name="data[phone]" value="{$info.phone}"  placeholder="请输入固定电话">
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="postalcode" class="am-u-sm-3 am-form-label">邮政编码</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="postalcode" name="data[postalcode]" value="{$info.postalcode}"  placeholder="请输入邮政编码">
+                                        </div>
+                                    </div>
+                                    <include file="Common:location"/>
+                                    <div class="am-form-group">
+                                        <label for="address" class="am-u-sm-3 am-form-label">街道地址</label>
+                                        <div class="am-u-sm-9">
+                                            <textarea class="" rows="3" id="address" name="data[address]" placeholder="不需要重复填写省市区，必须大于5个字符，小于120个字符" inlength="3" maxlength="50">{$info.address}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="status" class="am-u-sm-3 am-form-label">状态</label>
+                                        <div class="am-u-sm-9">
+                                            <label class="am-checkbox am-secondary am-margin-right-sm am-fl">
+                                                <input type="radio" name="data[status]" value="1" data-am-ucheck <if condition="$info['status'] eq 1"> checked</if> /> 启动
+                                            </label>
+                                            <label class="am-checkbox am-secondary am-fl">
+                                                <input type="radio" name="data[status]" value="1" data-am-ucheck <if condition="$info['status'] eq 0"> checked</if> /> 禁用
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="widget-sun-head">实名认证</div>
+                                    <div class="am-form-group">
+                                        <label for="truename" class="am-u-sm-3 am-form-label">真实姓名</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="truename" name="data[truename]" value="{$info.truename}"  placeholder="请输入真实姓名">
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="idcard" class="am-u-sm-3 am-form-label">身份证号</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="idcard" name="data[idcard]" value="{$info.idcard}"  placeholder="请输入身份证号">
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="rec" class="am-u-sm-3 am-form-label">身份证正面照片</label>
+                                        <div class="am-u-sm-9">
+                                            <div class="uploadePic-box am-margin-bottom-0 am-cf">
+                                                <ul  data-am-widget="gallery" data-am-gallery="{pureview:{target: 'a.showurl'}}">
+                                                    <notempty name="info.idcard_front">
+                                                        <li class="img-box">
+                                                            <div class="upImg-list-box am-gallery-item">
+                                                                <a class="showurl" href="{:C('UPLOADS_PICPATH')}{$info.idcard_front|picRep=###,0,'user'}" ><img src="{:C('UPLOADS_PICPATH')}{$info.idcard_front}"><input type="hidden" name="data[idcard_front]" value="{$info.idcard_front}" /></a>
+                                                            </div>
+                                                        </li>
+                                                    </notempty>
+                                                    <li class="upImg-lighthouse">
+                                                        <div class="upImg-list-box">
+                                                            <div class="filePic">
+                                                                <i class="am-icon-cloud-upload"></i><div class="txt">上传图片</div>
+                                                                <input type="file" pname="data[idcard_front]" link="{:U('Upload/upIdcardPic')}" class="upInput" value="选择凭证图片" name="file" max="5" maxsize="5120" allowexts="gif,jpeg,jpg,bmp" accept="image/bmp,image/jpg,image/jpeg" multiple>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="rec" class="am-u-sm-3 am-form-label">身份证反面照片</label>
+                                        <div class="am-u-sm-9">
+                                            <div class="uploadePic-box am-margin-bottom-0 am-cf">
+                                                <ul  data-am-widget="gallery" data-am-gallery="{pureview:{target: 'a.showurl'}}">
+                                                    <notempty name="info.idcard_behind">
+                                                        <li class="img-box">
+                                                            <div class="upImg-list-box am-gallery-item">
+                                                                <a class="showurl" href="{:C('UPLOADS_PICPATH')}{$info.idcard_behind|picRep=###,0,'user'}" ><img src="{:C('UPLOADS_PICPATH')}{$info.idcard_behind}"><input type="hidden" name="data[idcard_behind]" value="{$info.idcard_behind}" /></a>
+                                                            </div>
+                                                        </li>
+                                                    </notempty>
+                                                    <li class="upImg-lighthouse">
+                                                        <div class="upImg-list-box">
+                                                            <div class="filePic">
+                                                                <i class="am-icon-cloud-upload"></i><div class="txt">上传图片</div>
+                                                                <input type="file" pname="data[idcard_behind]" link="{:U('Upload/upIdcardPic')}" class="upInput" value="选择凭证图片" name="file" max="5" maxsize="5120" allowexts="gif,jpeg,jpg,bmp" accept="image/bmp,image/jpg,image/jpeg" multiple>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="email" class="am-u-sm-3 am-form-label">实名认证</label>
+                                        <div class="am-u-sm-9">
+                                            <label class="am-checkbox am-secondary am-margin-right-sm am-fl">
+                                                <input type="radio" name="data[idcard_check]" value="0" data-am-ucheck <if condition="$info['idcard_check'] eq 0"> checked</if> /> 未申请认证
+                                            </label>
+                                            <label class="am-checkbox am-secondary am-margin-right-sm am-fl">
+                                                <input type="radio" name="data[idcard_check]" value="1" data-am-ucheck <if condition="$info['idcard_check'] eq 1"> checked</if> /> 待认证
+                                            </label>
+                                            <label class="am-checkbox am-secondary am-margin-right-sm am-fl">
+                                                <input type="radio" name="data[idcard_check]" value="2" data-am-ucheck <if condition="$info['idcard_check'] eq 2"> checked</if> /> 已认证
+                                            </label>
+                                            <label class="am-checkbox am-secondary am-fl">
+                                                <input type="radio" name="data[idcard_check]" value="3" data-am-ucheck <if condition="$info['idcard_check'] eq 3"> checked</if> /> 未通过
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="widget-sun-head">卖家信息</div>
+                                    <div class="am-form-group">
+                                        <label for="score" class="am-u-sm-3 am-form-label">卖家得分</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="number" class="tpl-form-input" id="score" name="data[score]" value="{$info.score}"  placeholder="请输入卖家得分">
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="organization" class="am-u-sm-3 am-form-label">店铺名称</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="organization" name="data[organization]" value="{$info.organization}"  placeholder="请输入店铺名称" maxlength="50">
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="organization" class="am-u-sm-3 am-form-label">店铺简介</label>
+                                        <div class="am-u-sm-9">
+                                            <textarea name="data[intro]" maxlength="50">{$info.intro}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="rec" class="am-u-sm-3 am-form-label">店铺LOGO</label>
+                                        <div class="am-u-sm-9">
+                                            <div class="uploadePic-box am-margin-bottom-0 am-cf">
+                                                <ul  data-am-widget="gallery" data-am-gallery="{pureview:{target: 'a.showurl'}}">
+                                                    <notempty name="info.avatar_sel">
+                                                        <li class="img-box">
+                                                            <div class="upImg-list-box am-gallery-item">
+                                                                <a class="showurl" href="{:C('UPLOADS_PICPATH')}{$info.avatar_sel|picRep=###,0,'user'}" ><img src="{:C('UPLOADS_PICPATH')}{$info.avatar_sel|picRep=###,1,'user'}"><input type="hidden" name="data[avatar_sel]" value="{$info.avatar_sel}" /></a>
+                                                            </div>
+                                                        </li>
+                                                    </notempty>
+                                                    <li class="upImg-lighthouse">
+                                                        <div class="upImg-list-box">
+                                                            <div class="filePic">
+                                                                <i class="am-icon-cloud-upload"></i><div class="txt">上传图片</div>
+                                                                <input type="file" pname="data[avatar_sel]" link="{:U('Upload/upUserPic')}" class="upInput" value="选择凭证图片" name="file" max="5" maxsize="5120" allowexts="gif,jpeg,jpg,bmp" accept="image/bmp,image/jpg,image/jpeg" multiple>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <small>图片尺寸：正方形图片</small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <input type="hidden" name="data[uid]" value="{$info.uid}"/>
+                                            <input type="submit" name="" value="提交" class="am-btn am-btn-primary tpl-btn-bg-color-success submitBtn">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<js href="--PUBLIC--/PhotoClipJs/lrz.all.bundle.js"/>
+<script type="text/javascript">
+
+    $("#checkUserAccount").click(function(){
+        $.getJSON("__URL__/checkUserAccount", { account:$("#account").val(),uid:"{$info.uid}"}, function(json){
+            $("#checkUserAccount").css("color",json.status==1?"#0f0":"#f00").html(json.info);
+        });
+    });
+
+
+    // 生日
+    $('#birthday').datepicker({language:'zh-CN',format: 'yyyy-mm-dd'});
+    // 表单提交
+        var $form = $('#addeditForm');
+        var $subbtn = $(".submitBtn");
+        $form.validator({
+            submit: function() {
+                var formValidity = this.isFormValid();
+                if (formValidity) {
+                    // 验证成功的逻辑
+                    $subbtn.button('loading');
+                    // 验证成功的逻辑
+                    $form.ajaxSubmit({url:document.URL,data:'',type:"POST",
+                        success:function(data, st) {
+                            // 提示框
+                            AMUI.dialog.alert({ title: data.title, content: data.info});
+                            if(data.status==1){
+                                setTimeout(function(){
+                                    top.window.location.href = data.url;
+                                },1000);
+                            }else{
+                                $('#'+data.field).parents('.am-form-group').removeClass('.am-form-success').addClass('am-form-error');
+                                $('#'+data.field).addClass('am-field-error');
+                                $subbtn.button('reset');
+                            }
+                            return false;
+                        }
+                    });
+                } else {
+                    $subbtn.button('reset');
+                // 验证失败的逻辑
+                }
+            //阻止原生form提交
+            return false;
+            }
+        });
+</script>
+</body>
+</html>

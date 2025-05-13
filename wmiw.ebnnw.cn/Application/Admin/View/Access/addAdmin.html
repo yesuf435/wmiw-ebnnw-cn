@@ -1,0 +1,152 @@
+<include file="Common:meta" />
+<title>添加编辑管理员-{$site.SITE_INFO.name}</title>
+<meta name="description" content="{$site.SITE_INFO.keyword}">
+<meta name="keywords" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<body data-type="widgets">
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <include file="Common:header" />
+        <!-- 内容区域 -->
+
+        <div class="tpl-content-wrapper">
+            <div class="row-content am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                        <div class="widget am-cf">
+                            <div class="widget-head am-cf">
+                                <div class="widget-title am-fl">添加编辑管理员</div>
+                            </div>
+
+                            <div class="widget-body am-fr">
+                                <form id="addAdmin" class="am-form tpl-form-border-form tpl-form-border-br">
+                                    <div class="am-form-group">
+                                        <label for="email" class="am-u-sm-3 am-form-label">账号邮件地址</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="email" name="data[email]" value="{$info.email}" placeholder="请输入账号邮件地址" <if condition="ACTION_NAME eq 'editAdmin'"> disabled="disabled"</if> required>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="pwd" class="am-u-sm-3 am-form-label">新密码</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="pwd" name="data[pwd]" value="" placeholder="请输入新密码" <eq name="ACTION_NAME" value="addAdmin">required</eq>>
+                                            <small><span>*</span>密码为8-30个字符必须包含字母、数字、特殊字符！<eq name="ACTION_NAME" value="editAdmin">留空则不进行修改</eq></small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="nickname" class="am-u-sm-3 am-form-label">昵称</label>
+                                        <div class="am-u-sm-9">
+                                            <input type="text" class="tpl-form-input" id="nickname" name="data[nickname]" value="{$info.nickname}" placeholder="请输入昵称" required>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="rec" class="am-u-sm-3 am-form-label">用户头像</label>
+                                        <div class="am-u-sm-9">
+                                            <div class="uploadePic-box am-margin-bottom-0 am-cf">
+                                                <ul  data-am-widget="gallery" data-am-gallery="{pureview:{target: 'a.showurl'}}">
+                                                    <notempty name="info.avatar">
+                                                        <li class="img-box">
+                                                            <div class="upImg-list-box am-gallery-item">
+                                                                <a class="showurl" href="{:C('UPLOADS_PICPATH')}{$info.avatar}" ><img src="{:C('UPLOADS_PICPATH')}{$info.avatar|picRep=###,1,'user'}"><input type="hidden" name="data[avatar]" value="{$info.avatar}" /></a>
+                                                            </div>
+                                                        </li>
+                                                    </notempty>
+                                                    <li class="upImg-lighthouse">
+                                                        <div class="upImg-list-box">
+                                                            <div class="filePic">
+                                                                <i class="am-icon-cloud-upload"></i><div class="txt">上传图片</div>
+                                                                <input type="file" pname="data[avatar]" link="{:U('Upload/upUserPic')}" class="upInput" value="选择凭证图片" name="file" max="5" maxsize="5120" allowexts="gif,jpeg,jpg,png,bmp" accept="image/*" multiple>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <small>图片尺寸：正方形图片</small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="status" class="am-u-sm-3 am-form-label">状态</label>
+                                        <div class="am-u-sm-9">
+                                            <select name="data[status]" data-am-selected>
+                                                <option value="1" <eq name="info.status" value="1">selected</eq>>启用</option>
+                                                <option value="0" <eq name="info.status" value="0">selected</eq>>禁用</option>
+                                            </select>
+                                            <small>如果禁用了将无法登陆本系统</small>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="status" class="am-u-sm-3 am-form-label">所属用户组</label>
+                                        <div class="am-u-sm-9">
+                                            <select name="data[role_id]" data-am-selected>
+                                                {$info.roleOption}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <label for="remark" class="am-u-sm-3 am-form-label">备注</label>
+                                        <div class="am-u-sm-9">
+                                            <textarea name="data[remark]" placeholder="请输入备注">{$info.remark}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="am-form-group">
+                                        <div class="am-u-sm-9 am-u-sm-push-3">
+                                            <input type="hidden" name="data[aid]" value="{$info.aid}"/>
+                                            <input type="submit" name="" value="提交" class="am-btn am-btn-primary tpl-btn-bg-color-success submitBtn">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<include file="Common:footer_link" />
+<js href="--PUBLIC--/PhotoClipJs/lrz.all.bundle.js"/>
+<script type="text/javascript">
+    // 表单提交
+        var $form = $('#addAdmin');
+        var $subbtn = $(".submitBtn");
+        $form.validator({
+            submit: function() {
+                var pwdval = $("input[name='data[pwd]']").val();
+                if (pwdval!='') {
+                    var pwdRegex = new RegExp('(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,30}');
+                    if (!pwdRegex.test(pwdval)) {
+                         AMUI.dialog.alert({ content: '您的密码复杂度太低（密码为8-30个字符且必须包含字母、数字、特殊字符）,请重新设定！'});
+                         return false;
+                    }
+                }
+                
+                var formValidity = this.isFormValid();
+                if (formValidity) {
+                    // 验证成功的逻辑
+                    $subbtn.button('loading');
+                    // 验证成功的逻辑
+                    $form.ajaxSubmit({url:document.URL,data:'',type:"POST",
+                        success:function(data, st) {
+                            // 提示框
+                            AMUI.dialog.alert({ title: data.title, content: data.info});
+                            if(data.status==1){
+                                setTimeout(function(){
+                                    top.window.location.href = data.url;
+                                },1000);
+                            }else{
+                                $subbtn.button('reset');
+                            }
+                            return false;
+                        }
+                    });
+                } else {
+                    $subbtn.button('reset');
+                // 验证失败的逻辑
+                }
+            //阻止原生form提交
+            return false;
+            }
+        });
+</script>
+</body>
+</html>

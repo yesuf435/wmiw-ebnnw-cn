@@ -1,0 +1,52 @@
+<include file="Common:meta" />
+<title>账单明细-{$site.SITE_INFO.title}</title>
+<meta name="keyword" content="{$site.SITE_INFO.keyword}">
+<meta name="description" content="{$site.SITE_INFO.description}">
+<include file="Common:link" />
+<include file="Common:linkuser" />
+<link href="__CSS__/wallet.css" rel="stylesheet" type="text/css">
+<body>
+<include file="Common:header" />
+<include file="Common:navigation" />
+		<div class="center">
+			<div class="col-main">
+				<div class="main-wrap">
+					<div class="main-wrap-box">
+						<div class="user-logistics">
+							<!--标题 -->
+							<div class="am-cf on-user-title">
+								<div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">账单明细</strong> / <small>Electronic&nbsp;bill</small></div>
+							</div>
+							<div class="package-title">
+								<div class="item-info">
+									<p class="log-status">事项：<span>{$info.changetype|changetype=###}</span> </p>
+									<p>金额：
+										<neq name="info.expend" value="0">
+											<span class="dec">-{$info.expend}</span>
+										</neq>
+										<neq name="info.income" value="0">
+											<span>+{$info.income}</span>
+										</neq>
+									</p>
+									<p>详情：{$info.annotation}</p>
+									<p>余额：{$info.balance}</p>
+									<p>时间：{$info.time|date='Y-m-d H:i',###}</p>
+									
+								</div>
+	                         <div class="clear"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--底部-->
+                <include file="Common:footer"/>
+            </div>
+            <include file="Member:menu"/>
+        </div>
+<script type="text/javascript">
+    $(function(){
+
+    });
+</script>
+	</body>
+</html>
