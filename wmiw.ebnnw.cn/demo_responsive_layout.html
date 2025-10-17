@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <!-- 响应式设计：完整的 meta 标签配置 -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <title>响应式布局示例 - CSS Grid & Flexbox</title>
+    
+    <!-- 引入响应式布局样式 -->
+    <link rel="stylesheet" href="Public/css/responsive-layout.css">
+    
+    <style>
+        /* 演示样式 */
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .demo-section {
+            background: white;
+            padding: 30px;
+            margin-bottom: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .demo-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ff6b6b;
+        }
+        
+        .demo-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .card-demo {
+            background: white;
+            border: 1px solid #eee;
+        }
+        
+        .card-demo .card-title {
+            color: #333;
+        }
+        
+        .card-demo .card-description {
+            color: #666;
+        }
+        
+        .demo-code {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align: center; color: #333; margin-bottom: 40px;">
+            响应式布局示例
+            <br>
+            <small style="font-size: 16px; color: #666;">展示 CSS Grid 和 Flexbox 现代布局技术</small>
+        </h1>
+
+        <!-- Flexbox 布局示例 -->
+        <section class="demo-section">
+            <h2 class="demo-title">1. Flexbox 弹性布局</h2>
+            <p style="color: #666; margin-bottom: 20px;">
+                Flexbox 适合一维布局，如导航栏、按钮组等。支持自动换行和灵活的空间分配。
+            </p>
+            
+            <div class="flex-container">
+                <div class="demo-item flex-1">Flex 1</div>
+                <div class="demo-item flex-2">Flex 2 (占2倍宽度)</div>
+                <div class="demo-item flex-1">Flex 1</div>
+            </div>
+            
+            <div class="demo-code">
+&lt;div class="flex-container"&gt;
+    &lt;div class="flex-1"&gt;Flex 1&lt;/div&gt;
+    &lt;div class="flex-2"&gt;Flex 2 (占2倍宽度)&lt;/div&gt;
+    &lt;div class="flex-1"&gt;Flex 1&lt;/div&gt;
+&lt;/div&gt;
+            </div>
+        </section>
+
+        <!-- CSS Grid 自适应布局 -->
+        <section class="demo-section">
+            <h2 class="demo-title">2. CSS Grid 自适应布局</h2>
+            <p style="color: #666; margin-bottom: 20px;">
+                Grid 布局会自动根据容器宽度调整列数，每列最小宽度 250px。适合响应式卡片列表。
+            </p>
+            
+            <div class="grid-auto-fit">
+                <div class="demo-item">卡片 1</div>
+                <div class="demo-item">卡片 2</div>
+                <div class="demo-item">卡片 3</div>
+                <div class="demo-item">卡片 4</div>
+                <div class="demo-item">卡片 5</div>
+                <div class="demo-item">卡片 6</div>
+            </div>
+            
+            <div class="demo-code">
+&lt;div class="grid-auto-fit"&gt;
+    &lt;div&gt;卡片 1&lt;/div&gt;
+    &lt;div&gt;卡片 2&lt;/div&gt;
+    ...
+&lt;/div&gt;
+
+/* CSS */
+.grid-auto-fit {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+}
+            </div>
+        </section>
+
+        <!-- 响应式卡片组件 -->
+        <section class="demo-section">
+            <h2 class="demo-title">3. 响应式卡片组件</h2>
+            <p style="color: #666; margin-bottom: 20px;">
+                卡片会根据屏幕大小自动调整布局：桌面端3列，平板2列，手机1列。
+            </p>
+            
+            <div class="card-container">
+                <div class="card card-demo">
+                    <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'%3E%3Crect width='400' height='200' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-size='20'%3E图片区域%3C/text%3E%3C/svg%3E" alt="示例图片" class="card-image">
+                    <div class="card-content">
+                        <h3 class="card-title">卡片标题 1</h3>
+                        <p class="card-description">这是卡片的描述文本，展示卡片组件的内容布局效果。</p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-primary">查看详情</button>
+                    </div>
+                </div>
+
+                <div class="card card-demo">
+                    <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'%3E%3Crect width='400' height='200' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-size='20'%3E图片区域%3C/text%3E%3C/svg%3E" alt="示例图片" class="card-image">
+                    <div class="card-content">
+                        <h3 class="card-title">卡片标题 2</h3>
+                        <p class="card-description">响应式卡片会自动适应不同屏幕尺寸。</p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-primary">查看详情</button>
+                    </div>
+                </div>
+
+                <div class="card card-demo">
+                    <img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'%3E%3Crect width='400' height='200' fill='%23ddd'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-size='20'%3E图片区域%3C/text%3E%3C/svg%3E" alt="示例图片" class="card-image">
+                    <div class="card-content">
+                        <h3 class="card-title">卡片标题 3</h3>
+                        <p class="card-description">支持悬停效果和流畅的交互动画。</p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-primary">查看详情</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 响应式表单 -->
+        <section class="demo-section">
+            <h2 class="demo-title">4. 响应式表单布局</h2>
+            <p style="color: #666; margin-bottom: 20px;">
+                表单使用 Grid 布局，桌面端双列，移动端自动切换为单列。
+            </p>
+            
+            <form class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">姓名</label>
+                    <input type="text" class="form-input" placeholder="请输入姓名">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">邮箱</label>
+                    <input type="email" class="form-input" placeholder="请输入邮箱">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">电话</label>
+                    <input type="tel" class="form-input" placeholder="请输入电话">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">城市</label>
+                    <select class="form-select">
+                        <option>请选择城市</option>
+                        <option>北京</option>
+                        <option>上海</option>
+                        <option>广州</option>
+                    </select>
+                </div>
+                <div class="form-group form-group-full">
+                    <label class="form-label">备注</label>
+                    <textarea class="form-textarea" rows="4" placeholder="请输入备注信息"></textarea>
+                </div>
+                <div class="form-group form-group-full">
+                    <button type="submit" class="btn btn-primary">提交表单</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- 响应式说明 -->
+        <section class="demo-section">
+            <h2 class="demo-title">5. 响应式断点说明</h2>
+            <div style="color: #666; line-height: 2;">
+                <p><strong>桌面端（> 1024px）：</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Grid 布局显示 4 列</li>
+                    <li>卡片显示 3 列</li>
+                    <li>表单显示 2 列</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>平板端（768px - 1024px）：</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Grid 布局显示 3 列</li>
+                    <li>卡片显示 2 列</li>
+                    <li>表单显示 1 列</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>手机端（< 768px）：</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Grid 布局显示 1 列</li>
+                    <li>卡片显示 1 列</li>
+                    <li>导航栏垂直堆叠</li>
+                    <li>间距自动缩小</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 使用指南 -->
+        <section class="demo-section">
+            <h2 class="demo-title">6. 使用指南</h2>
+            <div style="color: #666; line-height: 1.8;">
+                <p><strong>在项目中使用这些布局：</strong></p>
+                <ol style="margin-left: 20px; margin-top: 10px;">
+                    <li>在页面中引入 <code style="background: #f5f5f5; padding: 2px 6px; border-radius: 3px;">responsive-layout.css</code></li>
+                    <li>选择合适的布局类名（如 grid-auto-fit, flex-container 等）</li>
+                    <li>根据需要自定义 CSS 变量（颜色、间距等）</li>
+                    <li>测试不同屏幕尺寸下的显示效果</li>
+                </ol>
+                
+                <p style="margin-top: 15px;"><strong>推荐的开发工具：</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Chrome DevTools 的设备模拟器</li>
+                    <li>Firefox 的响应式设计模式</li>
+                    <li>真机测试（iOS Safari、Android Chrome）</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <footer style="text-align: center; padding: 40px 0; color: #999; border-top: 1px solid #eee; margin-top: 40px;">
+        <p>响应式布局示例 - 商场系统现代化升级</p>
+        <p style="font-size: 14px; margin-top: 10px;">基于 CSS Grid 和 Flexbox 实现</p>
+    </footer>
+
+    <script>
+        // 显示当前窗口宽度
+        function showWindowSize() {
+            const width = window.innerWidth;
+            let device = '';
+            if (width > 1024) device = '桌面端';
+            else if (width > 768) device = '平板端';
+            else device = '手机端';
+            
+            console.log(`当前窗口宽度: ${width}px (${device})`);
+        }
+        
+        // 页面加载和窗口大小改变时显示
+        window.addEventListener('load', showWindowSize);
+        window.addEventListener('resize', showWindowSize);
+        
+        // 阻止表单默认提交
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('这是演示页面，表单提交已被阻止');
+        });
+    </script>
+</body>
+</html>

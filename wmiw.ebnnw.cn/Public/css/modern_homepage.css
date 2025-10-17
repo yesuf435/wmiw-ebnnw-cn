@@ -1,13 +1,34 @@
-/* 现代化拍卖网站首页样式 */
-/* 基于优雅的深色主题，适合高端拍卖平台 */
+/**
+ * 现代化拍卖网站首页样式
+ * 基于优雅的深色主题，适合高端拍卖平台
+ * 
+ * 响应式设计说明：
+ * - 采用移动优先策略（Mobile First）
+ * - 使用 Flexbox 实现灵活布局
+ * - 支持三级断点：桌面端（>1200px）、平板端（768px-1200px）、手机端（<768px）
+ * - 所有组件均自适应屏幕尺寸
+ */
 
-/* 全局重置和基础样式 */
+/* ============================================
+   全局重置和基础样式
+   ============================================ */
+
+/* 
+ * 盒模型重置：使用 border-box 确保 padding 和 border 包含在元素宽度内
+ * 这样可以更容易控制元素尺寸，特别是在响应式布局中
+ */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* 
+ * Body 基础样式
+ * - 使用现代中文字体栈，确保跨平台显示效果
+ * - 渐变背景营造高端氛围
+ * - overflow-x: hidden 防止水平滚动条
+ */
 body {
     font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
@@ -16,14 +37,29 @@ body {
     overflow-x: hidden;
 }
 
-/* 容器样式 */
+/* 
+ * 响应式容器
+ * - 最大宽度 1200px，适合大屏显示
+ * - 两侧 20px 内边距，防止内容紧贴边缘
+ * - 居中对齐
+ */
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
 }
 
-/* 头部导航栏 */
+/* ============================================
+   响应式头部导航栏
+   使用 Flexbox 实现自适应布局
+   ============================================ */
+
+/* 
+ * 头部容器
+ * - fixed 定位保持导航栏始终可见
+ * - backdrop-filter 实现毛玻璃效果（需要现代浏览器支持）
+ * - z-index: 1000 确保在其他内容之上
+ */
 .modern-header {
     background: rgba(0, 0, 0, 0.95);
     backdrop-filter: blur(10px);
@@ -36,6 +72,12 @@ body {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* 
+ * 导航内容区
+ * - 使用 Flexbox 横向布局
+ * - justify-content: space-between 实现两端对齐
+ * - 自动在不同屏幕尺寸调整间距
+ */
 .header-content {
     display: flex;
     align-items: center;
@@ -471,24 +513,41 @@ body {
     line-height: 1.8;
 }
 
-/* 响应式设计 */
+/* ============================================
+   响应式设计 - 移动端适配
+   ============================================ */
+
+/**
+ * 平板和手机端适配（最大宽度 768px）
+ * 
+ * 主要调整：
+ * - 导航栏改为垂直堆叠布局
+ * - 搜索框占满可用宽度
+ * - 导航菜单自动换行居中
+ * - 标题字体缩小以适应小屏幕
+ * - Grid 布局列数自动减少
+ */
 @media (max-width: 768px) {
+    /* 头部导航垂直堆叠 */
     .header-content {
         flex-direction: column;
         gap: 20px;
     }
     
+    /* 搜索框全宽显示 */
     .search-container {
         margin: 0;
         max-width: 100%;
     }
     
+    /* 导航菜单自动换行并居中 */
     .nav-menu {
         flex-wrap: wrap;
         justify-content: center;
         gap: 15px;
     }
     
+    /* 标题字体适配 */
     .hero-title {
         font-size: 2.5rem;
     }
@@ -497,11 +556,13 @@ body {
         font-size: 1.1rem;
     }
     
+    /* 功能卡片网格：自动适配列数，最小宽度 150px */
     .feature-grid {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         gap: 20px;
     }
     
+    /* 拍品网格：自动填充，最小宽度 250px */
     .auction-grid {
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         gap: 20px;
@@ -512,7 +573,13 @@ body {
     }
 }
 
+/**
+ * 小屏手机端适配（最大宽度 480px）
+ * 
+ * 进一步优化小屏幕显示效果
+ */
 @media (max-width: 480px) {
+    /* 标题进一步缩小 */
     .hero-title {
         font-size: 2rem;
     }
